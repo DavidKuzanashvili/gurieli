@@ -10,7 +10,7 @@ function Intro() {
   }
 
   this.keyPressed = function() {
-    if(key == '1') {
+    if(keyCode === ENTER) {
       this.sceneManager.showScene( Game );
     }
   }
@@ -19,6 +19,6 @@ function Intro() {
     textSize(22)
     textAlign(CENTER);
     text('Find hidden object', width / 2, height / 2);
-    text('Press 1 to start', width / 2, height / 2 + 30);
+    text('Press ENTER to start', width / 2, height / 2 + 30);
   }
 }

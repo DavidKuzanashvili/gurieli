@@ -1,23 +1,24 @@
 function Game() {
-  var placeHiddenObjects = [
-    {
-      x: random(width * 2 / 3, width),
-      y: random(height - (height * 2 / 3))
-    },
-    {
-      x: random(width * 2 / 3, width),
-      y: random(height - (height * 2 / 3))
-    }
-  ];
+  var placeHiddenObjects = [];
+
+  var imgArray = [];
 
   var score = 0;
+
+  this.enter = function() {
+    for(var i = 0; i < this.sceneManager.hiddenObjects.length; i++) {
+      imgArray.push(this.sceneManager.hiddenObjects[i]);
+    }
+
+    initGame();
+  }
 
   this.draw = function() {
     push();
 
     image( this.sceneManager.bkImg, 0, 0 );
 
-    placeObjects(this.sceneManager.hiddenObjects);
+    placeObjects();
 
     pop();
   }
@@ -25,14 +26,14 @@ function Game() {
   this.mouseClicked = function() {
     var omitObject = detectClickedObject();
 
-    if(score >= 2) {
-      this.sceneManager.showScene( GameOver );
-    }
-
     if(omitObject.inSight) {
-      this.sceneManager.hiddenObjects.splice(omitObject.index, 1);
+      imgArray.splice(omitObject.index, 1);
       placeHiddenObjects.splice(omitObject.index, 1);
       score++;
+    }
+
+    if(score >= 2) {
+      this.sceneManager.showScene( GameOver );
     }
   }
 
@@ -40,7 +41,11 @@ function Game() {
     return score;
   }
 
-  function placeObjects(imgArray) {
+  this.getHiddenObjectsPlace = function() {
+    return placeHiddenObjects;
+  }
+
+  function placeObjects() {
     for(var i = 0; i < imgArray.length; i++) {
       for(var j = 0; j < placeHiddenObjects.length; j++) {
         fill(0);
@@ -66,5 +71,18 @@ function Game() {
       inSight: false,
       index: -1
     };
+  }
+
+  function initGame() {
+    placeHiddenObjects = [
+      {
+        x: random(width * 2 / 3, width),
+        y: random(height - (height * 2 / 3))
+      },
+      {
+        x: random(width * 2 / 3, width),
+        y: random(height - (height * 2 / 3))
+      }
+    ];
   }
 }
