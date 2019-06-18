@@ -14,7 +14,7 @@ function GameOver() {
     textAlign(CENTER);
     text('Score: ' + oGame.getScore(), width / 2, height / 2 - 20);
 
-    text('Press anu key to restart game...', width / 2, height / 2 + 20);
+    text('Press any key to restart game...', width / 2, height / 2 + 20);
 
     pop();
   }

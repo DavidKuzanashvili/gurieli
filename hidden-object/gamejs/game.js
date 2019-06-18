@@ -41,10 +41,6 @@ function Game() {
     return score;
   }
 
-  this.getHiddenObjectsPlace = function() {
-    return placeHiddenObjects;
-  }
-
   function placeObjects() {
     for(var i = 0; i < imgArray.length; i++) {
       for(var j = 0; j < placeHiddenObjects.length; j++) {
@@ -84,5 +80,7 @@ function Game() {
         y: random(height - (height * 2 / 3))
       }
     ];
+
+    score = 0;
   }
 }
