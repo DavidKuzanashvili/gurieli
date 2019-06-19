@@ -5,7 +5,6 @@ var fruitImages = {};
 
 function preload()
 {
-    bgImage = loadImage(imgPath + 'bk.png');
     loadBottles();
     loadFruits();
 }
@@ -16,7 +15,6 @@ function setup()
     canvas.parent('canvas');
 
     var mgr = new SceneManager();
-    mgr.bgImage = bgImage; // inject bkImage property
     mgr.wire();
     mgr.showScene( Intro );
 }
@@ -45,7 +43,7 @@ function loadBottles() {
     bottleImages.cherryBottle = loadImage(imgPath + 'cherry.png');
     bottleImages.mintBottle = loadImage(imgPath + 'feijoa.png');
     bottleImages.peachBottle = loadImage(imgPath + 'peach.png');
-    bottleImages.reapberryBottle = loadImage(imgPath + 'raspberry.png');
+    bottleImages.raspberryBottle = loadImage(imgPath + 'raspberry.png');
     bottleImages.mintBottle = loadImage(imgPath + 'mint.png');
     bottleImages.feijoaBottle = loadImage(imgPath + 'feijoa.png');
 }

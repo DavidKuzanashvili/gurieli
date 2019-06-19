@@ -1,19 +1,21 @@
 function Game()
 {
+    var maxFruitCount = 20;
     var fruitAddLastTime = 0;
     var stats;
+    var timer;
     
     var bottle = null;
     var fruits = [];
 
-    this.enter = function()
+    this.enter = function() 
     {
         initGame();
     }
 
     this.draw = function()
     {
-        image(this.sceneManager.bgImage, 0, 0);
+        background('#003919');
 
         dropFruits();
 
@@ -21,6 +23,13 @@ function Game()
         bottle.draw();
 
         stats.draw();
+
+        if (timer.getMinutes() >= 3) {
+            this.sceneManager.showScene( GameOver );
+        }
+
+        timer.update();
+        timer.draw();
     }
 
     this.mousePressed = function()
@@ -31,10 +40,11 @@ function Game()
     function initGame()
     {
         stats = new Statistics(3224);
-        bottle = new Bottle(width / 2, height, bottleImages.mintBottle, 70, new Tooltip({
+        timer = new Timer(millis());
+        bottle = new Bottle(width / 2, height, bottleImages.raspberryBottle, 70, new Tooltip({
             width: 18,
             color: '#993333',
-            max: 100
+            max: 20
         }));
         fruits = [];
     }
@@ -57,6 +67,7 @@ function Game()
             if(bottle.hitsFruit(fruits[i])) {
                 fruits.splice(i, 1);
                 stats.increaseScore();
+                bottle.tooltip.increase();
                 i--;
                 continue;
             }
@@ -65,5 +76,9 @@ function Game()
         fruits.forEach(function(fruit) {
             fruit.draw();
         });
+    }
+
+    this.getScore = function() {
+        return stats.getScore();
     }
 }

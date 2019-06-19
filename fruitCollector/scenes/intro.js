@@ -19,7 +19,7 @@ function Intro()
 
     this.draw = function()
     {
-        image(this.sceneManager.bgImage, 0, 0);
+        background('#003919')
 
         cursor('default');
         drawIntroScreen();  

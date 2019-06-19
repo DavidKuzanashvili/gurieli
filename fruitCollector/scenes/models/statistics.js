@@ -2,6 +2,9 @@ function Statistics(higestScore) {
   this.higestScore = higestScore;
   this.score = 0;
   this.round = 1;
+  this.margin = 100;
+  var statsContainerStart = width - this.margin;
+
 
   this.getScore = function() {
     return this.score;
@@ -22,10 +25,11 @@ function Statistics(higestScore) {
   this.draw = function() {
     push();
 
-    fill(255);
+    fill('#ddd254');
     textSize(32);
     text('The higest score: ' + this.higestScore, 100, 100, 500, 100);
-    text('Score: ' + this.score, 700, 100, 500, 100);
+    fill(255);
+    text('Score: ' + this.score, 600, 100, 700, 100);
 
     pop();
   }

@@ -10,11 +10,7 @@ function GameOver()
 
     this.draw = function()
     {
-        // read the injected bkImage property
-        image( this.sceneManager.bgImage, 0, 0);
-        
-        // invoke a method from a different scene
-        oGame.displayGlobalBalls();
+        background('#003919');
 
         fill("black");
         textSize( map( sin(frameCount * 0.1), 0, 1, 24, 32) );
