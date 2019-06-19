@@ -16,6 +16,7 @@ function Bottle(x, y, type, speed, tooltip) {
   if(this.tooltip) {
     // this.tooltip.x = this.x + 75 + 30;
     this.tooltip.height = 250;
+    this.tooltip.reload();
     this.tooltip.y = height - 20 - this.tooltip.height / 2;
   }
 
@@ -48,6 +49,7 @@ function Bottle(x, y, type, speed, tooltip) {
 
     if(this.tooltip){
       this.tooltip.x = this.x + 75 + 30;
+      this.tooltip.update();
     }
   }
 
