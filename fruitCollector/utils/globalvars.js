@@ -1,0 +1,12 @@
+var imgPath = 'assets/imgs/';
+var fontsPath = 'assets/fonts/';
+var bgImage;
+var leaves = null;
+var bottleImages = {};
+var fruitImages = {};
+var lifeImages = {};
+var leavesImages = {};
+var fonts = {};
+var sequenceImage = null;
+var xushturi = null;
+var currentLevel = 1;

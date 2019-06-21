@@ -17,6 +17,7 @@ function GameOver()
     this.draw = function()
     {
         background('#003919');
+        leaves.draw();
 
         modal.drawStats();
 

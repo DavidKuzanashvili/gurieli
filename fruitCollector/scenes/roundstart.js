@@ -10,6 +10,7 @@ function RoundStart() {
 
   this.draw = function() {
     background(colors.mainTheme);
+    leaves.draw();
 
     title.draw();
 

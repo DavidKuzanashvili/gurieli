@@ -26,6 +26,7 @@ function Game()
     this.draw = function()
     {
         background('#003919');
+        leaves.draw();
         cursor('default');
 
         dropFruits();

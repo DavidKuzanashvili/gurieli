@@ -1,15 +1,6 @@
-var imgPath = 'assets/imgs/';
-var fontsPath = 'assets/fonts/';
-var bgImage;
-var bottleImages = {};
-var fruitImages = {};
-var lifeImages = {};
-var fonts = {};
-var sequenceImage = null;
-var xushturi = null;
-
 function preload()
 {
+    loadLeaves();
     loadBottles();
     loadFruits();
     loadLife();
@@ -22,6 +13,7 @@ function setup()
 {
     var canvas = createCanvas(windowWidth, windowHeight);
     canvas.parent('canvas');
+    leaves = new Leaves(leavesImages.mint);
 
     var mgr = new SceneManager();
     mgr.wire();
@@ -59,7 +51,11 @@ function loadBottles() {
 
 function loadFruits() {
     fruitImages.raspberry = loadImage(imgPath + 'original-raspberry.png');
-    fruitImages.leaves = [loadImage(imgPath + 'leaves/mintleft.png'), loadImage(imgPath + 'leaves/mintright.png')];
+    fruitImages.leaves = [loadImage(imgPath + 'leaves/mint/mintleft.png'), loadImage(imgPath + 'leaves/mint/mintright.png')];
+}
+
+function loadLeaves() {
+    leavesImages.mint = loadImage(imgPath + 'leaves/mint/mint-leaves.png');
 }
 
 function loadLife() {
