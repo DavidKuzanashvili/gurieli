@@ -38,6 +38,7 @@ function CountDown(x, y, countNumber) {
       // noLoop();
     }
     
+    textFont(fonts.LGVBold);
     fill(107, 200, 167, 255 * 0.25);
     textAlign(CENTER, CENTER);
 
