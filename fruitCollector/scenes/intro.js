@@ -5,7 +5,7 @@ function Intro()
     var btn;
 
     this.setup = function() {
-        title = new Title(width / 2, 100, '#თამაში');
+        title = new Title(width / 2, 100, '#TamaSi');
         var bottlesCount = Object.keys(bottleImages).length;
         var bottlesOffsetLeft = (width - (bottlesCount * 150 + (bottlesCount - 1) * 60)) / 2 + 75;
 
@@ -14,7 +14,13 @@ function Intro()
             bottlesOffsetLeft += 150 + 60;
         }
 
-        btn = new Button(width / 2, height - 100, color('#86b23d'), 'დაიწყე');
+        btn = new Button({
+            x: width / 2,
+            y: height - 100,
+            backgroundColor: color('#86b23d'),
+            font: fonts.LGVBold,
+            content: 'daiwye'
+        });
     }
 
     this.draw = function()
@@ -29,7 +35,9 @@ function Intro()
     {
         if(btn.contains(mouseX, mouseY)) {
             btn.animate('down');
-            this.sceneManager.showScene( Game );
+            btn.events.down.end = function(){
+                this.sceneManager.showScene( RoundStart );
+            }.bind(this);
         }
     }
 

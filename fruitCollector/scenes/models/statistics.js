@@ -1,10 +1,10 @@
-function Statistics(higestScore) {
+function Statistics(higestScore, startingPoint) {
   this.higestScore = higestScore;
+  this.startingPoint = startingPoint;
   this.score = 0;
   this.round = 1;
-  this.margin = 100;
-  var statsContainerStart = width - this.margin;
-
+  this.font = fonts.LGVBold;
+  var marginTop = 70;
 
   this.getScore = function() {
     return this.score;
@@ -25,11 +25,16 @@ function Statistics(higestScore) {
   this.draw = function() {
     push();
 
-    fill('#ddd254');
+    fill(colors.sand);
     textSize(32);
-    text('The higest score: ' + this.higestScore, 100, 100, 500, 100);
+    textFont(this.font);
+    textAlign(LEFT, CENTER);
+    text('umaRlesi qula: ' + this.higestScore, this.startingPoint, marginTop);
     fill(255);
-    text('Score: ' + this.score, 600, 100, 700, 100);
+    textAlign(RIGHT, CENTER);
+    text('qula: ' + this.score, width / 2 - 200, marginTop);
+    textAlign(LEFT, CENTER);
+    text('raundi: ' + this.round, width / 2 + 200, marginTop);
 
     pop();
   }

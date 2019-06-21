@@ -14,15 +14,9 @@ function Tooltip(options) {
   var darkenColor = darken(this.color);
   var fillObject = null;
 
-<<<<<<< HEAD
-  this.getCurrentFillLevel = function() {
-    return map(currentFillLevel, this.min, this.max, 0, this.height - 8);
-  };
-=======
   this.getCurrentHeight = function(){
     return parseInt(map(fillLevel, this.min, this.max, 0, this.height));
   }
->>>>>>> 3a38dc675968280c942eac8924be30a385326f1c
 
   this.draw = function() {
     push();
@@ -33,15 +27,7 @@ function Tooltip(options) {
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.height, 20);
     
-<<<<<<< HEAD
-    rectMode(CORNER);
-    noStroke();
-    fill(190, 100, 100);
-    rect(this.x - this.width / 2 + 4, this.y + this.height / 2 - this.getCurrentFillLevel() - 4, this.width - 8, this.getCurrentFillLevel(), 0, 0, 20, 20);
-    fill(41, 41, 41);
-=======
     image(fillObject, this.x - this.width / 2, this.y - this.height / 2 + (this.height - currentHeight), this.width, currentHeight, 0, this.height - currentHeight, this.width, currentHeight);
->>>>>>> 3a38dc675968280c942eac8924be30a385326f1c
 
     pop();
   }

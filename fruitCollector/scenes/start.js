@@ -1,12 +1,21 @@
 var imgPath = 'assets/imgs/';
+var fontsPath = 'assets/fonts/';
 var bgImage;
 var bottleImages = {};
 var fruitImages = {};
+var lifeImages = {};
+var fonts = {};
+var sequenceImage = null;
+var xushturi = null;
 
 function preload()
 {
     loadBottles();
     loadFruits();
+    loadLife();
+    loadFonts();
+    sequenceImage = loadImage(imgPath + 'cat.png');
+    xushturi = loadImage(imgPath + 'xushturi.png');
 }
 
 function setup()
@@ -50,4 +59,15 @@ function loadBottles() {
 
 function loadFruits() {
     fruitImages.raspberry = loadImage(imgPath + 'original-raspberry.png');
+    fruitImages.leaves = [loadImage(imgPath + 'leaves/mintleft.png'), loadImage(imgPath + 'leaves/mintright.png')];
+}
+
+function loadLife() {
+    lifeImages.active = loadImage(imgPath + 'heart.png')
+    lifeImages.inactive = loadImage(imgPath + 'deadheart.png')
+}
+
+function loadFonts() {
+    fonts.LGVBold = loadFont(fontsPath + 'lgv-bebas-neue-bold-bold.otf');
+    fonts.LVGRegular = loadFont(fontsPath + 'LVG-BEBAS-NEUE-REGULAR.otf');
 }

@@ -1,30 +1,60 @@
 function GameOver()
 {
+    var bindGameOverObject = this;
+    var oRoundStart;
     var oGame;
+    var modal = null;
+    var modalAnimation = null;
 
     this.setup = function()
     {
         // find a different scene using the SceneManager
+        oRoundStart = this.sceneManager.findScene( RoundStart ).oScene;
         oGame = this.sceneManager.findScene( Game ).oScene;
+        initGameOver();
     }
 
     this.draw = function()
     {
         background('#003919');
 
-        fill("black");
-        textSize( map( sin(frameCount * 0.1), 0, 1, 24, 32) );
-        textAlign(CENTER);
-        text("GAME OVER", width / 2, height / 2);
+        modal.drawStats();
 
-        textSize(12);
-        text("Score: " + oGame.getScore(), width / 2, height / 2 + 20);
+        // modalAnimation.update();
+        // modalAnimation.draw();
+    }
 
-        text("Press any key to restart game...", width / 2, height - 20);
+    function initGameOver() {
+        modal = new Modal();
+        modalAnimation = new Model(new Frame(), sequenceImage);
+
+        for(var i = 0; i < 8; i++) {
+            var x = (i % 4) * 512;
+            var y = parseInt(i / 4) * 256;
+
+            modalAnimation.frame.sequence.push(new Sprite(x, y, 512, 256));
+        }
+
+        modalAnimation.frame.addAnimation('moving', 0, 7);
+        modalAnimation.animate('moving', 50);
     }
 
     this.keyPressed = function()
     {
         this.sceneManager.showScene( Intro );
+    }
+
+    this.mousePressed = function() {
+        modal.statButtons.forEach(function(btn) {
+            btn.contains(mouseX, mouseY) && btn.animate('down');
+
+            if(btn.content === 'R') {
+                btn.events.down.end = function() {
+                    bindGameOverObject.sceneManager.showScene( RoundStart );
+                    oRoundStart.reset();
+                    oGame.reset();
+                }
+            }
+        })
     }
 }

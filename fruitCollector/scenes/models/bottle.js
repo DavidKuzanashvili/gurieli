@@ -4,12 +4,12 @@ function Bottle(x, y, type, speed, tooltip) {
   this.type = type;
   this.speed = speed;
   this.color = color(255);
-  this.width = 150;
+  this.width = 140;
   this.height = 400;
   this.tooltip = tooltip || null;
   
   this.getY = function() {
-    this.y = height - this.height / 3;
+    this.y = height - this.height / 4;
     return this.y;
   }
 
@@ -17,7 +17,6 @@ function Bottle(x, y, type, speed, tooltip) {
     // this.tooltip.x = this.x + 75 + 30;
     this.tooltip.height = 250;
     this.tooltip.reload();
-    this.tooltip.y = height - 20 - this.tooltip.height / 2;
   }
 
   this.draw = function() {
@@ -48,6 +47,7 @@ function Bottle(x, y, type, speed, tooltip) {
     }
 
     if(this.tooltip){
+      this.tooltip.y = height - 20 - this.tooltip.height / 2;
       this.tooltip.x = this.x + 75 + 30;
       this.tooltip.update();
     }
@@ -68,6 +68,6 @@ function Bottle(x, y, type, speed, tooltip) {
     let bottleLeft = this.x - this.width / 2;
     let bottleRight = this.x + this.width / 2;
     let bottleTop = this.y - this.height / 2;
-    return fruit.x > bottleLeft && fruit.x < bottleRight && fruit.y > bottleTop && fruit.y < bottleTop + 5;
+    return fruit.x > bottleLeft && fruit.x < bottleRight && fruit.y > bottleTop && fruit.y < bottleTop + 20;
   }
 } 
