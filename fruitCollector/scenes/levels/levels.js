@@ -6,19 +6,19 @@ const LEVEL = [
       width: 355,
       height: 159
     },
-    fruits: [  
-      { 
+    fruits: [
+      {
         fruit: 'leaves',
         width: 70,
         height: 120
+      },
+      {
+        fruit: 'raspberry',
+        width: 90,
+        height: 90
       }
-      // { 
-      //   fruit: 'raspberry',
-      //   width: 90,
-      //   height: 90
-      // }
     ],
-    correctFruits: [ 'leaves' ],
+    correctFruits: ['leaves'],
     fruitName: 'pitna',
     bottle: 'mintBottle',
     color: colors.sefoamBlue,
@@ -32,7 +32,7 @@ const LEVEL = [
       height: 200
     },
     fruits: [
-      { 
+      {
         fruit: 'raspberry',
         width: 90,
         height: 90
@@ -43,7 +43,7 @@ const LEVEL = [
         height: 80
       }
     ],
-    correctFruits: [ 'raspberry', 'vanilla'],
+    correctFruits: ['raspberry', 'vanilla'],
     fruitName: 'jolo',
     bottle: 'raspberryBottle',
     color: colors.darkPink,
@@ -57,13 +57,13 @@ const LEVEL = [
       height: 145
     },
     fruits: [
-      { 
+      {
         fruit: 'cherry',
         width: 45,
         height: 110
       }
     ],
-    correctFruits: [ 'cherry' ],
+    correctFruits: ['cherry'],
     fruitName: 'alubali',
     bottle: 'cherryBottle',
     color: colors.lipstick,
@@ -77,13 +77,13 @@ const LEVEL = [
       height: 165
     },
     fruits: [
-      { 
+      {
         fruit: 'feijoa',
         width: 80,
         height: 115
       }
     ],
-    correctFruits: [ 'feijoa' ],
+    correctFruits: ['feijoa'],
     fruitName: 'feixoia',
     bottle: 'feijoaBottle',
     color: colors.lightMossGreen,
@@ -97,13 +97,13 @@ const LEVEL = [
       height: 150
     },
     fruits: [
-      { 
+      {
         fruit: 'peach',
         width: 85,
         height: 85
       }
     ],
-    correctFruits: [ 'peach' ],
+    correctFruits: ['peach'],
     fruitName: 'atami',
     bottle: 'peachBottle',
     color: colors.paleOrange,

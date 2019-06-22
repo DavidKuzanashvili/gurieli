@@ -1,5 +1,4 @@
-function Game()
-{
+function Game() {
     var bindGameObject = this;
     var maxFruitCount = LEVEL[CURRENT_LEVEL].maxFruitsToGather;
     var fruitAddLastTime = 0;
@@ -8,7 +7,7 @@ function Game()
     var hearts;
 
     var oRoundStart;
-    
+
     var bottle = null;
     var fruits = [];
 
@@ -20,64 +19,59 @@ function Game()
     var showPauseModal = false;
     var isPaused = false;
 
-    this.enter = function() 
-    {
+    this.enter = function () {
         initGame();
     }
 
-    this.setup = function() {
-        oRoundStart = this.sceneManager.findScene( RoundStart ).oScene;
+    this.setup = function () {
+        oRoundStart = this.sceneManager.findScene(RoundStart).oScene;
     }
 
-    this.draw = function()
-    {
-        background(colors.mainTheme);
-        cursor('default');
-        
-        dropFruits();
-        leaves.draw();
-        
-        bottle.update();
-        bottle.draw();
+    this.draw = function () {
+        if (!isPaused) {
+            background(colors.mainTheme);
+            cursor('default');
 
-        stats.draw();
-        hearts.draw();
+            dropFruits();
+            leaves.draw();
 
-        if (timer.ended()) {
-            if(this.getScore() >= maxFruitCount && LEVEL.length - 1 > CURRENT_LEVEL) {
-                CURRENT_LEVEL++;
-                oRoundStart.reset();
-                this.sceneManager.showScene( RoundStart )
-            } else {
-                this.sceneManager.showScene( GameOver );
+            bottle.update();
+            bottle.draw();
+
+            stats.draw();
+            hearts.draw();
+
+            if (timer.ended()) {
+                if (this.getScore() >= maxFruitCount && LEVEL.length - 1 > CURRENT_LEVEL) {
+                    CURRENT_LEVEL++;
+                    oRoundStart.reset();
+                    this.sceneManager.showScene(RoundStart)
+                } else {
+                    this.sceneManager.showScene(GameOver);
+                }
+            }
+
+            timer.update();
+            timer.draw();
+
+            headerButtons.forEach(x => x.update() & x.draw());
+
+            drawCornerLeaves();
+
+            if (showQuitModal) {
+                drawQuitGameModal();
             }
         }
 
-        timer.update();
-        timer.draw();
-
-        headerButtons.forEach(x => x.update() & x.draw());
-
-        drawCornerLeaves();
-
-        if(showQuitModal) {
-            drawQuitGameModal();
-        }
-
-        if(showPauseModal) {
+        if (showPauseModal) {
             drawPauseGame();
         }
-
-        if(isPaused) {
-            noLoop();
-        } 
     }
 
-    function initGame()
-    {
+    function initGame() {
         stats = new Statistics(3224, 100);
         timer = new Timer(millis(), 10);
-        hearts = new LifeFactory(100,5);
+        hearts = new LifeFactory(100, 5);
         hearts.generateLifes();
 
         bottle = new Bottle(width / 2, height, LEVEL[CURRENT_LEVEL].bottle, 70, new Tooltip({
@@ -89,33 +83,33 @@ function Game()
 
         headerButtons.push(new Button({
             x: width - 100 - 25,
-            y: 70, 
+            y: 70,
             backgroundColor: color(colors.sand),
-            content: "X", 
-            width: 50, 
-            height: 50, 
-            shadowOffset:6,
+            content: "X",
+            width: 50,
+            height: 50,
+            shadowOffset: 6,
             fontSize: 16
         }));
 
         headerButtons.push(new Button({
             x: width - 180 - 25,
-            y: 70, 
+            y: 70,
             backgroundColor: color(colors.booger),
-            content: "| |", 
-            width: 50, 
-            height: 50, 
-            shadowOffset:6,
+            content: "| |",
+            width: 50,
+            height: 50,
+            shadowOffset: 6,
             fontSize: 16
         }));
 
         headerButtons.push(new Button({
             x: width - 260 - 25,
-            y: 70, 
+            y: 70,
             backgroundColor: color(colors.seafoamBlueTwo),
-            content: "m", 
-            width: 50, 
-            height: 50, 
+            content: "m",
+            width: 50,
+            height: 50,
             shadowOffset: 6,
             fontSize: 16
         }));
@@ -123,7 +117,7 @@ function Game()
         quitGameModal = new Modal({
             width: 400,
             height: 300,
-            shadowOffsetTop: 12 
+            shadowOffsetTop: 12
         });
 
         pauseGameModal = new Modal({
@@ -136,44 +130,45 @@ function Game()
     function dropFruits() {
         if (millis() > fruitAddLastTime + 600) {
             fruitAddLastTime = millis();
-            var randDifferentFruitIndex = round(random() * (LEVEL[CURRENT_LEVEL].fruits.length - 1));
-            var imageTypeIndex = round(random() * (fruitImages[LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].fruit].length - 1));
+            var randDifferentFruitIndex = round(random(LEVEL[CURRENT_LEVEL].fruits.length - 1));
+            var imageTypeIndex = round(random(fruitImages[LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].fruit].length - 1));
+
             fruits.push(new Fruit({
-                x: random(width), 
+                x: random(width),
                 y: -50,
                 w: LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].width,
-                h:  LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].height, 
+                h: LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].height,
                 type: LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].fruit,
-                imageTypeIndex: imageTypeIndex, 
+                imageTypeIndex: imageTypeIndex,
                 speed: round(random() * 4 + 2)
             }));
         }
 
-        for(var i = 0; i < fruits.length; i++) {
+        for (var i = 0; i < fruits.length; i++) {
             fruits[i].update();
 
-            if(fruits[i].y > height + fruits[i].height) {
+            if (fruits[i].y > height + fruits[i].height) {
                 fruits.splice(i, 1);
                 i--;
                 continue;
             }
 
-            if(bottle.hitsFruit(fruits[i])) {
-                fruits.splice(i, 1);
+            if (bottle.hitsFruit(fruits[i])) {
                 console.log(fruits[i]);
-                if(bottle.hitsCorrectFruit(fruits[i].type, LEVEL[CURRENT_LEVEL].correctFruits)) {
+                if (bottle.hitsCorrectFruit(fruits[i].type, LEVEL[CURRENT_LEVEL].correctFruits)) {
                     stats.increaseScore();
                     bottle.tooltip.increase();
                 } else {
                     stats.decreaseScore();
                     bottle.tooltip.decrease();
                 }
+                fruits.splice(i, 1);
                 i--;
                 continue;
             }
         }
 
-        fruits.forEach(function(fruit) {
+        fruits.forEach(function (fruit) {
             fruit.draw();
         });
     }
@@ -186,27 +181,26 @@ function Game()
         pauseGameModal.drawPause();
     }
 
-    this.getScore = function() {
+    this.getScore = function () {
         return stats.getScore();
     }
 
-    this.reset = function() {
+    this.reset = function () {
         showQuitModal = false;
     }
 
-    this.mousePressed = function()
-    {
-        headerButtons.forEach(function(btn) {
-            if(btn.contains(mouseX, mouseY))  {
+    this.mousePressed = function () {
+        headerButtons.forEach(function (btn) {
+            if (btn.contains(mouseX, mouseY)) {
                 btn.animate('down');
-                if(btn.content === 'X') {
-                    btn.events.down.end = function() {
+                if (btn.content === 'X') {
+                    btn.events.down.end = function () {
                         showQuitModal = true;
                     }
                 }
 
-                if(btn.content === '| |') {
-                    btn.events.down.end = function() {
+                if (btn.content === '| |') {
+                    btn.events.down.end = function () {
                         showPauseModal = true;
                         isPaused = true;
                     }
@@ -214,27 +208,27 @@ function Game()
             }
         });
 
-        quitGameModal.quitButtons.forEach(function(btn) {
-            if(btn.contains(mouseX, mouseY)) {
+        quitGameModal.quitButtons.forEach(function (btn) {
+            if (btn.contains(mouseX, mouseY)) {
                 btn.animate('down');
 
-                if(btn.content === 'ara') {
-                    btn.events.down.end = function() {
+                if (btn.content === 'ara') {
+                    btn.events.down.end = function () {
                         showQuitModal = false;
                     }
                 }
 
-                if(btn.content === 'ki') {
-                    btn.events.down.end = function() {
-                        bindGameObject.sceneManager.showScene( GameOver );
+                if (btn.content === 'ki') {
+                    btn.events.down.end = function () {
+                        bindGameObject.sceneManager.showScene(GameOver);
                     }
                 }
             }
         });
 
-        if(pauseGameModal.pauseButton.contains(mouseX, mouseY)) {
+        if (pauseGameModal.pauseButton.contains(mouseX, mouseY)) {
             pauseGameModal.pauseButton.animate('down');
-            pauseGameModal.pauseButton.events.down.end = function() {
+            pauseGameModal.pauseButton.events.down.end = function () {
                 showPauseModal = false;
                 isPaused = false;
             }
