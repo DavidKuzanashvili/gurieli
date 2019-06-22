@@ -2,9 +2,9 @@ function RoundStart() {
   var counter;
   var title;
   var subTitle;
-  var subTitleWidth = parseInt(textWidth('Seagrove mxolod pitna'));
+  var subTitleWidth = parseInt(textWidth('Seagrove mxolod ' + LEVEL[CURRENT_LEVEL].fruitName));
 
-  this.setup = function() {
+  this.enter = function() {
     roundStartInit();
   }
 
@@ -17,8 +17,7 @@ function RoundStart() {
     counter.update();
     counter.draw();
 
-    image(fruitImages.leaves[1], width / 2 - subTitleWidth / 2 - 40, height - 220);
-    image(fruitImages.leaves[0], width / 2 - subTitleWidth / 2 + 40, height - 220);
+    drawIntroFruit();
     subTitle.draw();
 
     if(counter.isNextScene) {
@@ -27,12 +26,20 @@ function RoundStart() {
   } 
 
   function roundStartInit() {
-    counter = new CountDown(width / 2, height / 2, 3);
-    counter.scaleDawn = 2;
-    counter.speed = 5;
+    counter = new CountDown(width / 2, height / 2, 3, LEVEL[CURRENT_LEVEL].color);
 
-    title = new Title(width / 2, height / 2 - 150, 'turi: 1', colors.sefoamBlue, 60);
-    subTitle = new Title(width / 2, height - 70, 'Seagrove mxolod pitna', colors.spruce, 40);
+    title = new Title(width / 2, height / 2 - 150, 'turi: ' + (CURRENT_LEVEL + 1), LEVEL[CURRENT_LEVEL].color, 60);
+    subTitle = new Title(width / 2, height - 70, 'Seagrove mxolod ' + LEVEL[CURRENT_LEVEL].fruitName, LEVEL[CURRENT_LEVEL].color, 40);
+    subTitle.alpha = 0.5;
+  }
+
+  function drawIntroFruit() {
+    push();
+
+    imageMode(CENTER);
+    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height  - 200, LEVEL[CURRENT_LEVEL].introFruit.width, LEVEL[CURRENT_LEVEL].fruitName.height);
+
+    pop();
   }
 
   this.reset = function() {

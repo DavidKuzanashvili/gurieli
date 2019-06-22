@@ -18,5 +18,7 @@ var colors = {
   boogerTwo: '#86b23d',
   sea: '#388c92',
   seafoamBlueTwo: '#5bc7cf',
-  cherry: '#e40035'
+  cherry: '#e40035',
+  lightMossGreen: '#97cc7c',
+  paleOrange: '#fdb05e'
 }

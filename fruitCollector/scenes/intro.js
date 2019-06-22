@@ -28,7 +28,7 @@ function Intro()
         background('#003919')
 
         cursor('default');
-        drawIntroScreen();  
+        drawIntroScreen();
     }
 
     this.mousePressed = function()

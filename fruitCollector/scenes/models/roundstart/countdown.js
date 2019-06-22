@@ -1,11 +1,10 @@
-function CountDown(x, y, countNumber) {
+function CountDown(x, y, countNumber, numberColor) {
   this.x = x;
   this.y = y;
   this.countNumber = countNumber;
+  this.color = hexToRgb(numberColor);
   this.fontSize = 300;
   this.translate = 400;
-  this.speed = 2;
-  this.scaleDawn = 5;
   this.startTime = millis();
   this.isNextScene = false;
   var minFontSize = this.fontSize * 0.4;
@@ -39,21 +38,21 @@ function CountDown(x, y, countNumber) {
     }
     
     textFont(fonts.LGVBold);
-    fill(107, 200, 167, 255 * 0.25);
+    fill(this.color.r, this.color.g, this.color.b, 255 * 0.25);
     textAlign(CENTER, CENTER);
 
     textSize(currentFontSize);
-    fill(107, 200, 167, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
+    fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
     text('3', this.x + offset, this.y + (this.fontSize - currentFontSize / 2) / 2);
     
     currentFontSize = getFontSizeFor(diff + duration * 1.5);
     textSize(currentFontSize);
-    fill(107, 200, 167, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
+    fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
     text('2', this.x + offset + 200, this.y + (this.fontSize - currentFontSize / 2) / 2);
 
     currentFontSize = getFontSizeFor(diff + duration);
     textSize(currentFontSize);
-    fill(107, 200, 167, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
+    fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
     text('1', this.x + offset + 400, this.y + (this.fontSize - currentFontSize / 2) / 2);
 
     pop();

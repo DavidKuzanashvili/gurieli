@@ -1,7 +1,8 @@
 function Title(x, y, content, color, fontSize) {
   this.x = x;
   this.y = y;
-  this.color = color || 'white';
+  this.color = hexToRgb(color) || { r: 255, g: 255, b: 255 };
+  this.alpha = 1;
   this.fontSize = fontSize || 30;
   this.content = content;
   this.font = fonts.LGVBold;
@@ -9,7 +10,7 @@ function Title(x, y, content, color, fontSize) {
   this.draw = function() {
     push();
 
-    fill(this.color);
+    fill(this.color.r, this.color.g, this.color.b, this.alpha * 255);
     textSize(this.fontSize);
     textAlign(CENTER, CENTER);
     textFont(this.font);

@@ -6,12 +6,15 @@ function GameOver()
     var modal = null;
     var modalAnimation = null;
 
+    this.enter = function() {
+        initGameOver();        
+    }
+
     this.setup = function()
     {
         // find a different scene using the SceneManager
         oRoundStart = this.sceneManager.findScene( RoundStart ).oScene;
         oGame = this.sceneManager.findScene( Game ).oScene;
-        initGameOver();
     }
 
     this.draw = function()

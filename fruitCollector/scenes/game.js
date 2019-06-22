@@ -1,11 +1,13 @@
 function Game()
 {
     var bindGameObject = this;
-    var maxFruitCount = 20;
+    var maxFruitCount = LEVEL[CURRENT_LEVEL].maxFruitsToGather;
     var fruitAddLastTime = 0;
     var stats;
     var timer;
     var hearts;
+
+    var oRoundStart;
     
     var bottle = null;
     var fruits = [];
@@ -23,14 +25,18 @@ function Game()
         initGame();
     }
 
+    this.setup = function() {
+        oRoundStart = this.sceneManager.findScene( RoundStart ).oScene;
+    }
+
     this.draw = function()
     {
-        background('#003919');
-        leaves.draw();
+        background(colors.mainTheme);
         cursor('default');
-
+        
         dropFruits();
-
+        leaves.draw();
+        
         bottle.update();
         bottle.draw();
 
@@ -38,7 +44,13 @@ function Game()
         hearts.draw();
 
         if (timer.ended()) {
-            this.sceneManager.showScene( GameOver );
+            if(this.getScore() >= maxFruitCount && LEVEL.length - 1 > CURRENT_LEVEL) {
+                CURRENT_LEVEL++;
+                oRoundStart.reset();
+                this.sceneManager.showScene( RoundStart )
+            } else {
+                this.sceneManager.showScene( GameOver );
+            }
         }
 
         timer.update();
@@ -64,13 +76,13 @@ function Game()
     function initGame()
     {
         stats = new Statistics(3224, 100);
-        timer = new Timer(millis());
-        hearts = new LifeFactory(100, 5);
+        timer = new Timer(millis(), 10);
+        hearts = new LifeFactory(100,5);
         hearts.generateLifes();
 
-        bottle = new Bottle(width / 2, height, bottleImages.mintBottle, 70, new Tooltip({
+        bottle = new Bottle(width / 2, height, LEVEL[CURRENT_LEVEL].bottle, 70, new Tooltip({
             width: 18,
-            color: colors.sefoamBlue,
+            color: LEVEL[CURRENT_LEVEL].color,
             max: maxFruitCount
         }));
         fruits = [];
@@ -124,13 +136,15 @@ function Game()
     function dropFruits() {
         if (millis() > fruitAddLastTime + 600) {
             fruitAddLastTime = millis();
-            var randFruitIndex = round(random() * (fruitImages.leaves.length - 1));
+            var randDifferentFruitIndex = round(random() * (LEVEL[CURRENT_LEVEL].fruits.length - 1));
+            var imageTypeIndex = round(random() * (fruitImages[LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].fruit].length - 1));
             fruits.push(new Fruit({
                 x: random(width), 
                 y: -50,
-                w: 70,
-                h:  120, 
-                type: fruitImages.leaves[randFruitIndex], 
+                w: LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].width,
+                h:  LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].height, 
+                type: LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].fruit,
+                imageTypeIndex: imageTypeIndex, 
                 speed: round(random() * 4 + 2)
             }));
         }
@@ -146,8 +160,14 @@ function Game()
 
             if(bottle.hitsFruit(fruits[i])) {
                 fruits.splice(i, 1);
-                stats.increaseScore();
-                bottle.tooltip.increase();
+                console.log(fruits[i]);
+                if(bottle.hitsCorrectFruit(fruits[i].type, LEVEL[CURRENT_LEVEL].correctFruits)) {
+                    stats.increaseScore();
+                    bottle.tooltip.increase();
+                } else {
+                    stats.decreaseScore();
+                    bottle.tooltip.decrease();
+                }
                 i--;
                 continue;
             }
@@ -228,8 +248,11 @@ function Game()
     function drawCornerLeaves() {
         push();
         imageMode(CENTER);
-        image(fruitImages.leaves[0], width - 100 - 35, height - 85, 70, 120);
-        image(fruitImages.leaves[1], width - 180 - 35, height - 85, 70, 120);
+        image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width - 100 - LEVEL[CURRENT_LEVEL].introFruit.width / 2, height - LEVEL[CURRENT_LEVEL].introFruit.height / 2, LEVEL[CURRENT_LEVEL].introFruit.width / 2, LEVEL[CURRENT_LEVEL].introFruit.height / 2);
         pop();
+    }
+
+    function dispatcher() {
+
     }
 }

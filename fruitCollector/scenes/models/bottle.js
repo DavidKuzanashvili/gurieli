@@ -28,7 +28,7 @@ function Bottle(x, y, type, speed, tooltip) {
     fill(this.color);
     noStroke();
     // rect(this.x, this.getY(), this.width, this.height);
-    image(this.type, this.x, this.getY(), this.width, this.height);
+    image(bottleImages[this.type], this.x, this.getY(), this.width, this.height);
 
     pop();
 
@@ -69,5 +69,13 @@ function Bottle(x, y, type, speed, tooltip) {
     let bottleRight = this.x + this.width / 2;
     let bottleTop = this.y - this.height / 2;
     return fruit.x > bottleLeft && fruit.x < bottleRight && fruit.y > bottleTop && fruit.y < bottleTop + 20;
+  }
+
+  this.hitsCorrectFruit = function(type = '', correctTypes = []) {
+    for(var i = 0; i < correctTypes.length; i++) {
+      if(type === correctTypes[i]) 
+        return true;
+    }
+    return false;
   }
 } 

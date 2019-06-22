@@ -4,7 +4,7 @@ function Leaves(leavesType) {
   this.draw = function() {
     push();
 
-    image(this.leavesType, 0, 0, width, 300);
+    image(leavesImages[this.leavesType], 0, 0, width, 300);
 
     pop();
   }

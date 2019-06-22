@@ -46,4 +46,8 @@ function Statistics(higestScore, startingPoint) {
   this.increaseScore = function() {
     this.score++;
   }
+
+  this.decreaseScore = function() {
+    this.score--;
+  }
 }

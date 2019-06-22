@@ -2,6 +2,7 @@ function Fruit(options = {}) {
   this.x = options.x || 0;
   this.y = options.y || 0;
   this.type = options.type;
+  this.imageTypeIndex = options.imageTypeIndex || 0;
   this.speed = options.speed || 2;
   this.width = options.w || 70;
   this.height = options.h || 70;
@@ -11,7 +12,7 @@ function Fruit(options = {}) {
 
     imageMode(CENTER);
 
-    image(this.type, this.x, this.y, this.width, this.height);
+    image(fruitImages[this.type][this.imageTypeIndex], this.x, this.y, this.width, this.height);
 
     pop();
   }
