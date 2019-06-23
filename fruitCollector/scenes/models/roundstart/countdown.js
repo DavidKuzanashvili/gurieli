@@ -17,26 +17,26 @@ function CountDown(x, y, countNumber, numberColor) {
   //   }
   // ];
 
-  var getFontSizeFor = function(diff){
+  var getFontSizeFor = function (diff) {
     diff %= duration * 2;
-    if(diff > duration) {
+    if (diff > duration) {
       return map(diff, duration, 2 * duration, minFontSize, this.fontSize);
     }
     return map(diff, 0, duration, this.fontSize, minFontSize);
   }.bind(this);
 
-  this.draw = function() {
+  this.draw = function () {
     push();
 
     var diff = millis() - this.startTime;
     var currentFontSize = getFontSizeFor(diff);
 
-    if(diff > duration) {
+    if (diff > duration) {
       diff = duration;
       this.isNextScene = true;
       // noLoop();
     }
-    
+
     textFont(fonts.LGVBold);
     fill(this.color.r, this.color.g, this.color.b, 255 * 0.25);
     textAlign(CENTER, CENTER);
@@ -44,7 +44,7 @@ function CountDown(x, y, countNumber, numberColor) {
     textSize(currentFontSize);
     fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
     text('3', this.x + offset, this.y + (this.fontSize - currentFontSize / 2) / 2);
-    
+
     currentFontSize = getFontSizeFor(diff + duration * 1.5);
     textSize(currentFontSize);
     fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
@@ -58,9 +58,9 @@ function CountDown(x, y, countNumber, numberColor) {
     pop();
   }
 
-  this.update = function() {
+  this.update = function () {
 
-    if(this.fontSize <= 200) {
+    if (this.fontSize <= 200) {
       return;
     }
 
@@ -69,7 +69,7 @@ function CountDown(x, y, countNumber, numberColor) {
     offset = map(diff, 0, duration, 0, -this.translate);
   }
 
-  this.reset = function() {
+  this.reset = function () {
     this.startTime = millis();
     this.isNextScene = false;
   }

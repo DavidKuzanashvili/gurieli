@@ -18,6 +18,7 @@ function Game() {
     var showQuitModal = false;
     var showPauseModal = false;
     var isPaused = false;
+    var pauseStart;
 
     this.enter = function () {
         initGame();
@@ -202,7 +203,7 @@ function Game() {
                 if (btn.content === '| |') {
                     btn.events.down.end = function () {
                         showPauseModal = true;
-                        isPaused = true;
+                        pauseGame();
                     }
                 }
             }
@@ -230,7 +231,7 @@ function Game() {
             pauseGameModal.pauseButton.animate('down');
             pauseGameModal.pauseButton.events.down.end = function () {
                 showPauseModal = false;
-                isPaused = false;
+                unpouseGame();
             }
         }
     }
@@ -248,5 +249,16 @@ function Game() {
 
     function dispatcher() {
 
+    }
+
+    function pauseGame() {
+        pauseStart = millis();
+        isPaused = true;
+    }
+
+    function unpouseGame() {
+        timer.fixTime(millis() - pauseStart);
+        isPaused = false;
+        delete pauseStart;
     }
 }

@@ -1,11 +1,11 @@
-function Timer(gameStart, maxTime = 60) {
-  this.gameStart = gameStart;
+function Timer(timerStart, maxTime = 60) {
+  this.timerStart = timerStart;
   this.font = fonts.LGVBold;
   var timerColor = '#f9f5ed';
   var timerShadow = '#aeaeae';
   var seconds = 0;
 
-  this.draw = function() {
+  this.draw = function () {
     push();
 
     noStroke();
@@ -24,27 +24,31 @@ function Timer(gameStart, maxTime = 60) {
     pop();
   }
 
-  this.update = function() {
-    seconds = Math.min(round(millis() / 1000) - round(this.gameStart / 1000), maxTime);
+  this.update = function () {
+    seconds = Math.min(round(millis() / 1000) - round(this.timerStart / 1000), maxTime);
   }
 
-  this.getTimeLeft = function(){
+  this.getTimeLeft = function () {
     return maxTime - seconds;
   }
 
-  this.getSecondsLeft = function(){
+  this.getSecondsLeft = function () {
     return this.getTimeLeft() % 60;
   }
 
-  this.getMinutesLeft = function(){
+  this.getMinutesLeft = function () {
     return parseInt(this.getTimeLeft() / 60);
   }
 
-  this.getTimeText = function(){
+  this.getTimeText = function () {
     return this.getMinutesLeft() + ':' + this.getSecondsLeft().toString().padStart(2, '0');
   }
 
-  this.ended = function(){
+  this.ended = function () {
     return seconds === maxTime;
+  }
+
+  this.fixTime = function (badMS) {
+    this.timerStart += badMS;
   }
 }

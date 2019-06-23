@@ -4,11 +4,11 @@ function RoundStart() {
   var subTitle;
   var subTitleWidth = parseInt(textWidth('Seagrove mxolod ' + LEVEL[CURRENT_LEVEL].fruitName));
 
-  this.enter = function() {
+  this.enter = function () {
     roundStartInit();
   }
 
-  this.draw = function() {
+  this.draw = function () {
     background(colors.mainTheme);
     leaves.draw();
 
@@ -20,10 +20,10 @@ function RoundStart() {
     drawIntroFruit();
     subTitle.draw();
 
-    if(counter.isNextScene) {
-      this.sceneManager.showScene( Game );
+    if (counter.isNextScene) {
+      this.sceneManager.showScene(Game);
     }
-  } 
+  }
 
   function roundStartInit() {
     counter = new CountDown(width / 2, height / 2, 3, LEVEL[CURRENT_LEVEL].color);
@@ -37,12 +37,12 @@ function RoundStart() {
     push();
 
     imageMode(CENTER);
-    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height  - 200, LEVEL[CURRENT_LEVEL].introFruit.width, LEVEL[CURRENT_LEVEL].fruitName.height);
+    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - 200, LEVEL[CURRENT_LEVEL].introFruit.width, LEVEL[CURRENT_LEVEL].fruitName.height);
 
     pop();
   }
 
-  this.reset = function() {
+  this.reset = function () {
     counter.reset();
   }
 }
