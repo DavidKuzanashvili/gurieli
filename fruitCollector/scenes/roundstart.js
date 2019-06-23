@@ -10,6 +10,7 @@ function RoundStart() {
 
   this.draw = function () {
     background(colors.mainTheme);
+    leaves.update();
     leaves.draw();
 
     title.draw();
@@ -26,9 +27,11 @@ function RoundStart() {
   }
 
   function roundStartInit() {
+    leaves.leavesType = LEVEL[CURRENT_LEVEL].leaves;
     counter = new CountDown(width / 2, height / 2, 3, LEVEL[CURRENT_LEVEL].color);
 
     title = new Title(width / 2, height / 2 - 150, 'turi: ' + (CURRENT_LEVEL + 1), LEVEL[CURRENT_LEVEL].color, 60);
+
     subTitle = new Title(width / 2, height - 70, 'Seagrove mxolod ' + LEVEL[CURRENT_LEVEL].fruitName, LEVEL[CURRENT_LEVEL].color, 40);
     subTitle.alpha = 0.5;
   }

@@ -8,6 +8,7 @@ function Timer(timerStart, maxTime = 60) {
   this.draw = function () {
     push();
 
+
     noStroke();
     fill(timerShadow);
     arc(width / 2, 0, 250, 250, 0, PI);

@@ -34,6 +34,7 @@ function Game() {
             cursor('default');
 
             dropFruits();
+            leaves.update();
             leaves.draw();
 
             bottle.update();
@@ -71,7 +72,7 @@ function Game() {
 
     function initGame() {
         stats = new Statistics(3224, 100);
-        timer = new Timer(millis(), 10);
+        timer = new Timer(millis(), 180);
         hearts = new LifeFactory(100, 5);
         hearts.generateLifes();
 
@@ -155,7 +156,6 @@ function Game() {
             }
 
             if (bottle.hitsFruit(fruits[i])) {
-                console.log(fruits[i]);
                 if (bottle.hitsCorrectFruit(fruits[i].type, LEVEL[CURRENT_LEVEL].correctFruits)) {
                     stats.increaseScore();
                     bottle.tooltip.increase();
