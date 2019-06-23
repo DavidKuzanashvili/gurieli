@@ -12,8 +12,7 @@ var sequenceImage = null;
 var xushturi = null;
 var CURRENT_LEVEL = 0;
 
-function preload()
-{
+function preload() {
     loadLeaves();
     loadIntroFruits();
     loadBottles();
@@ -24,8 +23,7 @@ function preload()
     xushturi = loadImage(imgPath + 'xushturi.png');
 }
 
-function setup()
-{
+function setup() {
     var canvas = createCanvas(windowWidth, windowHeight);
     canvas.parent('canvas');
 
@@ -33,7 +31,7 @@ function setup()
 
     var mgr = new SceneManager();
     mgr.wire();
-    mgr.showScene( Intro );
+    mgr.showScene(Intro);
 }
 
 function windowResized() {

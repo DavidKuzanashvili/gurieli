@@ -30,39 +30,44 @@ function Game() {
 
     this.draw = function () {
         if (!isPaused) {
-            background(colors.mainTheme);
-            cursor('default');
-
-            dropFruits();
+            generateFruits();
+            updateFruits();
             leaves.update();
-            leaves.draw();
-
             bottle.update();
-            bottle.draw();
-
-            stats.draw();
-            hearts.draw();
-
-            if (timer.ended()) {
-                if (this.getScore() >= maxFruitCount && LEVEL.length - 1 > CURRENT_LEVEL) {
-                    CURRENT_LEVEL++;
-                    oRoundStart.reset();
-                    this.sceneManager.showScene(RoundStart)
-                } else {
-                    this.sceneManager.showScene(GameOver);
-                }
-            }
-
             timer.update();
-            timer.draw();
+            headerButtons.forEach(x => x.update());
+        }
 
-            headerButtons.forEach(x => x.update() & x.draw());
+        background(colors.mainTheme);
+        cursor('default');
 
-            drawCornerLeaves();
 
-            if (showQuitModal) {
-                drawQuitGameModal();
+        drawFruits();
+        leaves.draw();
+
+        bottle.draw();
+
+        stats.draw();
+        hearts.draw();
+
+        if (timer.ended()) {
+            if (this.getScore() >= maxFruitCount && LEVEL.length - 1 > CURRENT_LEVEL) {
+                CURRENT_LEVEL++;
+                oRoundStart.reset();
+                this.sceneManager.showScene(RoundStart)
+            } else {
+                this.sceneManager.showScene(GameOver);
             }
+        }
+
+        timer.draw();
+
+        headerButtons.forEach(x => x.draw());
+
+        drawIntroFruit();
+
+        if (showQuitModal) {
+            drawQuitGameModal();
         }
 
         if (showPauseModal) {
@@ -72,7 +77,7 @@ function Game() {
 
     function initGame() {
         stats = new Statistics(3224, 100);
-        timer = new Timer(millis(), 180);
+        timer = new Timer(millis(), 5);
         hearts = new LifeFactory(100, 5);
         hearts.generateLifes();
 
@@ -129,7 +134,7 @@ function Game() {
         })
     }
 
-    function dropFruits() {
+    function generateFruits() {
         if (millis() > fruitAddLastTime + 600) {
             fruitAddLastTime = millis();
             var randDifferentFruitIndex = round(random(LEVEL[CURRENT_LEVEL].fruits.length - 1));
@@ -145,7 +150,9 @@ function Game() {
                 speed: round(random() * 4 + 2)
             }));
         }
+    }
 
+    function updateFruits() {
         for (var i = 0; i < fruits.length; i++) {
             fruits[i].update();
 
@@ -168,7 +175,9 @@ function Game() {
                 continue;
             }
         }
+    }
 
+    function drawFruits() {
         fruits.forEach(function (fruit) {
             fruit.draw();
         });
@@ -240,10 +249,10 @@ function Game() {
         fill(colors.darkForestGreen);
     }
 
-    function drawCornerLeaves() {
+    function drawIntroFruit() {
         push();
         imageMode(CENTER);
-        image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width - 100 - LEVEL[CURRENT_LEVEL].introFruit.width / 2, height - LEVEL[CURRENT_LEVEL].introFruit.height / 2, LEVEL[CURRENT_LEVEL].introFruit.width / 2, LEVEL[CURRENT_LEVEL].introFruit.height / 2);
+        image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width - 100 - LEVEL[CURRENT_LEVEL].introFruit.width / 4, height - LEVEL[CURRENT_LEVEL].introFruit.height / 2, LEVEL[CURRENT_LEVEL].introFruit.width / 2, LEVEL[CURRENT_LEVEL].introFruit.height / 2);
         pop();
     }
 

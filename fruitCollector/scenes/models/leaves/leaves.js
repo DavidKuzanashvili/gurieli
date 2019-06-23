@@ -1,13 +1,16 @@
 function Leaves(leavesType) {
+  this.y = -300;
   this.leavesType = leavesType;
   this.leafRotationSpeed = 0.2;
   this.changeX = 10;
   var diffX = 0;
-  var activeAnimation = 'animateLeft';
+  var activeAnimation = 'in';
+  var translateLeaves = -300;
+  var translateSpeed = 10;
   var animations = {
-    animateLeft:  {
-      update: function() {
-        if(diffX < this.changeX) {
+    animateLeft: {
+      update: function () {
+        if (diffX < this.changeX) {
           diffX += this.leafRotationSpeed;
         } else {
           diffX = this.changeX;
@@ -16,45 +19,62 @@ function Leaves(leavesType) {
       }.bind(this),
     },
     animateRight: {
-      update: function() {
-        if(diffX >= 0) {
+      update: function () {
+        if (diffX >= 0) {
           diffX -= this.leafRotationSpeed;
         } else {
           diffX = 0;
           this.animate('animateLeft');
         }
       }.bind(this)
+    },
+    in: {
+      setup: function () {
+        this.y = translateLeaves;
+      }.bind(this),
+      update: function () {
+        this.y = Math.min(this.y + translateSpeed, 0);
+      }.bind(this)
+    },
+    out: {
+      setup: function () {
+        this.y = 0;
+      }.bind(this),
+      update: function () {
+        this.y = Math.max(this.y - translateSpeed, translateLeaves);
+      }.bind(this)
     }
   }
 
-  this.draw = function() {
+  this.draw = function () {
     push();
 
-    image(leavesImages[this.leavesType][0], 0, 0, width, 300);
+    image(leavesImages[this.leavesType][0], 0, this.y, width, 300);
 
-    if(leavesImages[this.leavesType].length > 1) {
-      for(var i = 1; i < leavesImages[this.leavesType].length; i++) {
-        push();
+    // if(leavesImages[this.leavesType].length > 1) {
+    //   for(var i = 1; i < leavesImages[this.leavesType].length; i++) {
+    //     push();
 
-        var a = atan2(diffX * diffX, diffX + i * 450);
-        translate(420 * i, 0);
-        rotate(a);
-        // imageMode(CENTER);
-        image(leavesImages[this.leavesType][i], 0, -50, 250, 260);
+    //     var a = atan2(diffX * diffX, diffX + i * 450);
+    //     translate(420 * i, 0);
+    //     rotate(a);
+    //     // imageMode(CENTER);
+    //     image(leavesImages[this.leavesType][i], 0, -50, 250, 260);
 
-        pop();
-      }
-    }
+    //     pop();
+    //   }
+    // }
 
     pop();
   }
 
-  this.update = function() {
-    UpdateAnimation(); 
+  this.update = function () {
+    UpdateAnimation();
   }
 
-  this.animate = function(type) {
-    if(animations.hasOwnProperty(type)) {
+  this.animate = function (type) {
+    if (animations.hasOwnProperty(type)) {
+      animations[type].setup();
       activeAnimation = type;
     } else {
       activeAnimation = null;
@@ -62,7 +82,7 @@ function Leaves(leavesType) {
   }
 
   function UpdateAnimation() {
-    if(activeAnimation === null) {
+    if (activeAnimation === null) {
       return;
     }
 

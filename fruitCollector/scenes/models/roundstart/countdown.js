@@ -4,61 +4,84 @@ function CountDown(x, y, countNumber, numberColor) {
   this.countNumber = countNumber;
   this.color = hexToRgb(numberColor);
   this.fontSize = 300;
-  this.translate = 400;
+  this.translate = 600;
   this.startTime = millis();
   this.isNextScene = false;
-  var minFontSize = this.fontSize * 0.4;
-  var duration = 1800;
-  var offset = 0;
+  this.alpha = 1;
+  this.alphaSpeed = 0.025;
+  this.events = {};
 
-  // var items = [
-  //   {
-  //     x, y, fontSize, alpha, targetX, targetY, targetFontSize, targetAlpha
-  //   }
-  // ];
+  var minFontSize = this.fontSize * 0.2;
+  var duration = 3000;
+  var offset = 0;
+  var offsetSpeed = 5;
+  var realOffset = 0;
+
+  var currentAlpha = this.alpha;
+  var activeAnimation = 'in';
+  var animations = {
+    in: {
+      setup: function () {
+        currentAlpha = 0;
+      }.bind(this),
+      update: function () {
+        currentAlpha = Math.min(currentAlpha + this.alphaSpeed, this.alpha);
+        if (currentAlpha === this.alpha) {
+          activeAnimation = null;
+        }
+      }.bind(this)
+    },
+    out: {
+      setup: function () {
+        currentAlpha = this.alpha;
+      }.bind(this),
+      update: function () {
+        currentAlpha = Math.max(currentAlpha - this.alphaSpeed, 0);
+        if (currentAlpha === 0) {
+          activeAnimation = null;
+        }
+      }.bind(this)
+    }
+  }
 
   var getFontSizeFor = function (diff) {
-    diff %= duration * 2;
-    if (diff > duration) {
-      return map(diff, duration, 2 * duration, minFontSize, this.fontSize);
-    }
-    return map(diff, 0, duration, this.fontSize, minFontSize);
+    diff = Math.abs(diff);
+
+    return map(diff, 0, this.translate, this.fontSize, minFontSize);
   }.bind(this);
 
   this.draw = function () {
     push();
 
     var diff = millis() - this.startTime;
-    var currentFontSize = getFontSizeFor(diff);
 
-    if (diff > duration) {
-      diff = duration;
+    if (!(floor(diff / 1000) < 3)) {
       this.isNextScene = true;
-      // noLoop();
+    } else {
+      textFont(fonts.LGVBold);
+      textAlign(CENTER, CENTER);
+
+      var currentFontSize = getFontSizeFor(offset);
+      textSize(currentFontSize);
+      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1) * currentAlpha);
+      text('3', this.x + offset, this.y + (this.fontSize - currentFontSize / 2) / 2);
+
+      currentFontSize = getFontSizeFor(offset + 200);
+      textSize(currentFontSize);
+      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1) * currentAlpha);
+      text('2', this.x + offset + 200, this.y + (this.fontSize - currentFontSize / 2) / 2);
+
+      currentFontSize = getFontSizeFor(offset + 400);
+      textSize(currentFontSize);
+      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1) * currentAlpha);
+      text('1', this.x + offset + 400, this.y + (this.fontSize - currentFontSize / 2) / 2);
     }
-
-    textFont(fonts.LGVBold);
-    fill(this.color.r, this.color.g, this.color.b, 255 * 0.25);
-    textAlign(CENTER, CENTER);
-
-    textSize(currentFontSize);
-    fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
-    text('3', this.x + offset, this.y + (this.fontSize - currentFontSize / 2) / 2);
-
-    currentFontSize = getFontSizeFor(diff + duration * 1.5);
-    textSize(currentFontSize);
-    fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
-    text('2', this.x + offset + 200, this.y + (this.fontSize - currentFontSize / 2) / 2);
-
-    currentFontSize = getFontSizeFor(diff + duration);
-    textSize(currentFontSize);
-    fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1));
-    text('1', this.x + offset + 400, this.y + (this.fontSize - currentFontSize / 2) / 2);
 
     pop();
   }
 
   this.update = function () {
+    UpdateAnimation();
 
     if (this.fontSize <= 200) {
       return;
@@ -66,11 +89,31 @@ function CountDown(x, y, countNumber, numberColor) {
 
     var diff = millis() - this.startTime;
 
-    offset = map(diff, 0, duration, 0, -this.translate);
+    realOffset = map(floor(diff / 1000) * 1000, 0, duration, 0, -this.translate) % this.translate;
+    if (realOffset !== offset) {
+      offset = Math.max(realOffset, offset - offsetSpeed);
+    }
   }
 
   this.reset = function () {
     this.startTime = millis();
     this.isNextScene = false;
+  }
+
+  this.animate = function (type) {
+    if (animations.hasOwnProperty(type)) {
+      animations[type].setup();
+      activeAnimation = type;
+    } else {
+      activeAnimation = null;
+    }
+  }
+
+  function UpdateAnimation() {
+    if (activeAnimation === null) {
+      return;
+    }
+
+    animations[activeAnimation].update();
   }
 }

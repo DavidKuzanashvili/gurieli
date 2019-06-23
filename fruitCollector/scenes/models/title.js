@@ -6,16 +6,65 @@ function Title(x, y, content, color, fontSize) {
   this.fontSize = fontSize || 30;
   this.content = content;
   this.font = fonts.LGVBold;
+  this.alphaSpeed = 0.05;
 
-  this.draw = function() {
+  var currentAlpha = this.alpha;
+  var activeAnimation = 'in';
+  var animations = {
+    in: {
+      setup: function () {
+        currentAlpha = 0;
+      }.bind(this),
+      update: function () {
+        currentAlpha = Math.min(currentAlpha + this.alphaSpeed, this.alpha);
+        if (currentAlpha === this.alpha) {
+          activeAnimation = null;
+        }
+      }.bind(this)
+    },
+    out: {
+      setup: function () {
+        currentAlpha = this.alpha;
+      }.bind(this),
+      update: function () {
+        currentAlpha = Math.max(currentAlpha - this.alphaSpeed, 0);
+        if (currentAlpha === 0) {
+          activeAnimation = null;
+        }
+      }.bind(this)
+    }
+  }
+
+  this.draw = function () {
     push();
 
-    fill(this.color.r, this.color.g, this.color.b, this.alpha * 255);
+    fill(this.color.r, this.color.g, this.color.b, currentAlpha * 255);
     textSize(this.fontSize);
     textAlign(CENTER, CENTER);
     textFont(this.font);
     text(this.content, x, y);
 
     pop();
+  }
+
+  this.update = function () {
+    UpdateAnimation();
+  }
+
+  this.animate = function (type) {
+    if (animations.hasOwnProperty(type)) {
+      animations[type].setup();
+      activeAnimation = type;
+    } else {
+      activeAnimation = null;
+    }
+  }
+
+  function UpdateAnimation() {
+    if (activeAnimation === null) {
+      return;
+    }
+
+    animations[activeAnimation].update();
   }
 }
