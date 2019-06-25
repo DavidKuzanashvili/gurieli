@@ -2,6 +2,8 @@ function Header() {
   var btnSize = 50;
   var drawStart = 65;
   var marginBetweenBtns = 35;
+  var score = 0;
+  this.isPaused = false;
   this.height = 170;
   this.soundBtn = new Button({
     x: drawStart,
@@ -56,7 +58,9 @@ function Header() {
     });
 
     //Timer
-    this.timer.update();
+    if(!this.isPaused) {
+      this.timer.update();
+    }
     this.timer.draw();
 
     //Statistics
@@ -65,12 +69,16 @@ function Header() {
     pop();
   }
 
+  this.setScore = function(value) {
+    score = value;
+  }
+
   function drawStats() {
     fill(255);
     textSize(32);
     textFont(fonts.LGVBold);
     textAlign(RIGHT, CENTER);
-    text('qula: 100', width / 2 - 200, 85);
+    text('qula: ' + score, width / 2 - 200, 85);
     textAlign(LEFT, CENTER);
     text('raundi: 1', width / 2 + 200, 85);
 

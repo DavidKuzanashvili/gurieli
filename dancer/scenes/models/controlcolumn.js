@@ -2,13 +2,13 @@ function ControlColumn(btnType, x) {
   this.btnType = btnType;
   this.x = x;
   this.offsetTop = 170;
+  this.isPaused = false;
   var oControl = this;
   var w = width / 8;
   var h = height - this.offsetTop; 
   var backgroundColor = hexToRgb(colors.boogerTwo);
   var alpha = 0.3;
   var btnSize = 50;
-  var startTime = 0;
   this.arrows = [];
   this.btn = new Button({
     x: this.x + (w / 2),
@@ -34,33 +34,36 @@ function ControlColumn(btnType, x) {
     strokeWeight(2);
     line(this.x + w, this.offsetTop, this.x + w, height);
     dropArrows();
-    this.btn.update();
+    
+    if(!this.isPaused) {
+      this.btn.update();
+    }
+
     this.btn.draw();
 
     pop();
   }
 
   this.update = function() {
-
+    
   }
 
   function dropArrows() {
-    if(millis() > startTime + 2000) {
-      startTime = millis();
-      oControl.arrows.push(new Arrow(oControl.x + w / 2, oControl.offsetTop, btnSize, btnSize, oControl.btnType));
-    }
-
     for(var i = 0; i < oControl.arrows.length; i++) {
-      if(oControl.arrows[i].y >= height - 300) {
+      if(oControl.arrows[i].isInActiveArea(height - 300)) {
         oControl.arrows[i].bgColor = hexToRgb(colors.lightTan);
         oControl.arrows[i].alpha = 0.7;
+        ACTIVE_KEY_CODES.add(oControl.arrows[i].keycode);
       }
 
-      if(oControl.arrows[i].y >= height - 300 + h / 5) {
+      if(oControl.arrows[i].passedActiveArea(height - 300, h / 5)) {
         oControl.arrows[i].reset();
+        ACTIVE_KEY_CODES.delete(oControl.arrows[i].keycode);
       }
 
-      oControl.arrows[i].update();
+      if(!oControl.isPaused) {
+        oControl.arrows[i].update();
+      }
       oControl.arrows[i].draw();
 
       if(oControl.arrows[i].y > height) {
