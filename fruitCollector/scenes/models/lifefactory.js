@@ -1,13 +1,18 @@
 function LifeFactory(startDrawFrom, lifeNumber) {
   this.lifeNumber = lifeNumber;
   this.startDrawFrom = startDrawFrom || 100;
-  var lifes = [];
+  this.lifes = [];
+  this.inactiveLifes = [];
   var lifeWidth = 40;
   var gap = 30;
   var step = lifeWidth + gap;
 
   this.draw = function() {
-    lifes.forEach(function(life) {
+    this.inactiveLifes.forEach(function(inactiveLife) {
+      inactiveLife.draw();
+      inactiveLife.update();
+    });
+    this.lifes.forEach(function(life) {
       life.update();
       life.draw();
     });
@@ -17,7 +22,8 @@ function LifeFactory(startDrawFrom, lifeNumber) {
     var x1 = this.startDrawFrom;
 
     for(var i = 0; i < this.lifeNumber; i++) {
-      lifes.push(new Life(this.startDrawFrom, x1, 8))
+      this.lifes.push(new Life(this.startDrawFrom, x1, 8, true));
+      this.inactiveLifes.push(new Life(this.startDrawFrom, x1, 8, false));
       x1 += step;
     }
   }

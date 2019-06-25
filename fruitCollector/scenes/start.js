@@ -10,6 +10,9 @@ var leavesImages = {};
 var fonts = {};
 var sequenceImage = null;
 var xushturi = null;
+
+var score = 0;
+
 var CURRENT_LEVEL = 0;
 
 function preload() {
@@ -74,8 +77,8 @@ function loadLeaves() {
 }
 
 function loadLife() {
-    lifeImages.active = loadImage(imgPath + 'heart.png')
-    lifeImages.inactive = loadImage(imgPath + 'deadheart.png')
+    lifeImages.active = loadImage(imgPath + 'heart.png');
+    lifeImages.inactive = loadImage(imgPath + 'deadheart.png');
 }
 
 function loadFonts() {

@@ -18,11 +18,15 @@ const LEVEL = [
         height: 90
       }
     ],
+    fruitSpeedRange: {
+      start: 4,
+      end: 2
+    },
     correctFruits: ['leaves'],
     fruitName: 'pitna',
     bottle: 'mintBottle',
     color: colors.sefoamBlue,
-    maxFruitsToGather: 1
+    maxFruitsToGather: 10
   },
   {
     leaves: 'raspberry',
@@ -43,11 +47,15 @@ const LEVEL = [
         height: 80
       }
     ],
+    fruitSpeedRange: {
+      start: 6,
+      end: 2
+    },
     correctFruits: ['raspberry', 'vanilla'],
     fruitName: 'jolo',
     bottle: 'raspberryBottle',
     color: colors.darkPink,
-    maxFruitsToGather: 1
+    maxFruitsToGather: 15
   },
   {
     leaves: 'cherry',
@@ -63,11 +71,15 @@ const LEVEL = [
         height: 110
       }
     ],
+    fruitSpeedRange: {
+      start: 6,
+      end: 3
+    },
     correctFruits: ['cherry'],
     fruitName: 'alubali',
     bottle: 'cherryBottle',
     color: colors.lipstick,
-    maxFruitsToGather: 1
+    maxFruitsToGather: 20
   },
   {
     leaves: 'feijoa',
@@ -83,11 +95,15 @@ const LEVEL = [
         height: 115
       }
     ],
+    fruitSpeedRange: {
+      start: 9,
+      end: 10
+    },
     correctFruits: ['feijoa'],
     fruitName: 'feixoia',
     bottle: 'feijoaBottle',
     color: colors.lightMossGreen,
-    maxFruitsToGather: 1
+    maxFruitsToGather: 25
   },
   {
     leaves: 'peach',
@@ -103,10 +119,14 @@ const LEVEL = [
         height: 85
       }
     ],
+    fruitSpeedRange: {
+      start: 10,
+      end: 12
+    },
     correctFruits: ['peach'],
     fruitName: 'atami',
     bottle: 'peachBottle',
     color: colors.paleOrange,
-    maxFruitsToGather: 1
+    maxFruitsToGather: 30
   }
 ];

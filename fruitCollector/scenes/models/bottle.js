@@ -1,17 +1,28 @@
-function Bottle(x, y, type, speed, tooltip) {
+function Bottle(x, type, speed, tooltip) {
   this.x = x;
-  this.y = y;
   this.type = type;
   this.speed = speed;
   this.color = color(255);
   this.width = 140;
   this.height = 400;
+  this.startPoint = -(this.height + 100);
+  this.endPoint = height - this.height / 4;
+  this.y = this.startPoint;
   this.tooltip = tooltip || null;
-  
-  this.getY = function() {
-    this.y = height - this.height / 4;
-    return this.y;
-  }
+
+  var dropSpeed = 20;
+  var activeAnimation = 'in';
+
+  var animations = {
+    in: {
+      setup: function() {
+        this.y = this.startPoint;
+      }.bind(this),
+      update: function() {
+        this.y = Math.min(this.y + dropSpeed, this.endPoint);
+      }.bind(this)
+    }
+  };
 
   if(this.tooltip) {
     // this.tooltip.x = this.x + 75 + 30;
@@ -22,13 +33,8 @@ function Bottle(x, y, type, speed, tooltip) {
   this.draw = function() {
     push();
     
-    rectMode(CENTER);
     imageMode(CENTER);
-
-    fill(this.color);
-    noStroke();
-    // rect(this.x, this.getY(), this.width, this.height);
-    image(bottleImages[this.type], this.x, this.getY(), this.width, this.height);
+    image(bottleImages[this.type], this.x, this.y, this.width, this.height);
 
     pop();
 
@@ -38,12 +44,16 @@ function Bottle(x, y, type, speed, tooltip) {
   }
 
   this.update = function() {
-    if(mouseX > this.x) {
-      this.x = Math.min(this.x + this.speed, mouseX);
-    }
-
-    if(mouseX < this.x) {
-      this.x = Math.max(this.x - this.speed, mouseX);
+    if(this.y >= this.endPoint) {
+      if(mouseX > this.x) {
+        this.x = Math.min(this.x + this.speed, mouseX);
+      }
+  
+      if(mouseX < this.x) {
+        this.x = Math.max(this.x - this.speed, mouseX);
+      }
+    } else {
+      updateAnimation();
     }
 
     if(this.tooltip){
@@ -59,7 +69,7 @@ function Bottle(x, y, type, speed, tooltip) {
 
     imageMode(CENTER);
 
-    image(this.type, this.x, this.y, this.width, this.height);
+    image(this.type, this.x, height / 2, this.width, this.height);
 
     pop();
   }
@@ -77,5 +87,21 @@ function Bottle(x, y, type, speed, tooltip) {
         return true;
     }
     return false;
+  }
+
+  this.animate = function(type) {
+    if(animations.hasOwnPropery(type)) {
+      activeAnimation = type;
+      animations[activeAnimation].setup();
+    } else {
+      activeAnimation = null;
+    }
+  } 
+
+  function updateAnimation() {
+    if(activeAnimation === null) {
+      return;
+    }
+    animations[activeAnimation].update();
   }
 } 

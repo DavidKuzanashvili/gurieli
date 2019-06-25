@@ -8,7 +8,6 @@ var colors = {
   lipstick: '#db2643',
   beige: '#f9f5ed',
   darkBlueGreen: '#003b28',
-  seafoamBlue: '#6bc8a7',
   dustyTeal: '#4a8e76',
   sand: '#ddd254',
   evergreen: '#024335',
