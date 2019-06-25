@@ -9,7 +9,7 @@ function Intro() {
         var bottlesCount = Object.keys(bottleImages).length;
         var bottlesOffsetLeft = (width - (bottlesCount * 150 + (bottlesCount - 1) * 60)) / 2 + 75;
 
-        for(var key in bottleImages) {
+        for (var key in bottleImages) {
             bottles.push(new Bottle(bottlesOffsetLeft, bottleImages[key], 0));
             bottlesOffsetLeft += 150 + 60;
         }
@@ -23,8 +23,8 @@ function Intro() {
         });
 
         // topBox = new Top({
-        //     x: width / 2,
-        //     y: height / 2,
+        //     x: round(width / 2),
+        //     y: round(height / 2),
         //     width: 927,
         //     height: 720,
         //     color: '#86b23d',
@@ -72,6 +72,8 @@ function Intro() {
         //         score: 23984,
         //     },
         // ]);
+
+        // topBox.install(this);
     }
 
     this.draw = function () {
@@ -99,6 +101,8 @@ function Intro() {
 
         btn.update();
         btn.draw();
+
+        // topBox.update();
         // topBox.draw();
     }
 }

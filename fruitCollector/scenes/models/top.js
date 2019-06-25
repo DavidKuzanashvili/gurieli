@@ -10,6 +10,19 @@ function Top(options) {
   var content = null;
   var contentBackground = color(255);
 
+  var headerHeight = 100;
+  var speedY = 10;
+  var innerScroll = 0;
+  var targetInnerScroll = innerScroll;
+
+  var makeEven = function (x) {
+    if (x % 2) {
+      return x - 1;
+    }
+
+    return x;
+  }
+
   this.draw = function () {
     push();
 
@@ -25,8 +38,21 @@ function Top(options) {
     fill(contentBackground);
     rect(this.x, this.y, this.width, this.height - 200);
     if (content !== null) {
-      image(content, this.x - this.width / 2 + 64, this.y - this.height / 3, content.width, content.height, 0, 0, content.width, content.height);
+      image(content, this.x - this.width / 2 + 64, Math.round(this.y - this.height / 2 + headerHeight), content.width, this.height - 200, 0, innerScroll, content.width, this.height - 200);
     }
+
+    var scrollerX = round(this.x + this.width / 2 - 50);
+    var scrollerHeight = round((this.height - 200) * 0.8);
+    var scrollerBarHeight = round(scrollerHeight * 0.4);
+    var scrollerWidth = 8;
+    var scrollerbarMinY = round(this.y - scrollerHeight / 2 + scrollerBarHeight / 2);
+    var scrollerBarY = scrollerbarMinY + round(innerScroll / (content.height - (this.height - 200)) * (scrollerHeight - scrollerBarHeight));
+
+    fill(this.color);
+    rect(scrollerX, this.y, scrollerWidth, scrollerHeight, scrollerWidth);
+
+    fill(this.getShadowColor());
+    rect(scrollerX, scrollerBarY, scrollerWidth, scrollerBarHeight, scrollerWidth);
 
     pop();
   }
@@ -36,6 +62,19 @@ function Top(options) {
   }
 
   this.update = function () {
+    if (innerScroll !== targetInnerScroll) {
+      var calculatedSpeed = Math.max(Math.abs(innerScroll - targetInnerScroll) / 10, speedY);
+
+      if (innerScroll > targetInnerScroll) {
+        innerScroll = Math.max(innerScroll - calculatedSpeed, targetInnerScroll);
+      } else {
+        innerScroll = Math.min(innerScroll + calculatedSpeed, targetInnerScroll);
+      }
+    }
+  }
+
+  this.mouseWheel = function (event) {
+    targetInnerScroll = max(min(targetInnerScroll + event.delta, content.height - (this.height - 200)), 0);
   }
 
   var topBackgroundColors = [
@@ -51,7 +90,8 @@ function Top(options) {
     var r = 20;
     var em = 15;
     var eShadowOffset = 10;
-    content = createGraphics(w, h * data.length + mt * data.length);
+    var padding = h / 4;
+    content = createGraphics(w, topBackgroundColors.length * h + topBackgroundColors.length * mt + (data.length - topBackgroundColors.length) * h / 2 + (data.length - topBackgroundColors.length) * mt / 2 + padding * 2);
 
     content.clear();
     content.noStroke();
@@ -61,7 +101,7 @@ function Top(options) {
 
     for (var i = 0; i < data.length; i++) {
       if (i < topBackgroundColors.length) {
-        var y = i * h + i * mt;
+        var y = i * h + i * mt + padding;
         var fontSize = Math.round(h / 4);
         var textY = y + h / 2 + eShadowOffset / 2 - Math.round(fontSize / 2);
         content.fill(darken(color(topBackgroundColors[i])));
@@ -91,14 +131,14 @@ function Top(options) {
         content.textSize(fontSize);
         content.text('ქულა: ' + data[i].score, Math.round(w * 0.7) - 10, textY, Math.round(w * 0.3), fontSize);
       } else {
-        var y = (topBackgroundColors.length) * h + (i - topBackgroundColors.length) * h / 2 + i * mt / 2 + h / 4;
+        var y = topBackgroundColors.length * h + topBackgroundColors.length * mt + (i - topBackgroundColors.length) * h / 2 + (i - topBackgroundColors.length) * mt / 2 + padding;
         var fontSize = Math.round(h / 4);
         var textY = y + h / 2 + eShadowOffset / 2 - Math.round(fontSize / 2);
 
         content.fill('#999');
-        content.textAlign(CENTER, CENTER);
+        content.textAlign(LEFT, TOP);
         content.textSize(fontSize);
-        content.text(i + 1, h / 2, y + h / 2);
+        content.text(i + 1, h / 2 - fontSize / 4, textY);
 
         content.fill('#999');
         content.textAlign(LEFT, TOP);
@@ -108,6 +148,29 @@ function Top(options) {
         content.textAlign(RIGHT, TOP);
         content.textSize(fontSize);
         content.text('ქულა: ' + data[i].score, Math.round(w * 0.7) - 10, textY, Math.round(w * 0.3), fontSize);
+      }
+    }
+  }
+
+  this.install = function (oScene) {
+    if (typeof oScene.mouseWheel === 'function') {
+      var cb = oScene.mouseWheel;
+      oScene.mouseWheel = function () {
+        var args = [].map.call(arguments, function (x) {
+          return x;
+        });
+
+        cb.apply(oScene, args);
+        me.mouseWheel.apply(me, args)
+      }
+    } else {
+      var me = this;
+      oScene.mouseWheel = function () {
+        var args = [].map.call(arguments, function (x) {
+          return x;
+        });
+
+        me.mouseWheel.apply(me, args);
       }
     }
   }
