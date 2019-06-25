@@ -9,8 +9,8 @@ function Intro() {
         var bottlesCount = Object.keys(bottleImages).length;
         var bottlesOffsetLeft = (width - (bottlesCount * 150 + (bottlesCount - 1) * 60)) / 2 + 75;
 
-        for (var key in bottleImages) {
-            bottles.push(new Bottle(bottlesOffsetLeft, height / 2, bottleImages[key], 0));
+        for(var key in bottleImages) {
+            bottles.push(new Bottle(bottlesOffsetLeft, bottleImages[key], 0));
             bottlesOffsetLeft += 150 + 60;
         }
 
@@ -99,6 +99,6 @@ function Intro() {
 
         btn.update();
         btn.draw();
-        topBox.draw();
+        // topBox.draw();
     }
 }
