@@ -22,13 +22,13 @@ function Intro() {
             content: 'daiwye'
         });
 
-        // topBox = new Top({
-        //     x: round(width / 2),
-        //     y: round(height / 2),
-        //     width: 927,
-        //     height: 720,
-        //     color: '#86b23d',
-        // });
+        topBox = new Top({
+            x: round(width / 2),
+            y: round(height / 2),
+            width: 927,
+            height: 720,
+            color: '#86b23d',
+        });
 
         // topBox.setData([
         //     {

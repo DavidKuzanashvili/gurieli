@@ -8,6 +8,7 @@ var introFruits = {};
 var lifeImages = {};
 var leavesImages = {};
 var fonts = {};
+var icons = {};
 var sequenceImage = null;
 var xushturi = null;
 
@@ -22,6 +23,7 @@ function preload() {
     loadFruits();
     loadLife();
     loadFonts();
+    loadIcons();
     sequenceImage = loadImage(imgPath + 'cat.png');
     xushturi = loadImage(imgPath + 'xushturi.png');
 }
@@ -84,4 +86,13 @@ function loadLife() {
 function loadFonts() {
     fonts.LGVBold = loadFont(fontsPath + 'lgv-bebas-neue-bold-bold.otf');
     fonts.LVGRegular = loadFont(fontsPath + 'LVG-BEBAS-NEUE-REGULAR.otf');
+}
+
+function loadIcons() {
+    icons.close = loadImage(imgPath + 'icons/close.svg');
+    icons.fb = loadImage(imgPath + 'icons/facebook.svg');
+    icons.reload = loadImage(imgPath + 'icons/reload.svg');
+    icons.pause = loadImage(imgPath + 'icons/pause.svg');
+    icons.music = loadImage(imgPath + 'icons/music.svg');
+    console.log(icons);
 }

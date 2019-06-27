@@ -4,9 +4,9 @@ function Bottle(x, type, speed, tooltip) {
   this.speed = speed;
   this.color = color(255);
   this.width = 140;
-  this.height = 400;
+  this.height = 475;
   this.startPoint = -(this.height + 100);
-  this.endPoint = height - this.height / 4;
+  this.endPoint = height - this.height / 4 + 10;
   this.y = this.startPoint;
   this.tooltip = tooltip || null;
 

@@ -1,7 +1,11 @@
 function Game() {
     var bindGameObject = this;
-    var maxFruitCount = LEVEL[CURRENT_LEVEL].maxFruitsToGather;
+    var maxFruitCount;
+    var currentLevelFruitCount = 0;
+    var incorrectFruitsCount = 0;
     var fruitAddLastTime = 0;
+    var heartsRemain = 0;
+    var index = 0;
     var stats;
     var timer;
     var hearts;
@@ -45,17 +49,21 @@ function Game() {
         drawFruits();
         leaves.draw();
 
+        drawIntroFruit();
+
         bottle.draw();
 
         stats.draw();
         hearts.draw();
 
         if (timer.ended()) {
-            if (this.getScore() >= maxFruitCount && LEVEL.length - 1 > CURRENT_LEVEL) {
+            if (currentLevelFruitCount >= maxFruitCount && LEVEL.length - 1 > CURRENT_LEVEL) {
                 CURRENT_LEVEL++;
+                this.reset();
                 oRoundStart.reset();
                 this.sceneManager.showScene(RoundStart)
             } else {
+                this.reset();
                 this.sceneManager.showScene(GameOver);
             }
         }
@@ -68,8 +76,6 @@ function Game() {
 
         headerButtons.forEach(x => x.draw());
 
-        drawIntroFruit();
-
         if (showQuitModal) {
             drawQuitGameModal();
         }
@@ -80,12 +86,16 @@ function Game() {
     }
 
     function initGame() {
+        maxFruitCount = LEVEL[CURRENT_LEVEL].maxFruitsToGather;
         stats = new Statistics(3224, 100);
         stats.score = score;
         
-        timer = new Timer(millis(), 60);
+        timer = new Timer(millis(), 30);
         hearts = new LifeFactory(100, 5);
         hearts.generateLifes();
+        for(var i = 0; i < heartsRemain; i++) {
+            hearts.lifes.pop();
+        }
 
         bottle = new Bottle(width / 2, LEVEL[CURRENT_LEVEL].bottle, 70, new Tooltip({
             width: 18,
@@ -98,18 +108,20 @@ function Game() {
             x: width - 100 - 25,
             y: 70,
             backgroundColor: color(colors.sand),
-            content: "X",
+            type: "X",
+            content: icons.close,
             width: 50,
             height: 50,
             shadowOffset: 6,
-            fontSize: 16
+            fontSize: 16,
         }));
 
         headerButtons.push(new Button({
             x: width - 180 - 25,
             y: 70,
             backgroundColor: color(colors.booger),
-            content: "| |",
+            type: "| |",
+            content: icons.pause,
             width: 50,
             height: 50,
             shadowOffset: 6,
@@ -120,7 +132,8 @@ function Game() {
             x: width - 260 - 25,
             y: 70,
             backgroundColor: color(colors.seafoamBlueTwo),
-            content: "m",
+            type: "m",
+            content: icons.music,
             width: 50,
             height: 50,
             shadowOffset: 6,
@@ -137,13 +150,20 @@ function Game() {
             width: 400,
             height: 300,
             shadowOffsetTop: 12
-        })
+        });
     }
 
     function generateFruits() {
-        if (millis() > fruitAddLastTime + 600) {
+        if (millis() > fruitAddLastTime + LEVEL[CURRENT_LEVEL].fruitGenerateSpeed) {
+            index++;
             fruitAddLastTime = millis();
-            var randDifferentFruitIndex = round(random(LEVEL[CURRENT_LEVEL].fruits.length - 1));
+            var randDifferentFruitIndex;
+            if(index % 2 === 0) {
+                randDifferentFruitIndex = round(random((LEVEL[CURRENT_LEVEL].correctFruits.length - 1)));
+            } else {
+                randDifferentFruitIndex = round(random(LEVEL[CURRENT_LEVEL].fruits.length - 1));
+            }
+
             var imageTypeIndex = round(random(fruitImages[LEVEL[CURRENT_LEVEL].fruits[randDifferentFruitIndex].fruit].length - 1));
 
             fruits.push(new Fruit({
@@ -170,10 +190,14 @@ function Game() {
 
             if (bottle.hitsFruit(fruits[i])) {
                 if (bottle.hitsCorrectFruit(fruits[i].type, LEVEL[CURRENT_LEVEL].correctFruits)) {
+                    currentLevelFruitCount++;
                     score++;
                     stats.setScore(score);
                     bottle.tooltip.increase();
                 } else {
+                    currentLevelFruitCount--;
+                    heartsRemain++;
+                    console.log(heartsRemain);
                     stats.decreaseScore();
                     bottle.tooltip.decrease();
                     hearts.lifes.pop();
@@ -203,7 +227,21 @@ function Game() {
         return stats.getScore();
     }
 
+    this.resetGame = function() {
+        console.log(heartsRemain);
+        return heartsRemain < 5 ? false : true;
+    }
+
     this.reset = function () {
+        if(heartsRemain >= 5) {
+            heartsRemain = 0;
+        }
+
+        if(currentLevelFruitCount < maxFruitCount) {
+            score -= currentLevelFruitCount;
+            stats.setScore(score);
+        } 
+        currentLevelFruitCount = 0;
         showQuitModal = false;
     }
 
@@ -211,13 +249,13 @@ function Game() {
         headerButtons.forEach(function (btn) {
             if (btn.contains(mouseX, mouseY)) {
                 btn.animate('down');
-                if (btn.content === 'X') {
+                if (btn.type === 'X') {
                     btn.events.down.end = function () {
                         showQuitModal = true;
                     }
                 }
 
-                if (btn.content === '| |') {
+                if (btn.type === '| |') {
                     btn.events.down.end = function () {
                         showPauseModal = true;
                         pauseGame();

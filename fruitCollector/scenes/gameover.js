@@ -30,6 +30,7 @@ function GameOver()
 
     function initGameOver() {
         modal = new Modal();
+        modal.score = oGame.getScore();
         modalAnimation = new Model(new Frame(), sequenceImage);
 
         for(var i = 0; i < 8; i++) {
@@ -52,11 +53,18 @@ function GameOver()
         modal.statButtons.forEach(function(btn) {
             btn.contains(mouseX, mouseY) && btn.animate('down');
 
-            if(btn.content === 'R') {
+            if(btn.type === 'R') {
                 btn.events.down.end = function() {
-                    bindGameOverObject.sceneManager.showScene( RoundStart );
-                    oRoundStart.reset();
-                    oGame.reset();
+                    if(oGame.resetGame()) {
+                        CURRENT_LEVEL = 0;
+                        score = 0;
+                        oRoundStart.reset();
+                        oGame.reset();
+                    } else {
+                        bindGameOverObject.sceneManager.showScene( RoundStart );
+                        oRoundStart.reset();
+                        oGame.reset();
+                    }
                 }
             }
         })

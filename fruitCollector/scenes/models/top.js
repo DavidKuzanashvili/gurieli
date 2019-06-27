@@ -15,14 +15,6 @@ function Top(options) {
   var innerScroll = 0;
   var targetInnerScroll = innerScroll;
 
-  var makeEven = function (x) {
-    if (x % 2) {
-      return x - 1;
-    }
-
-    return x;
-  }
-
   this.draw = function () {
     push();
 

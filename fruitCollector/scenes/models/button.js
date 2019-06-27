@@ -10,6 +10,7 @@ function Button(options) {
   this.content = options.content || 'Undefined';
   this.fontSize = options.fontSize || 30;
   this.font = options.font || fonts.LGVBold;
+  this.type = options.type || 'undefined';
 
   this.shadowOffset = options.shadowOffset || 10;
 
@@ -26,7 +27,7 @@ function Button(options) {
       drawContent = function(){
         push();
         imageMode(CENTER);
-        image(this.content, this.x + this.width / 2, this.y + this.height / 2);
+        image(this.content, this.x, this.y + this.currentOffset, this.width / 3.5, this.height / 3.5);
         pop();
       }.bind(this);
       break;
