@@ -18,21 +18,48 @@ function Tooltip(options) {
     return parseInt(map(fillLevel, this.min, this.max, 0, this.height));
   }
 
+  var reavealAnimationSpeed = 1;
+  var offsetLeft = -100;
+  var alphaChangeSpeed = 0.05;
+  var a = 0;
+  var activeAnimation = '';
+
+  var animations = {
+    in: {
+      setup: function() {
+        a = 0;
+        hideX = -100;
+      },
+      update: function() {
+        a = Math.min(a + alphaChangeSpeed, 1);
+        offsetLeft = Math.min(offsetLeft + reavealAnimationSpeed, 0);
+      } 
+    }
+  };
+
+  this.events = {};
+
+  for(var key in animations) {
+    this.events[key] = {};
+  }
+
   this.draw = function() {
     push();
 
     rectMode(CENTER);
     noFill();
-    stroke(color(255, 255, 255, 75));
+    stroke(color(255, 255, 255, 75 * a));
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.height, 20);
     
+    tint(255, 255 * a);
     image(fillObject, this.x - this.width / 2, this.y - this.height / 2 + (this.height - currentHeight), this.width, currentHeight, 0, this.height - currentHeight, this.width, currentHeight);
 
     pop();
   }
 
   this.update = function() {
+    updateAnimation(); 
     if(currentHeight != this.getCurrentHeight()) {
       if(currentHeight < this.getCurrentHeight()) {
         currentHeight += this.speed;
@@ -48,15 +75,15 @@ function Tooltip(options) {
     return -(this.max - point);
   }
 
-  this.increase = function(point){
+  this.increase = function(point) {
     return this.setLevel(fillLevel + (point || 1));
   }
 
-  this.decrease = function(point){
+  this.decrease = function(point) {
     return this.setLevel(fillLevel - (point || 1));
   }
 
-  this.reset = function(){
+  this.reset = function() {
     this.setLevel(this.min);
   }
 
@@ -93,6 +120,36 @@ function Tooltip(options) {
 
     fillObject.updatePixels();
   }
+
+  this.animate = function(type) {
+    if(activeAnimation) {
+      triggerAnimationEvent(activeAnimation, 'end');
+    }
+
+    if(animations.hasOwnProperty(type)) {
+      activeAnimation = type;
+      animations[activeAnimation].setup();
+      triggerAnimationEvent(activeAnimation, 'start');
+    } else {
+      activeAnimation = null;
+    }
+  }
+
+  function updateAnimation() {
+    if(activeAnimation === '') {
+      return;
+    }
+
+    animations[activeAnimation].update();
+  }
+
+  var triggerAnimationEvent = function(animation, event) {
+    if(this.events.hasOwnProperty(animation) && this.events[animation].hasOwnProperty(event)) {
+      return this.events[animation][event]();
+    }
+
+    return false;
+  }.bind(this);
 
   this.reload();
 }

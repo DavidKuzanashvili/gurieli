@@ -4,6 +4,10 @@ function Intro() {
     var btn;
     var topBox;
 
+    this.enter = function() {
+        sounds.background.stop();
+    }
+
     this.setup = function () {
         title = new Title(width / 2, 100, '#TamaSi');
         var bottlesCount = Object.keys(bottleImages).length;

@@ -1,10 +1,12 @@
 function Game() {
     var bindGameObject = this;
+    var strtTheGame = null;
+    var gameStart = null;
     var maxFruitCount;
     var currentLevelFruitCount = 0;
-    var incorrectFruitsCount = 0;
     var fruitAddLastTime = 0;
-    var heartsRemain = 0;
+    var deadHearts = 0;
+    var isStoryLineFinished = false;
     var index = 0;
     var stats;
     var timer;
@@ -25,6 +27,7 @@ function Game() {
     var pauseStart;
 
     this.enter = function () {
+        sounds.background.play();
         initGame();
     }
 
@@ -38,7 +41,10 @@ function Game() {
             updateFruits();
             leaves.update();
             bottle.update();
-            timer.update();
+            stats.update();
+            if(startTheGame) {
+                timer.update();
+            } 
             headerButtons.forEach(x => x.update());
         }
 
@@ -48,7 +54,9 @@ function Game() {
 
         drawFruits();
         leaves.draw();
+        drawMotion();
 
+        updateIntroFruit();
         drawIntroFruit();
 
         bottle.draw();
@@ -57,14 +65,29 @@ function Game() {
         hearts.draw();
 
         if (timer.ended()) {
-            if (currentLevelFruitCount >= maxFruitCount && LEVEL.length - 1 > CURRENT_LEVEL) {
-                CURRENT_LEVEL++;
-                this.reset();
-                oRoundStart.reset();
-                this.sceneManager.showScene(RoundStart)
+            if (currentLevelFruitCount >= maxFruitCount) {
+                if(isStoryLineFinished || CURRENT_LEVEL < LEVEL.length - 1) {
+                    if(isStoryLineFinished) {
+                        CURRENT_LEVEL = round(random(0, LEVEL.length - 1));
+                    } else {
+                        CURRENT_LEVEL++;                        
+                    }
+                    this.reset();
+                    oRoundStart.reset();
+                    this.sceneManager.showScene(RoundStart)
+                } else {
+                    isStoryLineFinished = true;
+                    // this.sceneManager.showScene(GameOver);
+                }
             } else {
-                this.reset();
-                this.sceneManager.showScene(GameOver);
+                deadHearts++;
+                if(deadHearts >= 5) {
+                    this.sceneManager.showScene(GameOver);
+                } else {
+                    this.reset();
+                    oRoundStart.reset();
+                    this.sceneManager.showScene(RoundStart);
+                }
             }
         }
 
@@ -86,6 +109,8 @@ function Game() {
     }
 
     function initGame() {
+        gameStart = millis();
+        startTheGame = false;
         maxFruitCount = LEVEL[CURRENT_LEVEL].maxFruitsToGather;
         stats = new Statistics(3224, 100);
         stats.score = score;
@@ -93,7 +118,7 @@ function Game() {
         timer = new Timer(millis(), 30);
         hearts = new LifeFactory(100, 5);
         hearts.generateLifes();
-        for(var i = 0; i < heartsRemain; i++) {
+        for(var i = 0; i < deadHearts; i++) {
             hearts.lifes.pop();
         }
 
@@ -102,6 +127,7 @@ function Game() {
             color: LEVEL[CURRENT_LEVEL].color,
             max: maxFruitCount
         }));
+        bottle.animate('in');
         fruits = [];
 
         headerButtons.push(new Button({
@@ -151,10 +177,20 @@ function Game() {
             height: 300,
             shadowOffsetTop: 12
         });
+
+        cutSequence();
     }
 
     function generateFruits() {
-        if (millis() > fruitAddLastTime + LEVEL[CURRENT_LEVEL].fruitGenerateSpeed) {
+        bottle.events.in.end = function() {
+            startTheGame = true;
+            timer.animate('in');
+            timer.fixTime(millis() - gameStart);
+            bottle.tooltip.animate('in');
+            stats.animate('in');
+        }
+
+        if (millis() > fruitAddLastTime + LEVEL[CURRENT_LEVEL].fruitGenerateSpeed && startTheGame) {
             index++;
             fruitAddLastTime = millis();
             var randDifferentFruitIndex;
@@ -196,10 +232,14 @@ function Game() {
                     bottle.tooltip.increase();
                 } else {
                     currentLevelFruitCount--;
-                    heartsRemain++;
-                    console.log(heartsRemain);
-                    stats.decreaseScore();
-                    bottle.tooltip.decrease();
+                    if((score - 1) < 0) {
+                        score = 0;
+                    } else {
+                        score--;
+                    }
+                    stats.setScore(score);       
+                    deadHearts++;
+                    // bottle.tooltip.decrease();
                     hearts.lifes.pop();
                 }
                 fruits.splice(i, 1);
@@ -227,20 +267,24 @@ function Game() {
         return stats.getScore();
     }
 
+    this.isRandomRound = function() {
+        return c;
+    }
+
     this.resetGame = function() {
-        console.log(heartsRemain);
-        return heartsRemain < 5 ? false : true;
+        return deadHearts < 5 ? false : true;
     }
 
     this.reset = function () {
-        if(heartsRemain >= 5) {
-            heartsRemain = 0;
+        if(deadHearts >= 5) {
+            deadHearts = 0;
         }
 
         if(currentLevelFruitCount < maxFruitCount) {
             score -= currentLevelFruitCount;
             stats.setScore(score);
-        } 
+        }
+        index = 0; 
         currentLevelFruitCount = 0;
         showQuitModal = false;
     }
@@ -295,11 +339,21 @@ function Game() {
         fill(colors.darkForestGreen);
     }
 
+    var introFruitAlpha = 0;
+    var introFrutiAlphaSpeed = 0.009;
+
     function drawIntroFruit() {
         push();
         imageMode(CENTER);
+        tint(255, 255 * introFruitAlpha);
         image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width - 100 - LEVEL[CURRENT_LEVEL].introFruit.width / 4, height - LEVEL[CURRENT_LEVEL].introFruit.height / 2, LEVEL[CURRENT_LEVEL].introFruit.width / 2, LEVEL[CURRENT_LEVEL].introFruit.height / 2);
         pop();
+    }
+
+    function updateIntroFruit() {
+        if(millis() > gameStart + 300) {
+            introFruitAlpha = Math.min(introFruitAlpha + introFrutiAlphaSpeed, 1);
+        }
     }
 
     function pauseGame() {
@@ -311,5 +365,24 @@ function Game() {
         timer.fixTime(millis() - pauseStart);
         isPaused = false;
         delete pauseStart;
+    }
+
+    function cutSequence() {
+        leafMotionModel = new Model(new Frame(), sprites.leafMotion);
+        for(var i = 0; i < 90; i++) {
+            var x = (i % 90) * 230;
+            var y = parseInt(i / 90) * 95;
+
+            leafMotionModel.frame.sequence.push(new Sprite(x, y, 230, 95));
+        }
+
+        leafMotionModel.frame.addAnimation('moving', 0, 89);
+        leafMotionModel.animate('moving', 50);
+        leafMotionModel.translateX = 400;
+    }
+
+    function drawMotion() {
+        leafMotionModel.update();
+        leafMotionModel.draw();
     }
 }

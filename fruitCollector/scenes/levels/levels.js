@@ -152,6 +152,6 @@ const LEVEL = [
     bottle: 'raspberryBottle',
     color: colors.darkPink,
     maxFruitsToGather: 25,
-    fruitGenerateSpeed: 400
+    fruitGenerateSpeed: 350
   }
 ];

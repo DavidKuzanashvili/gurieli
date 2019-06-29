@@ -55,16 +55,20 @@ function GameOver()
 
             if(btn.type === 'R') {
                 btn.events.down.end = function() {
-                    if(oGame.resetGame()) {
-                        CURRENT_LEVEL = 0;
-                        score = 0;
-                        oRoundStart.reset();
-                        oGame.reset();
-                    } else {
-                        bindGameOverObject.sceneManager.showScene( RoundStart );
-                        oRoundStart.reset();
-                        oGame.reset();
-                    }
+                    CURRENT_LEVEL = 0;
+                    oRoundStart.reset();
+                    oGame.reset();
+                    score = 0;
+                    bindGameOverObject.sceneManager.showScene( RoundStart );
+                }
+            }
+
+            if(btn.type === 'X') {
+                btn.events.down.end = function() {
+                    oRoundStart.reset();
+                    oGame.reset();
+                    score = 0;
+                    bindGameOverObject.sceneManager.showScene( Intro );
                 }
             }
         })

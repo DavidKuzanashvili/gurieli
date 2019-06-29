@@ -25,6 +25,8 @@ function Model(frame, texture) {
   this.currentIndex = 0;
   this.animationStep = 100;
   this.currentStep = 0;
+  this.translateX = 0;
+  this.translateY = 0;
 
   this.animate = function(name, step) {
     this.currentAnimation = name;
@@ -49,8 +51,10 @@ function Model(frame, texture) {
   }
 
   this.draw = function() {
+    push();
     var sprite = this.frame.sequence[this.currentIndex];
-    console.log(sprite)
+    translate(this.translateX, this.translateY);
     image(this.texture, 0, 0, sprite.width, sprite.height, sprite.x, sprite.y, sprite.width, sprite.height);
+    pop();
   }
 }

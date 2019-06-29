@@ -3,7 +3,7 @@ function CountDown(x, y, countNumber, numberColor) {
   this.y = y;
   this.countNumber = countNumber;
   this.color = hexToRgb(numberColor);
-  this.fontSize = 300;
+  this.fontSize = 250;
   this.translate = 600;
   this.startTime = millis();
   this.isNextScene = false;
@@ -42,6 +42,10 @@ function CountDown(x, y, countNumber, numberColor) {
         }
       }.bind(this)
     }
+  }
+
+  for(var key in animations) {
+    this.events[key] = {};
   }
 
   var getFontSizeFor = function (diff) {
@@ -101,9 +105,14 @@ function CountDown(x, y, countNumber, numberColor) {
   }
 
   this.animate = function (type) {
+    if(activeAnimation) {
+      triggerAnimationEvent(activeAnimation, 'end');
+    }
+
     if (animations.hasOwnProperty(type)) {
       animations[type].setup();
       activeAnimation = type;
+      triggerAnimationEvent(activeAnimation, 'start');
     } else {
       activeAnimation = null;
     }
@@ -116,4 +125,12 @@ function CountDown(x, y, countNumber, numberColor) {
 
     animations[activeAnimation].update();
   }
+
+  var triggerAnimationEvent = function(animation, event) {
+    if(this.events.hasOwnProperty(animation) && this.events[animation].hasOwnProperty(event)) {
+      return this.events[animation][event]();
+    }
+
+    return false;
+  }.bind(this);
 }

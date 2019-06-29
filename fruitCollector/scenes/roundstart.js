@@ -1,4 +1,6 @@
 function RoundStart() {
+  var comboColor = hexToRgb(colors.mainTheme);
+  var comboOutStart = 0;
   var counter;
   var title;
   var subTitle;
@@ -25,6 +27,7 @@ function RoundStart() {
 
     if (counter.isNextScene && introOut === null) {
       drawIntroFruit = drawIntroFruitOut;
+      comboOutStart = millis();
       introOut = {
         x: width / 2,
         y: height - targetIntroFruitOffset,
@@ -63,7 +66,7 @@ function RoundStart() {
       // title.animate('out');
     }
 
-    if (endingAnimationFinished) {
+    if (endingAnimationFinished) { //endingAnimationFinished
       this.sceneManager.showScene(Game);
     }
   }
@@ -109,24 +112,45 @@ function RoundStart() {
 
   var introOut = null;
 
+  // function drawIntroFruitOut() {
+  //   push();
+
+  //   introFruitOffset = Math.min(introFruitOffset + introFruitOffsetSpeed, targetIntroFruitOffset);
+
+  //   imageMode(CENTER);
+  //   var currentPos = introOut.current.pos();
+  //   var distance = currentPos.dist(introOut.target.pos());
+  //   currentPos.add(p5.Vector.fromAngle(p5.Vector.angleBetween(introOut.pos(), introOut.target.pos())).mult(Math.min(distance, introOut.stepSize)));
+  //   introOut.current.scale = Math.max(introOut.current.scale - introOut.scaleSpeed, introOut.target.scale);
+  //   introOut.current.x = Math.min(currentPos.x, introOut.target.x());
+  //   introOut.current.y = Math.min(currentPos.y, introOut.target.y());
+
+  //   if (distance < 0.5) {
+  //     endingAnimationFinished = true;
+  //   }
+
+  //   image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], introOut.current.x, introOut.current.y, LEVEL[CURRENT_LEVEL].introFruit.width * introOut.current.scale, LEVEL[CURRENT_LEVEL].introFruit.height * introOut.current.scale);
+
+  //   pop();
+  // }
+
+  var changeAlpha = 1;
+  var changeAlphaSpeed = 0.05;
+
   function drawIntroFruitOut() {
     push();
 
-    introFruitOffset = Math.min(introFruitOffset + introFruitOffsetSpeed, targetIntroFruitOffset);
-
-    imageMode(CENTER);
-    var currentPos = introOut.current.pos();
-    var distance = currentPos.dist(introOut.target.pos());
-    currentPos.add(p5.Vector.fromAngle(p5.Vector.angleBetween(introOut.pos(), introOut.target.pos())).mult(Math.min(distance, introOut.stepSize)));
-    introOut.current.scale = Math.max(introOut.current.scale - introOut.scaleSpeed, introOut.target.scale);
-    introOut.current.x = Math.min(currentPos.x, introOut.target.x());
-    introOut.current.y = Math.min(currentPos.y, introOut.target.y());
-
-    if (distance < 0.5) {
-      endingAnimationFinished = true;
+    if(millis() > comboOutStart + 300) {
+      changeAlpha = Math.max(changeAlpha - changeAlphaSpeed, 0);
     }
 
-    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], introOut.current.x, introOut.current.y, LEVEL[CURRENT_LEVEL].introFruit.width * introOut.current.scale, LEVEL[CURRENT_LEVEL].introFruit.height * introOut.current.scale);
+    imageMode(CENTER);
+    tint(255, 255 * changeAlpha);
+    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width, LEVEL[CURRENT_LEVEL].fruitName.height);
+
+    if(changeAlpha === 0) {
+      endingAnimationFinished = true;
+    }
 
     pop();
   }

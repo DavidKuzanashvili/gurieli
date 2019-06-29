@@ -9,6 +9,8 @@ var lifeImages = {};
 var leavesImages = {};
 var fonts = {};
 var icons = {};
+var sprites = {};
+var sounds = {};
 var sequenceImage = null;
 var xushturi = null;
 
@@ -17,6 +19,8 @@ var score = 0;
 var CURRENT_LEVEL = 0;
 
 function preload() {
+    soundFormats('mp3', 'ogg');
+    loadSoundEffects();
     loadLeaves();
     loadIntroFruits();
     loadBottles();
@@ -24,11 +28,13 @@ function preload() {
     loadLife();
     loadFonts();
     loadIcons();
+    loadSprite();
     sequenceImage = loadImage(imgPath + 'cat.png');
     xushturi = loadImage(imgPath + 'xushturi.png');
 }
 
 function setup() {
+    frameRate(60);
     var canvas = createCanvas(windowWidth, windowHeight);
     canvas.parent('canvas');
 
@@ -94,5 +100,12 @@ function loadIcons() {
     icons.reload = loadImage(imgPath + 'icons/reload.svg');
     icons.pause = loadImage(imgPath + 'icons/pause.svg');
     icons.music = loadImage(imgPath + 'icons/music.svg');
-    console.log(icons);
+}
+
+function loadSprite() {
+    sprites.leafMotion = loadImage(imgPath + 'sprites/motions.png');
+}
+
+function loadSoundEffects() {
+    sounds.background = loadSound('sound-effects/background/background.mp3');
 }

@@ -7,6 +7,8 @@ function Title(x, y, content, color, fontSize) {
   this.content = content;
   this.font = fonts.LGVBold;
   this.alphaSpeed = 0.05;
+  this.events = {};
+  this.outEnd = false;
 
   var currentAlpha = this.alpha;
   var activeAnimation = 'in';
@@ -30,9 +32,14 @@ function Title(x, y, content, color, fontSize) {
         currentAlpha = Math.max(currentAlpha - this.alphaSpeed, 0);
         if (currentAlpha === 0) {
           activeAnimation = null;
+          this.outEnd = true;
         }
       }.bind(this)
     }
+  }
+
+  for(var key in animations) {
+    this.events[key] = {};
   }
 
   this.draw = function () {
@@ -52,9 +59,14 @@ function Title(x, y, content, color, fontSize) {
   }
 
   this.animate = function (type) {
+    if(activeAnimation) {
+      triggerAnimationEvent(activeAnimation, 'end');
+    }
+
     if (animations.hasOwnProperty(type)) {
       animations[type].setup();
       activeAnimation = type;
+      triggerAnimationEvent(activeAnimation, 'start');
     } else {
       activeAnimation = null;
     }
@@ -67,4 +79,12 @@ function Title(x, y, content, color, fontSize) {
 
     animations[activeAnimation].update();
   }
+
+  var triggerAnimationEvent = function(animation, event) {
+    if(this.events.hasOwnProperty(animation) && this.events[animation].hasOwnProperty(event)) {
+      return this.events[animation][event]();
+    }
+
+    return false;
+  }.bind(this);
 }

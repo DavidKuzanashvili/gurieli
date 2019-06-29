@@ -9,9 +9,10 @@ function Bottle(x, type, speed, tooltip) {
   this.endPoint = height - this.height / 4 + 10;
   this.y = this.startPoint;
   this.tooltip = tooltip || null;
+  this.events = {};
 
   var dropSpeed = 20;
-  var activeAnimation = 'in';
+  var activeAnimation = null;
 
   var animations = {
     in: {
@@ -20,9 +21,17 @@ function Bottle(x, type, speed, tooltip) {
       }.bind(this),
       update: function() {
         this.y = Math.min(this.y + dropSpeed, this.endPoint);
+        
+        if(this.y >= this.endPoint) {
+          this.events.in.end();
+        }
       }.bind(this)
     }
   };
+
+  for(var key in animations) {
+    this.events[key] = {};
+  }
 
   if(this.tooltip) {
     // this.tooltip.x = this.x + 75 + 30;
@@ -90,9 +99,14 @@ function Bottle(x, type, speed, tooltip) {
   }
 
   this.animate = function(type) {
-    if(animations.hasOwnPropery(type)) {
+    if(activeAnimation) {
+      triggerAnimationEvent(activeAnimation, 'end');
+    }
+
+    if(animations.hasOwnProperty(type)) {
       activeAnimation = type;
       animations[activeAnimation].setup();
+      triggerAnimationEvent(activeAnimation, 'start');
     } else {
       activeAnimation = null;
     }
@@ -104,4 +118,12 @@ function Bottle(x, type, speed, tooltip) {
     }
     animations[activeAnimation].update();
   }
+
+  var triggerAnimationEvent = function(animation, event) {
+    if(this.events.hasOwnProperty(animation) && this.events[animation].hasOwnProperty(event)) {
+      return this.events[animation][event]();
+    }
+
+    return false;
+  }.bind(this);
 } 
