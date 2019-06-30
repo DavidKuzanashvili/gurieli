@@ -1,28 +1,38 @@
 var imgPath = 'assets/imgs/';
 var fontsPath = 'assets/fonts/';
-var bottleImages = {};
 var fruitImages = {};
+var bottleImages = {};
 var fonts = {};
-var icons = {};
+var leaveImages = {};
+var sizes = {
+  translateLeaves: 0,
+  bottleSizesCoefficient: 0,
+  fruitsCoefficient: 0,
+  fontCoefficient: 0,
+  scoreOffsetCoefficientRight: 0,
+  scoreOffsetCoefficientBottom: 0
+}
 
 function preload() {
-  loadBottles();
   loadFruits();
+  loadBottles();
+  loadLeaves();
   loadFonts();
-  loadIcons();
 }
 
 function setup() {
-  frameRate(60);
+  changeSizes(); 
+  currentWindowWidth = windowWidth;
   var canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent('canvas');
-
+  frameRate(60);
   var mgr = new SceneManager();
   mgr.wire();
   mgr.showScene(Game);
 }
 
 function windowResized() {
+  changeSizes();
   resizeCanvas(windowWidth, windowHeight);
 }
 
@@ -44,15 +54,40 @@ function loadBottles() {
   bottleImages.feijoaBottle = loadImage(imgPath + 'bottles/feijoa.png');
 }
 
+function loadLeaves() {
+  leaveImages.mint = [loadImage(imgPath + 'leaves/mint/mint-leaves.png')];
+  leaveImages.raspberry = [loadImage(imgPath + 'leaves/raspberry/raspberry-leaves.png')];
+  leaveImages.cherry = [loadImage(imgPath + 'leaves/cherry/cherry-leaves.png')];
+  leaveImages.peach = [loadImage(imgPath + 'leaves/peach/peach-leaves.png')];
+  leaveImages.feijoa = [loadImage(imgPath + 'leaves/feijoa/feijoa-leaves.png')];
+}
+
 function loadFonts() {
   fonts.LGVBold = loadFont(fontsPath + 'lgv-bebas-neue-bold-bold.otf');
   fonts.LVGRegular = loadFont(fontsPath + 'LVG-BEBAS-NEUE-REGULAR.otf');
 }
 
-function loadIcons() {
-  icons.close = loadImage(imgPath + 'icons/close.svg');
-  icons.fb = loadImage(imgPath + 'icons/facebook.svg');
-  icons.reload = loadImage(imgPath + 'icons/reload.svg');
-  icons.pause = loadImage(imgPath + 'icons/pause.svg');
-  icons.music = loadImage(imgPath + 'icons/music.svg');
+function changeSizes() {
+  if(windowWidth > 1440) {
+    sizes.translateLeaves = -90;
+    sizes.bottleSizesCoefficient = 1;
+    sizes.fruitsCoefficient = 1;
+    sizes.fontCoefficient = 1;
+    sizes.scoreOffsetCoefficientRight = 1;
+    sizes.scoreOffsetCoefficientBottom = 1;
+  } else if(windowWidth > 1000 && windowWidth < 1440) {
+    sizes.translateLeaves = 0;
+  } else if(windowWidth > 700 && windowWidth < 1000) {
+    sizes.bottleSizesCoefficient = 0.8;
+    sizes.fruitsCoefficient = 0.8;
+    sizes.fontCoefficient = 0.6;
+    sizes.scoreOffsetCoefficientRight = 0.5;
+    sizes.scoreOffsetCoefficientBottom = 0.6;
+  } else if(windowWidth < 700) {
+    sizes.bottleSizesCoefficient = 0.6
+    sizes.fruitsCoefficient = 0.5;
+    sizes.fontCoefficient = 0.5;
+    sizes.scoreOffsetCoefficientRight = 0.2;
+    sizes.scoreOffsetCoefficientBottom = 0.5;
+  }
 }
