@@ -36,7 +36,6 @@ function Game() {
 
   this.draw = function() {
     push();
-    
     this.update();
     background(colors.mainTheme);
     fallFruits();
