@@ -10,7 +10,7 @@ function Fruit(options) {
   var randomFruitMode = round(random(0, fruitImages[this.type].length - 1));
 
   var scaleCoefficient = 1;
-  var scaleDownSpeed = 0.1;
+  var scaleDownSpeed = 0.05;
   var activeAnimation = null;
 
   var animations = {
