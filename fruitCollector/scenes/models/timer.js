@@ -16,7 +16,6 @@ function Timer(timerStart, maxTime = 60) {
       },
       update: function() {
         offsetTop = Math.min(offsetTop + animationSpeed, 0);
-        console.log(offsetTop);
       }
     }
   };
