@@ -23,11 +23,14 @@ function Game() {
     var pauseGameModal = null;
     var showQuitModal = false;
     var showPauseModal = false;
+    var togglePause = false;
+    var toggleClose = false;
+    var toggleMusic = false;
     var isPaused = false;
     var pauseStart;
 
     this.enter = function () {
-        sounds.background.play();
+        // sounds.background.play();
         initGame();
     }
 
@@ -54,7 +57,7 @@ function Game() {
 
         drawFruits();
         leaves.draw();
-        drawMotion();
+        // drawMotion();
 
         updateIntroFruit();
         drawIntroFruit();
@@ -142,6 +145,10 @@ function Game() {
             fontSize: 16,
         }));
 
+        headerButtons[0].events.down.end = function() {
+            showQuitModal = true;
+        }
+
         headerButtons.push(new Button({
             x: width - 180 - 25,
             y: 70,
@@ -153,6 +160,13 @@ function Game() {
             shadowOffset: 6,
             fontSize: 16
         }));
+
+        headerButtons[1].events.down.end = function() {
+            if(togglePause) {
+                showPauseModal = true;
+                pauseGame();
+            }
+        }
 
         headerButtons.push(new Button({
             x: width - 260 - 25,
@@ -166,17 +180,48 @@ function Game() {
             fontSize: 16
         }));
 
+        headerButtons.push(new Button({
+            x: width - 340 - 25,
+            y: 70,
+            backgroundColor: color(colors.lipstick),
+            type: "R",
+            content: icons.reload,
+            width: 50,
+            height: 50,
+            shadowOffset: 6,
+            fontSize: 16
+        }));
+
+        headerButtons[3].events.down.end = function() {
+            bindGameObject.reset();
+            oRoundStart.reset();
+            bindGameObject.sceneManager.showScene( RoundStart );
+        }
+
         quitGameModal = new Modal({
             width: 400,
             height: 300,
             shadowOffsetTop: 12
         });
 
+        quitGameModal.quitButtons[0].events.down.end = function () {
+            bindGameObject.sceneManager.showScene(GameOver);
+        }
+
+        quitGameModal.quitButtons[1].events.down.end = function () {
+            showQuitModal = false;
+        }
+
         pauseGameModal = new Modal({
             width: 400,
             height: 300,
             shadowOffsetTop: 12
         });
+        
+        pauseGameModal.pauseButton.events.down.end = function () {
+            showPauseModal = false;
+            unpouseGame();
+        }
 
         cutSequence();
     }
@@ -242,7 +287,7 @@ function Game() {
                     // bottle.tooltip.decrease();
                     hearts.lifes.pop();
                 }
-                fruits.splice(i, 1);
+                bottle.addFruit(fruits.splice(i, 1));
                 i--;
                 continue;
             }
@@ -293,12 +338,6 @@ function Game() {
         headerButtons.forEach(function (btn) {
             if (btn.contains(mouseX, mouseY)) {
                 btn.animate('down');
-                if (btn.type === 'X') {
-                    btn.events.down.end = function () {
-                        showQuitModal = true;
-                    }
-                }
-
                 if (btn.type === '| |') {
                     btn.events.down.end = function () {
                         showPauseModal = true;
@@ -311,27 +350,56 @@ function Game() {
         quitGameModal.quitButtons.forEach(function (btn) {
             if (btn.contains(mouseX, mouseY)) {
                 btn.animate('down');
-
-                if (btn.content === 'ara') {
-                    btn.events.down.end = function () {
-                        showQuitModal = false;
-                    }
-                }
-
-                if (btn.content === 'ki') {
-                    btn.events.down.end = function () {
-                        bindGameObject.sceneManager.showScene(GameOver);
-                    }
-                }
             }
         });
 
         if (pauseGameModal.pauseButton.contains(mouseX, mouseY)) {
             pauseGameModal.pauseButton.animate('down');
-            pauseGameModal.pauseButton.events.down.end = function () {
-                showPauseModal = false;
-                unpouseGame();
+        }
+    }
+
+    this.keyPressed = function() {
+        var SPACE = 32;
+        var M = 77;
+        var m = 109;
+        var R = 82;
+        var r = 114;
+
+        switch(keyCode) {
+            case SPACE: {
+                togglePause = !togglePause;
+                var puaseBtn = headerButtons.find(function(x) {
+                    return x.type === '| |';
+                });
+
+                if(togglePause) {
+                    puaseBtn.animate('down');
+                } else {
+                    pauseGameModal.pauseButton.animate('down');
+                }
             }
+            break;
+            case (M || m): {
+                var musicBtn = headerButtons.find(function(x) {
+                    return x.type === 'm';
+                });
+                musicBtn.animate('down');
+            }
+            break;
+            case(R || r): {
+                var resetBtn = headerButtons.find(function(x) {
+                    return x.type === 'R';
+                });
+                resetBtn.animate('down');
+            }
+            break;
+            case ESCAPE: {
+                var closeBtn = headerButtons.find(function(x) {
+                    return x.type === 'X';
+                });
+                closeBtn.animate('down');
+            }
+            break;
         }
     }
 

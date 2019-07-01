@@ -37,12 +37,33 @@ function windowResized() {
 }
 
 function loadFruits() {
-  fruitImages.raspberry = [loadImage(imgPath + 'raspberry/raspberryright.png'), loadImage(imgPath + 'raspberry/raspberryleft.png')];
-  fruitImages.vanilla = [loadImage(imgPath + 'vanilla/vanillaleft.png'), loadImage(imgPath + 'vanilla/vanillaright.png')];
-  fruitImages.leaves = [loadImage(imgPath + 'mint/mintleft.png'), loadImage(imgPath + 'mint/mintright.png')];
-  fruitImages.cherry = [loadImage(imgPath + 'cherry/cherryright.png')];
-  fruitImages.feijoa = [loadImage(imgPath + 'feijoa/feijoaleft.png'), loadImage(imgPath + 'feijoa/feijoaright.png')];
-  fruitImages.peach = [loadImage(imgPath + 'peach/peachleft.png'), loadImage(imgPath + 'peach/peachright.png')];
+  fruitImages.raspberry = [
+    { img: loadImage(imgPath + 'raspberry/raspberryright.png'), w: 92, h:88 },
+    { img: loadImage(imgPath + 'raspberry/raspberryleft.png'), w: 92, h: 86 }
+  ];
+  fruitImages.vanilla = [
+    { img: loadImage(imgPath + 'vanilla/vanillaleft.png'), w: 87, h: 78 }, 
+    { img: loadImage(imgPath + 'vanilla/vanillaright.png'), w: 88, h: 83},
+  ];
+  fruitImages.leaves = [
+    { img: loadImage(imgPath + 'mint/mintleft.png'), w: 68, h: 120}, 
+    { img: loadImage(imgPath + 'mint/mintright.png'), w: 68, h: 113 }
+  ];
+  fruitImages.cherry = [
+    { img: loadImage(imgPath + 'cherry/cherryright.png'), w: 43, h: 110 }
+  ];
+  fruitImages.feijoa = [
+    { img: loadImage(imgPath + 'feijoa/feijoaleft.png'), w: 80, h: 113 }, 
+    { img: loadImage(imgPath + 'feijoa/feijoaright.png'), w: 77, h: 112 },
+    { img: loadImage(imgPath + 'feijoa/feijoa-slice-left.png'), w: 80, h: 83 },
+    { img: loadImage(imgPath + 'feijoa/feijoa-slice-right.png'), w: 85, h: 83 }
+  ];
+  fruitImages.peach = [
+    { img: loadImage(imgPath + 'peach/peachleft.png'), w: 83, h: 84}, 
+    { img: loadImage(imgPath + 'peach/peachright.png'), w: 82, h: 90}, 
+    { img: loadImage(imgPath + 'peach/peach-slice-left.png'), w: 75, h: 79}, 
+    { img: loadImage(imgPath + 'peach/peach-slice-right.png'), w: 65, h: 79 }
+  ];
 }
 
 function loadBottles() {
@@ -68,12 +89,19 @@ function loadFonts() {
 }
 
 function changeSizes() {
-  if(windowWidth >= 1440) {
+  if(windowWidth >= 1600) {
     sizes.translateLeaves = -90;
     sizes.bottleSizesCoefficient = 1;
     sizes.fruitsCoefficient = 1;
     sizes.fontCoefficient = 1;
-    sizes.scoreOffsetCoefficientRight = 1;
+    sizes.scoreOffsetCoefficientRight = 0.8;
+    sizes.scoreOffsetCoefficientBottom = 1;
+  } else if(windowWidth >= 1440 && windowWidth < 1600) {
+    sizes.translateLeaves = -90;
+    sizes.bottleSizesCoefficient = 0.85;
+    sizes.fruitsCoefficient = 0.8;
+    sizes.fontCoefficient = 0.9;
+    sizes.scoreOffsetCoefficientRight = 0.7;
     sizes.scoreOffsetCoefficientBottom = 1;
   } else if(windowWidth >= 1000 && windowWidth < 1440) {
     sizes.translateLeaves = 0;
@@ -90,4 +118,45 @@ function changeSizes() {
     sizes.scoreOffsetCoefficientRight = 0.2;
     sizes.scoreOffsetCoefficientBottom = 0.5;
   }
+}
+
+try{
+  var orientKey = 'orientation';
+  if ('mozOrientation' in screen) {
+    orientKey = 'mozOrientation';
+  } else if ('msOrientation' in screen) {
+    orientKey = 'msOrientation';
+  }
+
+  if (screen[orientKey]) {
+
+    var orientationLock = function(){
+      if (screen[orientKey].lock) {
+        promise = screen[orientKey].lock('portrait-primary');
+      } else {
+        var o = screen[orientKey];
+        o.type = 'portrait-primary';
+        promise = screen.orientationLock(o);
+      }
+
+      promise.then(function(){}).catch(function(){
+        console.log("Screen orientation is not able to lock");
+      });
+    }
+
+    var onOrientationChange = function(){
+      orientationLock();
+    };
+  
+    if ('onchange' in screen[orientKey]) {
+      screen[orientKey].addEventListener('change', onOrientationChange);
+    } else if ('onorientationchange' in screen) {
+      screen.addEventListener('orientationchange', onOrientationChange);
+    }
+
+    orientationLock();
+  }
+
+} catch(err) {
+  console.log("Screen orientation is not able to lock");
 }

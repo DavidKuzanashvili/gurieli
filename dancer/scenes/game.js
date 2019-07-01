@@ -1,4 +1,5 @@
 function Game() {
+  var bindGameObject = this;
   var header = null;
   var oDancer = null;
   var hearts = null;
@@ -7,6 +8,7 @@ function Game() {
   var showQuit = false;
   var pauseGameModal;
   var quitGameModal;
+  var statsModal;
   var pauseStart;
   var startTime = 0;
   var arrowSize = 50;
@@ -37,6 +39,11 @@ function Game() {
       pauseGameModal.drawPause();
     }
 
+    if(header.timer.ended()) {
+      pauseGame();
+      statsModal.drawStats();
+    }
+
     pop();
   }
 
@@ -45,7 +52,7 @@ function Game() {
     if(!isPaused) {
       if(millis() > startTime + 1000) {
         startTime = millis();
-        var speed = 2;
+        var speed = 3;
         randomColumn.arrows.push(new Arrow(randomColumn.x + (width / 8) / 2, randomColumn.offsetTop, arrowSize, arrowSize, randomColumn.btnType, speed));
       }
     }
@@ -56,10 +63,12 @@ function Game() {
     oDancer = new Dancer(dancer);
     hearts = new LifeFactory(lifeImages.active, 3, 45, 40, 50);
     hearts.generetaLifes();
-    controlColumns.push(new ControlColumn('^', width / 2));
-    controlColumns.push(new ControlColumn('<', width / 2 + (width / 8)));
-    controlColumns.push(new ControlColumn('|', width / 2 + 2*(width / 8)));
-    controlColumns.push(new ControlColumn('>', width / 2 + 3*(width / 8)));
+    controlColumns.push(new ControlColumn('^', width / 2, colors.beige));
+    controlColumns.push(new ControlColumn('<', width / 2 + (width / 8), colors.sand));
+    controlColumns.push(new ControlColumn('|', width / 2 + 2*(width / 8), colors.seafoamBlue));
+    controlColumns.push(new ControlColumn('>', width / 2 + 3*(width / 8), colors.booger));
+
+    statsModal = new Modal();
 
     quitGameModal = new Modal({
       width: 400,
@@ -147,6 +156,16 @@ function Game() {
           }
       }
     });
+
+    statsModal.statButtons.forEach(function(btn) {
+      btn.contains(mouseX, mouseY) && btn.animate('down');
+
+      if(btn.content === 'R') {
+        btn.events.down.end = function() {
+          unpouseGame();
+        }
+      }
+    })
   }
 
   this.keyPressed = function() {

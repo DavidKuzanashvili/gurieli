@@ -82,6 +82,7 @@ function Modal(options) {
   this.drawStats = function() {
     push();
 
+    background(overlayColor.r, overlayColor.g, overlayColor.b, 255 * 0.5);
     cursor('default');
     fill(shadowColor);
     rectMode(CENTER);
@@ -89,7 +90,7 @@ function Modal(options) {
     rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 60);
     fill(colors.boogerTwo);
     rect(width / 2, height / 2, this.width, this.height, 60);
-    image(xushturi, width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop);
+    image(dancer, width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop, 150, 200);
     fill(255);
     textSize(this.fontSize);
     // text('უმაღლესი ქულა: 3224', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);

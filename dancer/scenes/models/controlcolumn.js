@@ -1,4 +1,4 @@
-function ControlColumn(btnType, x) {
+function ControlColumn(btnType, x, buttonColor) {
   this.btnType = btnType;
   this.x = x;
   this.offsetTop = 170;
@@ -13,8 +13,8 @@ function ControlColumn(btnType, x) {
   this.btn = new Button({
     x: this.x + (w / 2),
     y: this.offsetTop,
-    backgroundColor: color('white'),
-    color: colors.seafoamBlueTwo,
+    backgroundColor: color(buttonColor),
+    color: 'green',
     content: this.btnType,
     width: btnSize,
     height: btnSize,

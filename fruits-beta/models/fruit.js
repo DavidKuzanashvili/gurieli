@@ -7,6 +7,7 @@ function Fruit(options) {
   this.height = options.height || 50;
   this.fallSpeed = options.fallSpeed || 1;
   this.animationEnd = false;
+  this.responsiveCoefficient = options.responsiveCoefficient || 1;
   var randomFruitMode = round(random(0, fruitImages[this.type].length - 1));
 
   var scaleCoefficient = 1;
@@ -37,7 +38,7 @@ function Fruit(options) {
     push();
 
     imageMode(CENTER);
-    image(fruitImages[this.type][randomFruitMode], this.x, this.y, this.width * scaleCoefficient, this.height * scaleCoefficient);
+    image(fruitImages[this.type][randomFruitMode].img, this.x, this.y, fruitImages[this.type][randomFruitMode].w * this.responsiveCoefficient * scaleCoefficient, fruitImages[this.type][randomFruitMode].h * this.responsiveCoefficient * scaleCoefficient);
 
     pop();
   }

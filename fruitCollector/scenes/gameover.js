@@ -65,6 +65,7 @@ function GameOver()
 
             if(btn.type === 'X') {
                 btn.events.down.end = function() {
+                    CURRENT_LEVEL = 0;
                     oRoundStart.reset();
                     oGame.reset();
                     score = 0;

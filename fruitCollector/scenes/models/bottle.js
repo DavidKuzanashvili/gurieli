@@ -9,6 +9,8 @@ function Bottle(x, type, speed, tooltip) {
   this.endPoint = height - this.height / 4 + 10;
   this.y = this.startPoint;
   this.tooltip = tooltip || null;
+  this.fruits = [];
+  var fruitsOffsetXSpeed = 10;
   this.events = {};
 
   var dropSpeed = 20;
@@ -40,6 +42,7 @@ function Bottle(x, type, speed, tooltip) {
   }
 
   this.draw = function() {
+    this.drawFruits();
     push();
     
     imageMode(CENTER);
@@ -52,7 +55,26 @@ function Bottle(x, type, speed, tooltip) {
     }
   }
 
+  this.addFruit = function (fruits) {
+    for (var i = 0; i < fruits.length; i++) {
+      var fruit = fruits[i];
+      fruit.uniqueIdForBottle = Math.random().toString(36).substr(2, 9);
+      fruit.offsetXToBottle = this.x - fruit.x;
+      fruit.events.scaleDown.end = function () {
+        for (var i = this.fruits.length - 1; i >= 0; i--) {
+          if (this.fruits[i].uniqueIdForBottle === fruit.uniqueIdForBottle) {
+            this.fruits.splice(i, 1);
+            break;
+          }
+        }
+      }.bind(this);
+      fruit.animate('scaleDown');
+      this.fruits.push(fruit);
+    }
+  }
+
   this.update = function() {
+    this.updateFruits();
     if(this.y >= this.endPoint) {
       if(mouseX > this.x) {
         this.x = Math.min(this.x + this.speed, mouseX);
@@ -81,6 +103,27 @@ function Bottle(x, type, speed, tooltip) {
     image(this.type, this.x, height / 2, this.width, this.height);
 
     pop();
+  }
+
+  this.updateFruits = function () {
+    for (var i = this.fruits.length - 1; i >= 0; i--) {
+      fruit = this.fruits[i];
+      fruit.update();
+      if (fruit.offsetXToBottle !== 0) {
+        if (fruit.offsetXToBottle > 0) {
+          fruit.offsetXToBottle = Math.max(fruit.offsetXToBottle - fruitsOffsetXSpeed, 0);
+        } else {
+          fruit.offsetXToBottle = Math.min(fruit.offsetXToBottle + fruitsOffsetXSpeed, 0);
+        }
+      }
+      fruit.x = this.x - fruit.offsetXToBottle;
+    }
+  }
+
+  this.drawFruits = function () {
+    for (var i = 0; i < this.fruits.length; i++) {
+      this.fruits[i].draw();
+    }
   }
 
   this.hitsFruit = function(fruit) {

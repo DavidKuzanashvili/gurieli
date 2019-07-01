@@ -99,7 +99,7 @@ function Arrow(x, y, w, h, content, speed) {
   this.reset = function() {
     this.bgColor = hexToRgb(colors.boogerTwo);
     // this.alpha = 0.5;
-    deltaSize = 0;
+    // deltaSize = 0;
     // activeAnimation = null;
   }
 

@@ -69,8 +69,7 @@ function Game() {
         type: fruit.name,
         x: random(15, width - 15),
         y: -50,
-        width: fruit.w * sizes.fruitsCoefficient,
-        height: fruit.h * sizes.fruitsCoefficient,
+        responsiveCoefficient: sizes.fontCoefficient,
         fallSpeed: round(random(4, 6))
       }));
     }
