@@ -3,17 +3,17 @@ function Game() {
   var fruitFallStep = 0;
   var fruitTypes = [
     // { name: 'cherry', w: 45, h: 110 }, 
-    { name: 'raspberry', w: 90, h: 90 }, 
-    { name: 'leaves', w: 70, h: 120 }, 
-    { name: 'vanilla', w: 90, h: 80 }, 
-    { name: 'feijoa', w: 80, h: 115 }, 
+    { name: 'raspberry', w: 90, h: 90 },
+    { name: 'leaves', w: 70, h: 120 },
+    { name: 'vanilla', w: 90, h: 80 },
+    { name: 'feijoa', w: 80, h: 115 },
     { name: 'peach', w: 85, h: 85 }
   ];
   var bottleTypes = [
     // { name: 'cherryBottle', correctFruits: ['cherry'], leaves: { name: 'cherry', height: 290 } }, 
-    { name: 'raspberryBottle', correctFruits: ['raspberry', 'vanilla'], leaves: { name: 'raspberry', height: 280 } }, 
-    { name: 'mintBottle', correctFruits: ['leaves'], leaves: { name: 'mint', height: 290 } }, 
-    { name: 'peachBottle', correctFruits: ['peach'], leaves: { name: 'peach', height: 310 } }, 
+    { name: 'raspberryBottle', correctFruits: ['raspberry', 'vanilla'], leaves: { name: 'raspberry', height: 280 } },
+    { name: 'mintBottle', correctFruits: ['leaves'], leaves: { name: 'mint', height: 290 } },
+    { name: 'peachBottle', correctFruits: ['peach'], leaves: { name: 'peach', height: 310 } },
     { name: 'feijoaBottle', correctFruits: ['feijoa'], leaves: { name: 'feijoa', height: 310 } }
   ];
   var fruits = [];
@@ -23,10 +23,10 @@ function Game() {
   var currentLeavesHeight = 0;
   var ratio = bottleTypes[randBottleIndex].leaves.height / 1440;
 
-  this.enter = function() {
+  this.enter = function () {
   }
 
-  this.setup = function() {
+  this.setup = function () {
     gameStart = millis();
     bottle = new Bottle({
       x: width / 2,
@@ -34,7 +34,7 @@ function Game() {
     });
   }
 
-  this.draw = function() {
+  this.draw = function () {
     push();
     this.update();
     background(colors.mainTheme);
@@ -45,7 +45,7 @@ function Game() {
     pop();
   }
 
-  this.update = function() {
+  this.update = function () {
     // debugger;
     // console.log(sizes);
 
@@ -56,43 +56,43 @@ function Game() {
   }
 
   function fallFruits() {
-    if(millis() > fruitFallStep + 300) {
+    if (millis() > fruitFallStep + 300) {
       fruitFallStep = millis();
       // var randomTypeInex = round(random(0, fruitTypes.length - 1));
       // var fruit = fruitTypes[randomTypeInex];
       var randomFruitModeIndex = round(random(0, bottleTypes[randBottleIndex].correctFruits.length - 1));
       var randomFruit = bottleTypes[randBottleIndex].correctFruits[randomFruitModeIndex];
-      var fruit = fruitTypes.find(function(f) {
+      var fruit = fruitTypes.find(function (f) {
         return f.name === randomFruit;
       });
       fruits.push(new Fruit({
-          type: fruit.name,
-          x: random(15, width - 15),
-          y: -50,
-          width: fruit.w * sizes.fruitsCoefficient,
-          height: fruit.h  *sizes.fruitsCoefficient,
-          fallSpeed: round(random(4, 6))
+        type: fruit.name,
+        x: random(15, width - 15),
+        y: -50,
+        width: fruit.w * sizes.fruitsCoefficient,
+        height: fruit.h * sizes.fruitsCoefficient,
+        fallSpeed: round(random(4, 6))
       }));
     }
 
-    for(var i = 0; i < fruits.length; i++) {
+    for (var i = 0; i < fruits.length; i++) {
       fruits[i].update();
-      if(fruits[i].isOutsideOfScene()) {
+      if (fruits[i].isOutsideOfScene()) {
         fruits.splice(i, 1);
         i--;
         continue;
       }
-      if(bottle.hitFruit(fruits[i])) {
-        if(bottle.hitCorrectFruit(fruits[i].type, bottleTypes[randBottleIndex].correctFruits)) {
+      if (bottle.hitFruit(fruits[i])) {
+        if (bottle.hitCorrectFruit(fruits[i].type, bottleTypes[randBottleIndex].correctFruits)) {
           score++;
         } else {
-          if(score > 0) {
+          if (score > 0) {
             score--;
           }
         }
-        fruits.splice(i, 1);
+        bottle.addFruit(fruits.splice(i, 1));
         i--;
-        continue;  
+        continue;
       }
       fruits[i].draw();
     }
