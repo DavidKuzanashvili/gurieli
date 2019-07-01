@@ -68,16 +68,16 @@ function loadFonts() {
 }
 
 function changeSizes() {
-  if(windowWidth > 1440) {
+  if(windowWidth >= 1440) {
     sizes.translateLeaves = -90;
     sizes.bottleSizesCoefficient = 1;
     sizes.fruitsCoefficient = 1;
     sizes.fontCoefficient = 1;
     sizes.scoreOffsetCoefficientRight = 1;
     sizes.scoreOffsetCoefficientBottom = 1;
-  } else if(windowWidth > 1000 && windowWidth < 1440) {
+  } else if(windowWidth >= 1000 && windowWidth < 1440) {
     sizes.translateLeaves = 0;
-  } else if(windowWidth > 700 && windowWidth < 1000) {
+  } else if(windowWidth >= 700 && windowWidth < 1000) {
     sizes.bottleSizesCoefficient = 0.8;
     sizes.fruitsCoefficient = 0.8;
     sizes.fontCoefficient = 0.6;
