@@ -7,6 +7,7 @@ function RoundStart() {
   var endingAnimationFinished = false;
 
   this.enter = function () {
+    sounds.background.stop();
     roundStartInit();
   }
 
@@ -76,11 +77,23 @@ function RoundStart() {
     leaves.leavesType = LEVEL[CURRENT_LEVEL].leaves;
     leaves.animate('in');
     counter = new CountDown(width / 2, height / 2, 3, LEVEL[CURRENT_LEVEL].color);
+    counter.onUpdate = function() {
+      this.x = width / 2;
+      this.y = height / 2;
+    }
 
     title = new Title(width / 2, height / 2 - 150, 'turi: ' + (CURRENT_LEVEL + 1), LEVEL[CURRENT_LEVEL].color, 60);
+    title.onUpdate = function() {
+      this.x = width / 2;
+      this.y = height / 2 - 150;
+    }
     title.animate('in');
 
     subTitle = new Title(width / 2, height - 70, 'Seagrove mxolod ' + LEVEL[CURRENT_LEVEL].fruitName, LEVEL[CURRENT_LEVEL].color, 40);
+    subTitle.onUpdate = function() {
+      this.x = width / 2;
+      this.y = height - 70;
+    }
     counter.alpha = 0;
     subTitle.alpha = 0;
     setTimeout(function () {

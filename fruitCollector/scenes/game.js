@@ -30,12 +30,113 @@ function Game() {
     var pauseStart;
 
     this.enter = function () {
-        // sounds.background.play();
+        sounds.background.play();
         initGame();
     }
 
     this.setup = function () {
         oRoundStart = this.sceneManager.findScene(RoundStart).oScene;
+        headerButtons.push(new Button({
+            y: 70,
+            backgroundColor: color(colors.sand),
+            type: "X",
+            content: icons.close,
+            width: 50,
+            height: 50,
+            shadowOffset: 6,
+            fontSize: 16,
+            onUpdate: function() {
+                this.x = width - 100 - 25;
+            }
+        }));
+
+        headerButtons[0].events.down.end = function() {
+            showQuitModal = true;
+        }
+
+        headerButtons.push(new Button({
+            y: 70,
+            backgroundColor: color(colors.booger),
+            type: "| |",
+            content: icons.pause,
+            width: 50,
+            height: 50,
+            shadowOffset: 6,
+            fontSize: 16,
+            onUpdate: function() {
+                this.x = width - 180 - 25;
+            }
+        }));
+
+        headerButtons[1].events.down.end = function() {
+            if(togglePause) {
+                showPauseModal = true;
+                pauseGame();
+            }
+        }
+
+        headerButtons.push(new Button({
+            y: 70,
+            backgroundColor: color(colors.seafoamBlueTwo),
+            type: "m",
+            content: icons.music,
+            width: 50,
+            height: 50,
+            shadowOffset: 6,
+            fontSize: 16,
+            onUpdate: function() {
+                this.x = width - 260 - 25;
+            }
+        }));
+
+        headerButtons[2].events.down.end = function() {
+            sounds.background.volume = Math.abs(sounds.background.volume - 1);
+        }
+
+        headerButtons.push(new Button({
+            y: 70,
+            backgroundColor: color(colors.lipstick),
+            type: "R",
+            content: icons.reload,
+            width: 50,
+            height: 50,
+            shadowOffset: 6,
+            fontSize: 16,
+            onUpdate: function() {
+                this.x = width - 340 - 25;
+            }
+        }));
+
+        headerButtons[3].events.down.end = function() {
+            bindGameObject.reset();
+            oRoundStart.reset();
+            bindGameObject.sceneManager.showScene( RoundStart );
+        }
+
+        quitGameModal = new Modal({
+            width: 400,
+            height: 300,
+            shadowOffsetTop: 12
+        });
+
+        quitGameModal.quitButtons[0].events.down.end = function () {
+            bindGameObject.sceneManager.showScene(GameOver);
+        }
+
+        quitGameModal.quitButtons[1].events.down.end = function () {
+            showQuitModal = false;
+        }
+
+        pauseGameModal = new Modal({
+            width: 400,
+            height: 300,
+            shadowOffsetTop: 12
+        });
+        
+        pauseGameModal.pauseButton.events.down.end = function () {
+            showPauseModal = false;
+            unpouseGame();
+        }
     }
 
     this.draw = function () {
@@ -99,7 +200,7 @@ function Game() {
         }
 
         timer.draw();
-
+        
         headerButtons.forEach(x => x.draw());
 
         if (showQuitModal) {
@@ -132,97 +233,6 @@ function Game() {
         }));
         bottle.animate('in');
         fruits = [];
-
-        headerButtons.push(new Button({
-            x: width - 100 - 25,
-            y: 70,
-            backgroundColor: color(colors.sand),
-            type: "X",
-            content: icons.close,
-            width: 50,
-            height: 50,
-            shadowOffset: 6,
-            fontSize: 16,
-        }));
-
-        headerButtons[0].events.down.end = function() {
-            showQuitModal = true;
-        }
-
-        headerButtons.push(new Button({
-            x: width - 180 - 25,
-            y: 70,
-            backgroundColor: color(colors.booger),
-            type: "| |",
-            content: icons.pause,
-            width: 50,
-            height: 50,
-            shadowOffset: 6,
-            fontSize: 16
-        }));
-
-        headerButtons[1].events.down.end = function() {
-            if(togglePause) {
-                showPauseModal = true;
-                pauseGame();
-            }
-        }
-
-        headerButtons.push(new Button({
-            x: width - 260 - 25,
-            y: 70,
-            backgroundColor: color(colors.seafoamBlueTwo),
-            type: "m",
-            content: icons.music,
-            width: 50,
-            height: 50,
-            shadowOffset: 6,
-            fontSize: 16
-        }));
-
-        headerButtons.push(new Button({
-            x: width - 340 - 25,
-            y: 70,
-            backgroundColor: color(colors.lipstick),
-            type: "R",
-            content: icons.reload,
-            width: 50,
-            height: 50,
-            shadowOffset: 6,
-            fontSize: 16
-        }));
-
-        headerButtons[3].events.down.end = function() {
-            bindGameObject.reset();
-            oRoundStart.reset();
-            bindGameObject.sceneManager.showScene( RoundStart );
-        }
-
-        quitGameModal = new Modal({
-            width: 400,
-            height: 300,
-            shadowOffsetTop: 12
-        });
-
-        quitGameModal.quitButtons[0].events.down.end = function () {
-            bindGameObject.sceneManager.showScene(GameOver);
-        }
-
-        quitGameModal.quitButtons[1].events.down.end = function () {
-            showQuitModal = false;
-        }
-
-        pauseGameModal = new Modal({
-            width: 400,
-            height: 300,
-            shadowOffsetTop: 12
-        });
-        
-        pauseGameModal.pauseButton.events.down.end = function () {
-            showPauseModal = false;
-            unpouseGame();
-        }
-
         cutSequence();
     }
 
@@ -394,10 +404,15 @@ function Game() {
             }
             break;
             case ESCAPE: {
+                toggleClose = !toggleClose;
                 var closeBtn = headerButtons.find(function(x) {
                     return x.type === 'X';
                 });
-                closeBtn.animate('down');
+                if(toggleClose) {
+                    closeBtn.animate('down');
+                } else {
+                    quitGameModal.quitButtons[1].animate('down');
+                }
             }
             break;
         }

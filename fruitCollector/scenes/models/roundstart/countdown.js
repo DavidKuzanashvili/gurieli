@@ -10,6 +10,7 @@ function CountDown(x, y, countNumber, numberColor) {
   this.alpha = 1;
   this.alphaSpeed = 0.025;
   this.events = {};
+  this.onUpdate = function() {};
 
   var minFontSize = this.fontSize * 0.2;
   var duration = 3000;
@@ -85,6 +86,7 @@ function CountDown(x, y, countNumber, numberColor) {
   }
 
   this.update = function () {
+    this.onUpdate();
     UpdateAnimation();
 
     if (this.fontSize <= 200) {

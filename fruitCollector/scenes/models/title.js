@@ -9,6 +9,7 @@ function Title(x, y, content, color, fontSize) {
   this.alphaSpeed = 0.05;
   this.events = {};
   this.outEnd = false;
+  this.onUpdate = function() {};
 
   var currentAlpha = this.alpha;
   var activeAnimation = 'in';
@@ -49,12 +50,13 @@ function Title(x, y, content, color, fontSize) {
     textSize(this.fontSize);
     textAlign(CENTER, CENTER);
     textFont(this.font);
-    text(this.content, x, y);
+    text(this.content, this.x, this.y);
 
     pop();
   }
 
   this.update = function () {
+    this.onUpdate();
     UpdateAnimation();
   }
 

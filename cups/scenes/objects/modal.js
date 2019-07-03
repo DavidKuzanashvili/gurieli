@@ -1,14 +1,14 @@
 function Modal(options) {
   options = options || {};
   var oModal = this;
-  this.backgroundColor = options.backgroundColor;
+  this.backgroundColor = options.backgroundColor || colors.sand;
   this.shadowOffsetTop = options.shadowOffsetTop || 20;
   this.width = options.width || 640;
   this.height = options.height || 480;
   this.fontSize = options.fontSize || 40;
   this.font = options.font || fonts.LGVBold;
   this.score = 0;
-  var shadowColor = darken(color(colors.boogerTwo));
+  var shadowColor = darken(color(this.backgroundColor));
   var marginLeft = 50;
   var marginTop = 100;
   var lines = 'umaRlesi qula: 3224\nqula: ' + this.score +'\nTavidan\ngamorTva';
@@ -103,9 +103,9 @@ function Modal(options) {
     rectMode(CENTER);
     noStroke();
     rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 60);
-    fill(colors.boogerTwo);
+    fill(this.backgroundColor);
     rect(width / 2, height / 2, this.width, this.height, 60);
-    image(xushturi, width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop);
+    // image(xushturi, width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop);
     fill(255);
     textSize(this.fontSize);
 
@@ -131,7 +131,7 @@ function Modal(options) {
     rectMode(CENTER);
     noStroke();
     rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 40);
-    fill(colors.boogerTwo);
+    fill(this.backgroundColor);
     rect(width / 2, height / 2, this.width, this.height, 40);
 
     //Modal Text
@@ -158,7 +158,7 @@ function Modal(options) {
     rectMode(CENTER);
     noStroke();
     rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 40);
-    fill(colors.boogerTwo);
+    fill(this.backgroundColor);
     rect(width / 2, height / 2, this.width, this.height, 40);
 
     //Modal Text
