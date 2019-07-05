@@ -1,42 +1,59 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="lib/p5.js"></script>
-        <script src="lib/scenemanager.js"></script>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <script src="utils/helpers.js"></script>
-        <script src="utils/colors.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-77947700-2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-        <script src="scenes/models/button.js"></script>
-        <script src="scenes/models/modal.js"></script>
-        <script src="scenes/models/timer.js"></script>
-        <script src="scenes/models/header.js"></script>
-        <script src="scenes/models/dancer.js"></script>
-        <script src="scenes/models/life.js"></script>
-        <script src="scenes/models/lifefactory.js"></script>
-        <script src="scenes/models/arrow.js"></script>
-        <script src="scenes/models/controlcolumn.js"></script>
+      gtag("config", "UA-77947700-2");
+    </script>
 
-        <script src="levels/levels.js"></script>
+    <script src="lib/p5.js"></script>
+    <script src="lib/scenemanager.js"></script>
 
-        <script src="scenes/start.js"></script>
-        <script src="scenes/intro.js"></script>
-        <script src="scenes/game.js"></script>
-        <script src="scenes/gameover.js"></script>
+    <script src="utils/helpers.js"></script>
+    <script src="utils/colors.js"></script>
 
-        <style>
-            html,
-            body {
-                padding: 0;
-                margin: 0;
-                font-size: 0;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <main id="dancer-sketch" role="main">
-            <section id="canvas"></section>
-        </main>
-    </body>
+    <script src="scenes/models/button.js"></script>
+    <script src="scenes/models/modal.js"></script>
+    <script src="scenes/models/timer.js"></script>
+    <script src="scenes/models/header.js"></script>
+    <script src="scenes/models/dancer.js"></script>
+    <script src="scenes/models/life.js"></script>
+    <script src="scenes/models/lifefactory.js"></script>
+    <script src="scenes/models/arrow.js"></script>
+    <script src="scenes/models/controlcolumn.js"></script>
+
+    <script src="levels/levels.js"></script>
+
+    <script src="scenes/start.js"></script>
+    <script src="scenes/intro.js"></script>
+    <script src="scenes/game.js"></script>
+    <script src="scenes/gameover.js"></script>
+
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        font-size: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main id="dancer-sketch" role="main">
+      <section id="canvas"></section>
+    </main>
+  </body>
 </html>

@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-77947700-2"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-77947700-2"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'UA-77947700-2');
+      gtag("config", "UA-77947700-2");
     </script>
 
     <script src="lib/p5.js"></script>
@@ -34,19 +38,18 @@
     <script src="scenes/start.js"></script>
     <script src="scenes/game.js"></script>
     <style>
-        html,
-        body {
-            padding: 0;
-            margin: 0;
-            font-size: 0;
-        }
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        font-size: 0;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <main id="fruit-collector-sketch" role="main">
-        <section id="canvas"></section>
+      <section id="canvas"></section>
     </main>
-</body>
-
+  </body>
 </html>
