@@ -11,7 +11,6 @@ function RoundStart() {
   }
 
   this.setup = function() {
-    sounds.background.loop();
   }
 
   this.draw = function () {

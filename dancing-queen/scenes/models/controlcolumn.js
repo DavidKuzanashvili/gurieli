@@ -10,17 +10,9 @@ function ControlColumn(btnType, x, buttonColor) {
   var alpha = 0.3;
   var btnSize = 50;
   this.arrows = [];
-  this.btn = new Button({
-    x: this.x + (w / 2),
-    y: this.offsetTop,
-    backgroundColor: color(buttonColor),
-    color: 'green',
-    content: this.btnType,
-    width: btnSize,
-    height: btnSize,
-    shadowOffset: 6,
-    fontSize: 30
-  });
+  this.arrowRotation = 0;
+  this.btn = new ControlButton(arrow.img, 0, 0, arrow.w, arrow.h);
+  this.btn.typeText = this.btnType;
 
   this.draw = function() {
     push();
@@ -35,10 +27,9 @@ function ControlColumn(btnType, x, buttonColor) {
     line(this.x + w, this.offsetTop, this.x + w, height);
     dropArrows();
     
-    if(!this.isPaused) {
-      this.btn.update();
-    }
-
+    translate(this.x + (w / 2), this.offsetTop);
+    rotate(this.arrowRotation);
+    this.btn.update();
     this.btn.draw();
 
     pop();

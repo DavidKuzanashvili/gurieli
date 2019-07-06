@@ -3,17 +3,25 @@ function Dancer(img, offsetTop) {
   this.width = 255;
   this.height = 350;
   this.offsetTop = offsetTop || 170;
+  this.xushturi = null;
 
   this.draw = function() {
     push();
 
     imageMode(CENTER);
-    // rectMode(CENTER);
-    // fill(255);
-    // rect(width / 4, (height + this.offsetTop) / 2, this.width, this.height);
-    image(this.img, width / 4, (height + this.offsetTop) / 2, this.width, this.height);
-    // line(width / 2, 0, width / 2, height);
+    // image(this.img, width / 4, (height + this.offsetTop) / 2, this.width, this.height);
+    if(this.xushturi) {
+      this.xushturi.translateX = width / 4;
+      this.xushturi.translateY = (height + this.offsetTop) / 2;
+      this.xushturi.draw();
+    }
 
     pop();
+  }
+
+  this.update = function() { 
+    if(this.xushturi) {
+      this.xushturi.update();
+    }
   }
 }

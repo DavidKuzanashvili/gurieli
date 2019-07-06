@@ -1,42 +1,38 @@
 function Header() {
-  var btnSize = 50;
-  var drawStart = 65;
+  var self = this;
+  var drawStart = 100;
   var marginBetweenBtns = 35;
   var score = 0;
   this.isPaused = false;
   this.height = 170;
-  this.soundBtn = new Button({
-    x: drawStart,
-    y: this.height / 2,
-    backgroundColor: color(colors.seafoamBlueTwo),
-    content: "m",
-    width: btnSize,
-    height: btnSize,
-    shadowOffset: 6,
-    fontSize: 16
-  });
-  this.pauseBtn = new Button({
-    x: drawStart + btnSize + marginBetweenBtns,
-    y: this.height / 2,
-    backgroundColor: color('white'),
-    color: color(colors.boogerTwo),
-    content: "p",
-    width: btnSize,
-    height: btnSize,
-    shadowOffset: 6,
-    fontSize: 16
-  });
-  this.closeBtn = new Button({
-    x: drawStart + 2*(btnSize + marginBetweenBtns),
-    y: this.height / 2,
-    backgroundColor: color(colors.sand),
-    content: "X",
-    width: btnSize,
-    height: btnSize,
-    shadowOffset: 6,
-    fontSize: 16
-  });
-  this.btns = [ this.soundBtn, this.pauseBtn, this.closeBtn ];
+  this.soundBtn = new ControlButton(icons.sound.img, drawStart, this.height / 2, icons.sound.w, icons.sound.h);
+  this.soundBtn.typeText = 'sound';
+  this.soundBtn.onUpdate = function() {
+    this.x = drawStart;
+    this.y = self.height / 2;
+  }
+
+  this.pauseBtn = new ControlButton(icons.pause.img, drawStart + icons.pause.w + marginBetweenBtns, this.height / 2, icons.pause.w, icons.pause.h);
+  this.pauseBtn.typeText = 'pause';
+  this.pauseBtn.onUpdate = function() {
+    this.x = drawStart + icons.sound.w + marginBetweenBtns;
+    this.y = self.height / 2;
+  }
+
+  this.resetBtn = new ControlButton(icons.reset.img, drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns), this.height / 2, icons.reset.w, icons.reset.h);
+  this.resetBtn.typeText = 'reset';
+  this.resetBtn.onUpdate = function() {
+    this.x = drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
+    this.y = self.height / 2;
+  }
+
+  this.closeBtn = new ControlButton(icons.close.img, drawStart + (icons.reset.w + icons.pause.w + icons.sound.w + 3*marginBetweenBtns), this.height / 2, icons.close.w, icons.close.h);
+  this.closeBtn.typeText = 'close';
+  this.closeBtn.onUpdate = function() {
+    this.x = drawStart + (icons.reset.w + icons.pause.w + icons.sound.w + 3*marginBetweenBtns);
+    this.y = self.height / 2;
+  }
+  this.btns = [ this.soundBtn, this.pauseBtn, this.resetBtn, this.closeBtn ];
   this.timer = new Timer(millis(), 60);
 
 
@@ -83,6 +79,6 @@ function Header() {
     text('raundi: 1', width / 2 + 200, 85);
 
     textAlign(RIGHT, CENTER);
-    text('umaRlesi qula: 1', width  - 100, 85);
+    text('umaRlesi qula: 1', width  - drawStart, 85);
   }
 }

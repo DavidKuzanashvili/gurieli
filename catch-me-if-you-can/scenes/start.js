@@ -1,3 +1,17 @@
+window.requestQueryParams = window.location.href
+    .split('?')
+    .slice(1)
+    .join('?')
+    .split('&')
+    .reduce(function(o, c) {
+        c = c.split('=');
+        c.length = 2;
+
+        o[c[0] || 'undefined'] = c[1] || null;
+
+        return o;
+    }, {});
+
 var imgPath = 'assets/imgs/';
 var fontsPath = 'assets/fonts/';
 var bgImage;
@@ -13,6 +27,8 @@ var sprites = {};
 var sounds = {};
 var sequenceImage = null;
 var xushturi = null;
+var sequences = {};
+var username = window.requestQueryParams.username || null;
 
 var score = 0;
 
@@ -34,6 +50,12 @@ function preload() {
 }
 
 function setup() {
+    if(!sounds.background.isLoaded()) {
+        setTimeout(setup, 50);
+        return;
+    }
+
+    sounds.background.loop();
     frameRate(60);
     var canvas = createCanvas(windowWidth, windowHeight);
     canvas.parent('canvas');
@@ -42,7 +64,7 @@ function setup() {
 
     var mgr = new SceneManager();
     mgr.wire();
-    mgr.showScene(Intro);
+    mgr.showScene(RoundStart);
 }
 
 function windowResized() {
@@ -104,6 +126,7 @@ function loadIcons() {
 
 function loadSprite() {
     sprites.leafMotion = loadImage(imgPath + 'sprites/motions.png');
+    sequences.poetXushturi = loadImage(imgPath + 'sprites/poet_xushturi_sequence.png');
 }
 
 function loadSoundEffects() {

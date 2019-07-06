@@ -8,6 +8,7 @@ function Modal(options) {
   this.fontSize = options.fontSize || 40;
   this.font = options.font || fonts.LGVBold;
   this.score = 0;
+  this.xushturi = null;
   var shadowColor = darken(color(colors.boogerTwo));
   var marginLeft = 50;
   var marginTop = 100;
@@ -105,7 +106,13 @@ function Modal(options) {
     rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 60);
     fill(colors.boogerTwo);
     rect(width / 2, height / 2, this.width, this.height, 60);
-    image(xushturi, width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop);
+    if(this.xushturi) {
+      this.xushturi.translateX = width / 2 - this.width / 2 + 350;
+      this.xushturi.translateY = height / 2 - this.height / 2 + marginTop;
+      this.xushturi.update();
+      this.xushturi.draw();
+    }
+    // image(xushturi, width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop);
     fill(255);
     textSize(this.fontSize);
 

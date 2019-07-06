@@ -8,7 +8,8 @@ function Arrow(x, y, w, h, content, speed) {
   this.bgColor = hexToRgb(colors.boogerTwo);
   this.alpha = 0.5;
   this.keycode;
-  var alpha = this.alpha;
+  this.arrowRotatation = 0;
+  var alpha = this.alpha || 0;
   var alphaSpeed = 0.1;
   var broadLine = height - 300;
   var circleChangeSpeed = 0.5;
@@ -49,18 +50,22 @@ function Arrow(x, y, w, h, content, speed) {
   switch(this.content) {
     case '^': {
       this.keycode = UP_ARROW;
+      this.arrowRotatation = PI;
     }
     break;
     case '<': {
       this.keycode = LEFT_ARROW;
+      this.arrowRotatation = PI / 2;
     }
     break;
     case '|': {
       this.keycode = DOWN_ARROW;
+      this.arrowRotatation = 0;
     }
     break;
     case '>': {
       this.keycode = RIGHT_ARROW;
+      this.arrowRotatation = -PI / 2;
     }
     break;
   }
@@ -74,10 +79,10 @@ function Arrow(x, y, w, h, content, speed) {
     rect(this.x, this.y, this.w + deltaSize, this.h + deltaSize, 50);
     fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * (2 * alpha));
     rect(this.x, this.y, this.w, this.h, 50);
-    fill(255, 255, 255, 255 * (2 * alpha));
-    textSize(20);
-    textAlign(CENTER, CENTER);
-    text(this.content, this.x, this.y);
+    translate(this.x, this.y);
+    rotate(this.arrowRotatation);
+    imageMode(CENTER);
+    image(whiteDownArrow.img, 0, 0, whiteDownArrow.w, whiteDownArrow.h);
     
     pop();
   }

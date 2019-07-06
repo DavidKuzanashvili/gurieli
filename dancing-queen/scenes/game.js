@@ -11,8 +11,9 @@ function Game() {
   var statsModal;
   var pauseStart;
   var startTime = 0;
-  var arrowSize = 50;
+  var arrowSize = 72;
   var score = 0;
+  var dance = null;
   var inCorrectArrowsLimit = 3;
 
   this.enter = function() {
@@ -22,8 +23,12 @@ function Game() {
   this.draw = function() {
     push();
 
-    background(colors.lightTan);
+    if(!isPaused) {
+      oDancer.update();
+    }
+
     cursor('default');
+    background(colors.lightTan);
     this.update();
     drawHeader();
     drawDancer();
@@ -43,7 +48,7 @@ function Game() {
       pauseGame();
       statsModal.drawStats();
     }
-
+    
     pop();
   }
 
@@ -59,14 +64,22 @@ function Game() {
   }
 
   function initGame() {
+    var acceptQuitBtn = null;
+    var refuseQuitBtn = null;
+
     header = new Header();
-    oDancer = new Dancer(dancer);
+    oDancer = new Dancer();
+    cutSequence();
     hearts = new LifeFactory(lifeImages.active, 3, 45, 40, 50);
     hearts.generetaLifes();
     controlColumns.push(new ControlColumn('^', width / 2, colors.beige));
+    controlColumns[0].arrowRotation = PI;
     controlColumns.push(new ControlColumn('<', width / 2 + (width / 8), colors.sand));
+    controlColumns[1].arrowRotation = PI / 2;
     controlColumns.push(new ControlColumn('|', width / 2 + 2*(width / 8), colors.seafoamBlue));
+    controlColumns[2].arrowRotation = 0;
     controlColumns.push(new ControlColumn('>', width / 2 + 3*(width / 8), colors.booger));
+    controlColumns[3].arrowRotation = -PI / 2;
 
     statsModal = new Modal();
 
@@ -75,10 +88,22 @@ function Game() {
       height: 300,
       shadowOffsetTop: 12
     });
+    
+    acceptQuitBtn = quitGameModal.quitButtons[0];
+    refuseQuitBtn = quitGameModal.quitButtons[1];
+
+    acceptQuitBtn.events.down.end = function() {
+      console.log('User closed game');
+    }
+
+    refuseQuitBtn.events.down.end = function() {
+      showQuit = false;
+    }
+
 
     pauseGameModal = new Modal({
-      width: 400,
-      height: 300,
+      width: 499,
+      height: 154,
       shadowOffsetTop: 12
     });
   }
@@ -120,7 +145,7 @@ function Game() {
     var headerButtons = header.btns;
     headerButtons.forEach(function(btn) {
       if(btn.contains(mouseX, mouseY)) {
-        btn.animate('down');
+        console.log('mouse pressed!');
       }
     });
 
@@ -128,11 +153,8 @@ function Game() {
       pauseGame();
     }
 
-    if(pauseGameModal.pauseButton.contains(mouseX, mouseY)) {
-      pauseGameModal.pauseButton.animate('down');
-      pauseGameModal.pauseButton.events.down.end = function() {
-        unpouseGame();
-      }
+    if(pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
+      unpouseGame();
     }
 
     if(header.closeBtn.contains(mouseX, mouseY)) {
@@ -142,29 +164,11 @@ function Game() {
     quitGameModal.quitButtons.forEach(function (btn) {
       if (btn.contains(mouseX, mouseY)) {
           btn.animate('down');
-
-          if (btn.content === 'ara') {
-              btn.events.down.end = function () {
-                showQuit = false;
-              }
-          }
-
-          if (btn.content === 'ki') {
-            btn.events.down.end = function () {
-               console.log('User closed game');
-            }
-          }
       }
     });
 
     statsModal.statButtons.forEach(function(btn) {
       btn.contains(mouseX, mouseY) && btn.animate('down');
-
-      if(btn.content === 'R') {
-        btn.events.down.end = function() {
-          unpouseGame();
-        }
-      }
     })
   }
 
@@ -178,7 +182,6 @@ function Game() {
     switch(keyCode) {
       case UP_ARROW: {
         var up = controlColumns[0];
-        up.btn.animate('down');
         up.arrows.forEach(function(arrow) {
           if(arrow.isInActiveArea(height - 300)) {
             arrow.animate('increaseCircle');
@@ -188,7 +191,6 @@ function Game() {
       break;
       case LEFT_ARROW: {
         var left = controlColumns[1];
-        left.btn.animate('down');
         left.arrows.forEach(function(arrow) {
           if(arrow.isInActiveArea(height - 300)) {
             arrow.animate('increaseCircle');
@@ -198,7 +200,6 @@ function Game() {
       break;
       case DOWN_ARROW: {
         var down = controlColumns[2];
-        down.btn.animate('down');
         down.arrows.forEach(function(arrow) {
           if(arrow.isInActiveArea(height - 300)) {
             arrow.animate('increaseCircle');
@@ -208,7 +209,6 @@ function Game() {
       break;
       case RIGHT_ARROW: {
         var right = controlColumns[3];
-        right.btn.animate('down');
         right.arrows.forEach(function(arrow) {
           if(arrow.isInActiveArea(height - 300)) {
             arrow.animate('increaseCircle');
@@ -217,5 +217,20 @@ function Game() {
       }
       break;
     }
+  }
+
+  function cutSequence() {
+    dance = new Model(new Frame(), sequences.dance);
+    dance.currentIndex = 26;
+
+    for(var i = 0; i < 96; i++) {
+      var x = (i % 96) * 400;
+      var y = parseInt(i / 96) * 400;
+      dance.frame.sequence.push(new Sprite(x, y, 400, 400));
+    }
+
+    dance.frame.addAnimation('moving', 26, 59);
+    dance.animate('moving', floor(1000 / 20));
+    oDancer.xushturi = dance;
   }
 }

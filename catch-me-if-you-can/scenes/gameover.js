@@ -23,30 +23,27 @@ function GameOver()
         leaves.draw();
 
         modal.drawStats();
-
-        // modalAnimation.update();
-        // modalAnimation.draw();
     }
 
     function initGameOver() {
         modal = new Modal();
         modal.score = oGame.getScore();
-        modalAnimation = new Model(new Frame(), sequenceImage);
+        modalAnimation = new Model(new Frame(), sequences.poetXushturi);
 
-        for(var i = 0; i < 8; i++) {
-            var x = (i % 4) * 512;
-            var y = parseInt(i / 4) * 256;
-
-            modalAnimation.frame.sequence.push(new Sprite(x, y, 512, 256));
+        for(var i = 0; i < 60; i++) {
+            var x = (i % 60) * 200;
+            var y = parseInt(i / 60) * 227;
+            modalAnimation.frame.sequence.push(new Sprite(x, y, 200, 227));
         }
 
-        modalAnimation.frame.addAnimation('moving', 0, 7);
-        modalAnimation.animate('moving', 50);
+        modalAnimation.frame.addAnimation('moving', 0, 59);
+        modalAnimation.animate('moving', floor(1000 / 15));
+        modal.xushturi = modalAnimation;
     }
 
     this.keyPressed = function()
     {
-        this.sceneManager.showScene( Intro );
+        this.sceneManager.showScene( RoundStart );
     }
 
     this.mousePressed = function() {
@@ -69,7 +66,7 @@ function GameOver()
                     oRoundStart.reset();
                     oGame.reset();
                     score = 0;
-                    bindGameOverObject.sceneManager.showScene( Intro );
+                    bindGameOverObject.sceneManager.showScene( RoundStart );
                 }
             }
         })

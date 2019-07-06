@@ -12,6 +12,8 @@ function Modal(options) {
   var lines = 'umaRlesi qula: 3224\nqula: 244\nTavidan\ngamorTva'
   var lineHeight = 90;
   var overlayColor = hexToRgb(colors.lightTan);
+  var resumeText = 'TamaSis gagrZeleba';
+  var resumeTextWidth;
   this.statButtons = [
     new Button({
       x: width / 2 - this.width / 2 + 250,
@@ -67,17 +69,13 @@ function Modal(options) {
       fontSize: 30
     })
   ];
-  this.pauseButton = new Button({
-    x: width / 2,
-    y: height / 2 + 70,
-    backgroundColor: color(colors.beige),
-    color: color(colors.darkForestGreen),
-    content: '>',
-    width: 50,
-    height: 50,
-    shadowOffset: 5,
-    fontSize: 20
-  })
+
+  this.resumeBtn = new ControlButton(icons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, icons.resume.w, icons.resume.h);
+  this.resumeBtn.typeText = 'resume';
+  this.resumeBtn.onUpdate = function() {
+    this.x = width / 2 + resumeTextWidth / 2 + 20;
+    this.y = height / 2;
+  }
   
   this.drawStats = function() {
     push();
@@ -93,11 +91,6 @@ function Modal(options) {
     image(dancer, width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop, 150, 200);
     fill(255);
     textSize(this.fontSize);
-    // text('უმაღლესი ქულა: 3224', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);
-    // text('ქულა: 244', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + 2 * marginTop);
-    // text('თავიდან', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + 3 * marginTop);
-    // text('გამორთვა', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + 4 * marginTop);
-
     textLeading(lineHeight);
     textFont(this.font);
     text(lines, width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);
@@ -158,10 +151,11 @@ function Modal(options) {
     textSize(this.fontSize);
     textLeading(35);
     textFont(this.font);
-    text('TamaSis gagrZeleba', width / 2, height / 2 - this.height / 2 + 70);
+    text(resumeText, width / 2 - 20, height / 2);
+    resumeTextWidth = textWidth(resumeText)
 
-    this.pauseButton.update();
-    this.pauseButton.draw();
+    this.resumeBtn.update();
+    this.resumeBtn.draw();
 
     pop();
   }
