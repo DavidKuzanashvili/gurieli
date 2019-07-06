@@ -7,9 +7,11 @@ var sequences = {};
 var icons = {};
 var arrow = {};
 var whiteDownArrow = {};
+var sounds = {};
 var ACTIVE_KEY_CODES = new Set();
 
 function preload() {
+  loadSounds();
   loadFonts();
   loadIcons();
   loadDancer();
@@ -57,6 +59,16 @@ function loadIcons() {
     w: 38,
     h: 38
   };
+  icons.resume = {
+    img: loadImage(iconsPath + 'resume.png'),
+    w: 27,
+    h: 38
+  };
+  icons.share = {
+    img: loadImage(iconsPath + 'share.png'),
+    w: 45,
+    h: 38
+  };
   arrow = {
     img: loadImage(iconsPath + 'arrow-down.png'),
     w: 38,
@@ -66,11 +78,6 @@ function loadIcons() {
     img: loadImage(iconsPath + 'white-down-arrow.png'),
     w: 38,
     h: 46
-  };
-  icons.resume = {
-    img: loadImage(iconsPath + 'resume.png'),
-    w: 27,
-    h: 38
   };
 }
 
@@ -85,4 +92,8 @@ function loadLife() {
 
 function loadSequences() {
   sequences.dance = loadImage('assets/imgs/dance.png');
+}
+
+function loadSounds() {
+  sounds.background = loadSound('assets/sound-effects/background.wav');
 }

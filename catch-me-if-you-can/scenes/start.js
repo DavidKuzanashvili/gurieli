@@ -55,6 +55,7 @@ function setup() {
         return;
     }
 
+    sounds.background.setVolume(0.5);
     sounds.background.loop();
     frameRate(60);
     var canvas = createCanvas(windowWidth, windowHeight);

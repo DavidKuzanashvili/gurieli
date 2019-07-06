@@ -8,5 +8,6 @@ const colors = {
   mossyGreenTwo: '#6f972d',
   seafoamBlue: '#6bc8a7',
   seafoamBlueTwo: '#5bc7cf',
+  frenchBlue: '#4367b2',
   sand: '#ddd254'
 };

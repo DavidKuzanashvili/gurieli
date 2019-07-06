@@ -9,61 +9,63 @@ function Arrow(x, y, w, h, content, speed) {
   this.alpha = 0.5;
   this.keycode;
   this.arrowRotatation = 0;
+  var self = this;
   var alpha = this.alpha || 0;
-  var alphaSpeed = 0.1;
-  var broadLine = height - 300;
+  var alphaSpeed = 0.01;
+  var circleAlpha = 0;  
+  var circleAlphaSpeed = 0.01;  
   var circleChangeSpeed = 0.5;
-  var maxDelta = 15;
+  var maxDelta = 20;
   var deltaSize = 0;
   var animations = {
-    increaseCircle: {
+    fadeIn: {
       setup: function() {
         deltaSize = 0;
+        circleAlpha = 0;
       },
       update: function() {
+        circleAlpha = Math.min(circleAlpha + circleChangeSpeed, 0.5);
         deltaSize = Math.min(deltaSize + circleChangeSpeed, maxDelta);
-        
-        if(deltaSize >= maxDelta) {
-          this.animate('fadeOut');
+
+        if(circleAlpha >= 0.5 && deltaSize >= maxDelta) {
+          self.animate('fadeOut');
         }
-      }.bind(this)
-    },
-    decreaseCircle: {
-      setup: function() {
-        deltaSize = maxDelta;
-      },
-      update: function() {
-        deltaSize = Math.max(deltaSize - circleChangeSpeed, 0);
       }
     },
     fadeOut: {
       setup: function() {
         alpha = 0.5;
+        circleAlpha = 0.5;
       }.bind(this),
       update: function() {
         alpha = Math.max(alpha - alphaSpeed, 0);
+        circleAlpha = Math.max(circleAlpha - circleAlphaSpeed, 0);
+
+        if(alpha <= 0 && circleAlpha <= 0) {
+          delete activeAnimation;
+        }
       }.bind(this)
     }
   };
   var activeAnimation = null;
 
   switch(this.content) {
-    case '^': {
+    case UP_ARROW: {
       this.keycode = UP_ARROW;
       this.arrowRotatation = PI;
     }
     break;
-    case '<': {
+    case LEFT_ARROW: {
       this.keycode = LEFT_ARROW;
       this.arrowRotatation = PI / 2;
     }
     break;
-    case '|': {
+    case DOWN_ARROW: {
       this.keycode = DOWN_ARROW;
       this.arrowRotatation = 0;
     }
     break;
-    case '>': {
+    case RIGHT_ARROW: {
       this.keycode = RIGHT_ARROW;
       this.arrowRotatation = -PI / 2;
     }
@@ -75,13 +77,14 @@ function Arrow(x, y, w, h, content, speed) {
 
     rectMode(CENTER);
     noStroke();
-    fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * alpha);
+    fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * circleAlpha);
     rect(this.x, this.y, this.w + deltaSize, this.h + deltaSize, 50);
-    fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * (2 * alpha));
+    fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * (2 * circleAlpha));
     rect(this.x, this.y, this.w, this.h, 50);
     translate(this.x, this.y);
     rotate(this.arrowRotatation);
     imageMode(CENTER);
+    tint(255, 255 * (2*alpha));
     image(whiteDownArrow.img, 0, 0, whiteDownArrow.w, whiteDownArrow.h);
     
     pop();
@@ -102,20 +105,16 @@ function Arrow(x, y, w, h, content, speed) {
   }
 
   this.reset = function() {
-    this.bgColor = hexToRgb(colors.boogerTwo);
-    // this.alpha = 0.5;
-    // deltaSize = 0;
-    // activeAnimation = null;
   }
 
   this.animate = function(type) {
+    // console.log(animations.hasOwnProperty(type));
     if(animations.hasOwnProperty(type)) {
       activeAnimation = type;
       animations[activeAnimation].setup();
-      return;
+    } else {
+      activeAnimation = null;
     }
-
-    activeAnimation = null;
   }
 
   function updateAnimation() {

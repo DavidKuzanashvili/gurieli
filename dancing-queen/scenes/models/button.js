@@ -10,7 +10,7 @@ function Button(options) {
   this.content = options.content || 'Undefined';
   this.fontSize = options.fontSize || 30;
   this.font = options.font || fonts.LGVBold;
-
+  this.onUpdate = options.onUpdate || function() {};
   this.shadowOffset = options.shadowOffset || 10;
 
   this.currentOffset = 0;
@@ -58,6 +58,7 @@ function Button(options) {
   }
 
   this.update = function() {
+    this.onUpdate();
     updateAnimation();
   }
 

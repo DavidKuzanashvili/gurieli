@@ -1,4 +1,5 @@
 function Game() {
+  var self = this;
   var bindGameObject = this;
   var header = null;
   var oDancer = null;
@@ -6,6 +7,7 @@ function Game() {
   var controlColumns = [];
   var isPaused = false;
   var showQuit = false;
+  var showStats = false;
   var pauseGameModal;
   var quitGameModal;
   var statsModal;
@@ -14,10 +16,16 @@ function Game() {
   var arrowSize = 72;
   var score = 0;
   var dance = null;
+  var activeAreaStart = height - 200;
   var inCorrectArrowsLimit = 3;
 
   this.enter = function() {
     initGame();
+  }
+
+  this.setup = function() {
+    sounds.background.setVolume(0.5);
+    sounds.background.loop();
   }
 
   this.draw = function() {
@@ -44,9 +52,9 @@ function Game() {
       pauseGameModal.drawPause();
     }
 
-    if(header.timer.ended()) {
-      pauseGame();
+    if(header.timer.ended() || showStats) {
       statsModal.drawStats();
+      pauseGame();
     }
     
     pop();
@@ -58,7 +66,7 @@ function Game() {
       if(millis() > startTime + 1000) {
         startTime = millis();
         var speed = 3;
-        randomColumn.arrows.push(new Arrow(randomColumn.x + (width / 8) / 2, randomColumn.offsetTop, arrowSize, arrowSize, randomColumn.btnType, speed));
+        randomColumn.arrows.push(new Arrow(randomColumn.x + (width / 8) / 2, randomColumn.offsetTop, arrowSize, arrowSize, randomColumn.btnTypeCode, speed));
       }
     }
   }
@@ -72,14 +80,26 @@ function Game() {
     cutSequence();
     hearts = new LifeFactory(lifeImages.active, 3, 45, 40, 50);
     hearts.generetaLifes();
-    controlColumns.push(new ControlColumn('^', width / 2, colors.beige));
+    controlColumns.push(new ControlColumn(UP_ARROW, width / 2, colors.beige));
     controlColumns[0].arrowRotation = PI;
-    controlColumns.push(new ControlColumn('<', width / 2 + (width / 8), colors.sand));
+    controlColumns[0].onUpdate = function() {
+      this.x = width / 2;
+    };
+    controlColumns.push(new ControlColumn(LEFT_ARROW, width / 2 + (width / 8), colors.sand));
     controlColumns[1].arrowRotation = PI / 2;
-    controlColumns.push(new ControlColumn('|', width / 2 + 2*(width / 8), colors.seafoamBlue));
+    controlColumns[1].onUpdate = function() {
+      this.x = width / 2 + (width / 8);
+    };
+    controlColumns.push(new ControlColumn(DOWN_ARROW, width / 2 + 2*(width / 8), colors.seafoamBlue));
     controlColumns[2].arrowRotation = 0;
-    controlColumns.push(new ControlColumn('>', width / 2 + 3*(width / 8), colors.booger));
+    controlColumns[2].onUpdate = function() {
+      this.x = width / 2 + 2*(width / 8);
+    };
+    controlColumns.push(new ControlColumn(RIGHT_ARROW, width / 2 + 3*(width / 8), colors.booger));
     controlColumns[3].arrowRotation = -PI / 2;
+    controlColumns[3].onUpdate = function() {
+      this.x = width / 2 + 3*(width / 8);
+    };
 
     statsModal = new Modal();
 
@@ -91,9 +111,9 @@ function Game() {
     
     acceptQuitBtn = quitGameModal.quitButtons[0];
     refuseQuitBtn = quitGameModal.quitButtons[1];
-
     acceptQuitBtn.events.down.end = function() {
-      console.log('User closed game');
+      showStats = true;
+      showQuit = false;
     }
 
     refuseQuitBtn.events.down.end = function() {
@@ -124,6 +144,7 @@ function Game() {
   function drawControlColumns() {
     controlColumns.forEach(function(column) {
       column.isPaused = isPaused;
+      column.update();
       column.draw();
     });
   }
@@ -168,54 +189,55 @@ function Game() {
     });
 
     statsModal.statButtons.forEach(function(btn) {
-      btn.contains(mouseX, mouseY) && btn.animate('down');
+      if(btn.contains(mouseX, mouseY)) {
+        if(btn.textType === 'reset') {
+          self.reset();
+        }
+      }
     })
   }
 
   this.keyPressed = function() {
     if(ACTIVE_KEY_CODES.has(keyCode)) {
       score++;
+      for(var i = 0; i < controlColumns.length; i++) {
+        if(controlColumns[i].btnTypeCode === keyCode) {
+          for(var j = 0; j < controlColumns[i].arrows.length; j++) {
+            if(controlColumns[i].arrows[j].isInActiveArea(activeAreaStart)) {
+              controlColumns[i].arrows[j].bgColor = hexToRgb(colors.boogerTwo);
+              controlColumns[i].arrows[j].animate('fadeIn');
+            }
+          }
+        }
+      }
     } else {
-      score--;
-    }
+      var wrongKeyCodes = [UP_ARROW, LEFT_ARROW, DOWN_ARROW, RIGHT_ARROW].filter(function(a) {
+        return !ACTIVE_KEY_CODES.has(a);
+      });
 
-    switch(keyCode) {
-      case UP_ARROW: {
-        var up = controlColumns[0];
-        up.arrows.forEach(function(arrow) {
-          if(arrow.isInActiveArea(height - 300)) {
-            arrow.animate('increaseCircle');
+      wrongKeyCodes.forEach(function(k) {
+        if(keyCode === k) {
+          score--;
+          
+          for(var i = 0; i < controlColumns.length; i++) {
+            if(controlColumns[i].btnTypeCode !== k) {
+              for(var j = 0; j < controlColumns[i].arrows.length; j++) {
+                if(controlColumns[i].arrows[j].isInActiveArea(activeAreaStart)) {
+                  controlColumns[i].arrows[j].bgColor = hexToRgb(colors.lipstick);
+                  controlColumns[i].arrows[j].animate('fadeIn');
+                  oDancer.animate('shake');
+                
+                  if(inCorrectArrowsLimit === 0) {
+                    inCorrectArrowsLimit = 3;
+                    hearts.lifes.pop();
+                  }
+                  --inCorrectArrowsLimit;
+                }
+              }
+            }
           }
-        });
-      }
-      break;
-      case LEFT_ARROW: {
-        var left = controlColumns[1];
-        left.arrows.forEach(function(arrow) {
-          if(arrow.isInActiveArea(height - 300)) {
-            arrow.animate('increaseCircle');
-          }
-        });
-      }
-      break;
-      case DOWN_ARROW: {
-        var down = controlColumns[2];
-        down.arrows.forEach(function(arrow) {
-          if(arrow.isInActiveArea(height - 300)) {
-            arrow.animate('increaseCircle');
-          }
-        });
-      }
-      break;
-      case RIGHT_ARROW: {
-        var right = controlColumns[3];
-        right.arrows.forEach(function(arrow) {
-          if(arrow.isInActiveArea(height - 300)) {
-            arrow.animate('increaseCircle');
-          }
-        });
-      }
-      break;
+        }
+      });
     }
   }
 
@@ -232,5 +254,13 @@ function Game() {
     dance.frame.addAnimation('moving', 26, 59);
     dance.animate('moving', floor(1000 / 20));
     oDancer.xushturi = dance;
+  }
+
+  this.reset = function() {
+    score = 0;
+    header.setScore(score);
+    header.timer = new Timer(millis(), 60);
+    showStats = false;
+    unpouseGame();
   }
 }

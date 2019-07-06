@@ -1,18 +1,20 @@
-function ControlColumn(btnType, x, buttonColor) {
-  this.btnType = btnType;
+function ControlColumn(btnTypeCode, x, buttonColor) {
+  this.btnTypeCode = btnTypeCode;
   this.x = x;
   this.offsetTop = 170;
   this.isPaused = false;
+  this.onUpdate = function() {}
   var oControl = this;
   var w = width / 8;
   var h = height - this.offsetTop; 
   var backgroundColor = hexToRgb(colors.boogerTwo);
   var alpha = 0.3;
   var btnSize = 50;
+  var activeAreaStart = height - 200;
   this.arrows = [];
   this.arrowRotation = 0;
   this.btn = new ControlButton(arrow.img, 0, 0, arrow.w, arrow.h);
-  this.btn.typeText = this.btnType;
+  this.btn.typeText = this.btnTypeCode;
 
   this.draw = function() {
     push();
@@ -21,7 +23,7 @@ function ControlColumn(btnType, x, buttonColor) {
     noStroke();
     rect(this.x, this.offsetTop, w, h);
     fill(colors.boogerTwo);
-    rect(this.x, height - 300, w, h / 5);
+    rect(this.x, activeAreaStart, w, h / 5);
     stroke(colors.lightTan);
     strokeWeight(2);
     line(this.x + w, this.offsetTop, this.x + w, height);
@@ -36,19 +38,22 @@ function ControlColumn(btnType, x, buttonColor) {
   }
 
   this.update = function() {
-    
+    this.onUpdate();
+    w = width / 8;
+    h = height - this.offsetTop; 
+  }
+
+  this.getActiveAreaStart = function() {
+    return activeAreaStart;
   }
 
   function dropArrows() {
     for(var i = 0; i < oControl.arrows.length; i++) {
-      if(oControl.arrows[i].isInActiveArea(height - 300)) {
-        oControl.arrows[i].bgColor = hexToRgb(colors.lightTan);
-        oControl.arrows[i].alpha = 0.7;
+      if(oControl.arrows[i].isInActiveArea(activeAreaStart)) {
         ACTIVE_KEY_CODES.add(oControl.arrows[i].keycode);
       }
 
-      if(oControl.arrows[i].passedActiveArea(height - 300, h / 5)) {
-        oControl.arrows[i].reset();
+      if(oControl.arrows[i].passedActiveArea(activeAreaStart, h / 5)) {
         ACTIVE_KEY_CODES.delete(oControl.arrows[i].keycode);
       }
 
