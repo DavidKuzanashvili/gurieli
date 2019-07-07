@@ -19,6 +19,12 @@ function Game() {
     var fruits = [];
 
     var headerButtons = [];
+    var closeBtn = null;
+    var pauseBtn = null;
+    var muteBtn = null;
+    var resetBtn = null;
+    var gapBetweenBtns = 30;
+    var headerMargin = 100;
 
     var quitGameModal = null;
     var pauseGameModal = null;
@@ -36,91 +42,32 @@ function Game() {
 
     this.setup = function () {
         oRoundStart = this.sceneManager.findScene(RoundStart).oScene;
-        headerButtons.push(new Button({
-            y: 70,
-            backgroundColor: color(colors.sand),
-            type: "X",
-            content: icons.close,
-            width: 50,
-            height: 50,
-            shadowOffset: 6,
-            fontSize: 16,
-            onUpdate: function() {
-                this.x = width - 100 - 25;
-            }
-        }));
 
-        headerButtons[0].events.down.end = function() {
-            showQuitModal = true;
+        closeBtn = new ControlButton(pngIcons.close.img, width - 100 - pngIcons.close.w / 2, 70, pngIcons.close.w, pngIcons.close.h);
+        closeBtn.typeText = 'close';
+        closeBtn.onUpdate = function() {
+            this.x = width - 100 - pngIcons.close.w / 2;
         }
 
-        headerButtons.push(new Button({
-            y: 70,
-            backgroundColor: color(colors.booger),
-            type: "| |",
-            content: icons.pause,
-            width: 50,
-            height: 50,
-            shadowOffset: 6,
-            fontSize: 16,
-            onUpdate: function() {
-                this.x = width - 180 - 25;
-            }
-        }));
-
-        headerButtons[1].events.down.end = function() {
-            if(togglePause) {
-                showPauseModal = true;
-                pauseGame();
-            }
+        pauseBtn = new ControlButton(pngIcons.pause.img, width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2), 70, pngIcons.pause.w, pngIcons.pause.h);
+        pauseBtn.typeText = 'pause';
+        pauseBtn.onUpdate = function() {
+            this.x = width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2);
         }
 
-        headerButtons.push(new Button({
-            y: 70,
-            backgroundColor: color(colors.seafoamBlueTwo),
-            type: "m",
-            content: icons.music,
-            width: 50,
-            height: 50,
-            shadowOffset: 6,
-            fontSize: 16,
-            onUpdate: function() {
-                this.x = width - 260 - 25;
-            }
-        }));
-
-        headerButtons[2].events.down.end = function() {
-            soundsVolume = soundsVolume ? 0 : 1;
-            for(key in sounds) {
-                sounds[key].setVolume(soundsVolume);
-            }
+        muteBtn = new ControlButton(pngIcons.sound.img, width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2), 70, pngIcons.sound.w, pngIcons.sound.h);
+        muteBtn.typeText = 'mute';
+        muteBtn.onUpdate = function() {
+            this.x = width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2);
         }
 
-        headerButtons.push(new Button({
-            y: 70,
-            backgroundColor: color(colors.lipstick),
-            type: "R",
-            content: icons.reload,
-            width: 50,
-            height: 50,
-            shadowOffset: 6,
-            fontSize: 16,
-            onUpdate: function() {
-                this.x = width - 340 - 25;
-            }
-        }));
-
-        headerButtons[3].events.down.end = function() {
-            bindGameObject.reset();
-            oRoundStart.reset();
-            bindGameObject.sceneManager.showScene( RoundStart );
+        resetBtn = new ControlButton(pngIcons.reset.img, width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2), 70, pngIcons.reset.w, pngIcons.reset.h);
+        resetBtn.typeText = 'reset';
+        resetBtn.onUpdate = function() {
+            this.x = width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2);
         }
 
-        headerButtons.forEach(function(btn) {
-            btn.events.down.start = function() {
-                sounds.popUp.play();
-            }
-        });
+        headerButtons = [ closeBtn, pauseBtn, muteBtn, resetBtn ];
 
         quitGameModal = new Modal({
             width: 400,
@@ -137,15 +84,13 @@ function Game() {
         }
 
         pauseGameModal = new Modal({
-            width: 400,
-            height: 300,
+            width: 499,
+            height: 154,
             shadowOffsetTop: 12
         });
         
-        pauseGameModal.pauseButton.events.down.end = function () {
-            showPauseModal = false;
-            unpouseGame();
-        }
+        // showPauseModal = false;
+        // unpouseGame();
     }
 
     this.draw = function () {
@@ -158,7 +103,7 @@ function Game() {
             if(startTheGame) {
                 timer.update();
             } 
-            headerButtons.forEach(x => x.update());
+            headerButtons.forEach(function(x) { x.update() });
         }
 
         background(colors.mainTheme);
@@ -210,7 +155,7 @@ function Game() {
 
         timer.draw();
         
-        headerButtons.forEach(x => x.draw());
+        headerButtons.forEach(function(x) { x.draw() });
 
         if (showQuitModal) {
             drawQuitGameModal();
@@ -378,12 +323,28 @@ function Game() {
     this.mousePressed = function () {
         headerButtons.forEach(function (btn) {
             if (btn.contains(mouseX, mouseY)) {
-                btn.animate('down');
-                if (btn.type === '| |') {
-                    btn.events.down.end = function () {
-                        showPauseModal = true;
-                        pauseGame();
+                if(btn.typeText === 'close') {
+                    showQuitModal = true;
+                    sounds.popUp.play();
+                }
+
+                if(btn.typeText === 'pause') {
+                    sounds.popUp.play();
+                    showPauseModal = true;
+                    pauseGame();
+                }
+
+                if(btn.typeText === 'mute') {
+                    soundsVolume = soundsVolume ? 0 : 1;
+                    for(key in sounds) {
+                        sounds[key].setVolume(soundsVolume);
                     }
+                }
+
+                if(btn.typeText === 'reset') {
+                    bindGameObject.reset();
+                    oRoundStart.reset();
+                    bindGameObject.sceneManager.showScene( RoundStart );
                 }
             }
         });
@@ -394,8 +355,9 @@ function Game() {
             }
         });
 
-        if (pauseGameModal.pauseButton.contains(mouseX, mouseY)) {
-            pauseGameModal.pauseButton.animate('down');
+        if (pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
+            showPauseModal = false;
+            unpouseGame();
         }
     }
 

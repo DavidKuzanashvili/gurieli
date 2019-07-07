@@ -48,10 +48,17 @@ function GameOver()
 
     this.mousePressed = function() {
         modal.statButtons.forEach(function(btn) {
-            btn.contains(mouseX, mouseY) && btn.animate('down');
-
-            if(btn.type === 'R') {
-                btn.events.down.end = function() {
+            if (btn.contains(mouseX, mouseY)) {
+                console.log(btn);
+                if(btn.textType === 'reset') {
+                    CURRENT_LEVEL = 0;
+                    oRoundStart.reset();
+                    oGame.reset();
+                    score = 0;
+                    bindGameOverObject.sceneManager.showScene( RoundStart );
+                }
+    
+                if(btn.textType === 'close') {
                     CURRENT_LEVEL = 0;
                     oRoundStart.reset();
                     oGame.reset();
@@ -59,16 +66,6 @@ function GameOver()
                     bindGameOverObject.sceneManager.showScene( RoundStart );
                 }
             }
-
-            if(btn.type === 'X') {
-                btn.events.down.end = function() {
-                    CURRENT_LEVEL = 0;
-                    oRoundStart.reset();
-                    oGame.reset();
-                    score = 0;
-                    bindGameOverObject.sceneManager.showScene( RoundStart );
-                }
-            }
-        })
+        });
     }
 }

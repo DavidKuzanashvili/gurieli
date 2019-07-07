@@ -1,6 +1,7 @@
 function Modal(options) {
   options = options || {};
   var oModal = this;
+  var self = this;
   this.backgroundColor = options.backgroundColor;
   this.shadowOffsetTop = options.shadowOffsetTop || 20;
   this.width = options.width || 640;
@@ -12,49 +13,40 @@ function Modal(options) {
   var shadowColor = darken(color(colors.boogerTwo));
   var marginLeft = 50;
   var marginTop = 100;
+  var resumeText = 'TamaSis gagrZeleba';
+  var resumeTextWidth;
+  var overlayColor = hexToRgb(colors.booger);
   var lines = 'umaRlesi qula: 3224\nqula: ' + this.score +'\nTavidan\ngamorTva';
+  var controlButtonsOffsetX = textWidth('gamorTva') * this.fontSize / 12;
   var lineHeight = 90;
+  this.statResetButton = new ControlButton(pngIcons.reset.img, width / 2, height / 2, pngIcons.reset.w, pngIcons.reset.h);
+  this.statResetButton.textType = 'reset';
+  this.statResetButton.onUpdate = function() {
+    this.x = width / 2 - self.width / 2 + controlButtonsOffsetX + this.w + 20;
+    this.y = height / 2 - self.height / 2 + this.w / 2 - this.h / 2 + (marginTop + 2 * lineHeight) - 15;
+  }
+
+  this.statCloseButton = new ControlButton(pngIcons.close.img, width / 2, height / 2, pngIcons.close.w, pngIcons.close.h);
+  this.statCloseButton.textType = 'close';
+  this.statCloseButton.onUpdate = function() {
+    this.x = width / 2 - self.width / 2 + controlButtonsOffsetX + this.w + 20;
+    this.y = height / 2 - self.height / 2 + this.w / 2 - this.h / 2 + (marginTop + 3 * lineHeight) - 15;
+  }
+
+  
+  this.statShareButton = new ControlButton(pngIcons.share.img, width / 2, height / 2, pngIcons.share.w, pngIcons.share.h);
+  this.statShareButton.textType = 'share';
+  this.statShareButton.onUpdate = function() {
+    this.x = width / 2 + controlButtonsOffsetX + 50;
+    this.y = height / 2 - self.height / 2 + this.w / 2 - this.h / 2 + (marginTop + 3 * lineHeight) - 15;
+  }
+
   this.statButtons = [
-    new Button({ 
-      backgroundColor: color(colors.lipstick),
-      type: "R",
-      content: icons.reload, 
-      width: 50, 
-      height: 50, 
-      shadowOffset:6,
-      fontSize: 16,
-      onUpdate: function() {
-        this.x = width / 2 - oModal.width / 2 + 250;
-        this.y = height / 2 - oModal.height / 2 + marginTop + 2 * lineHeight - 15;
-      }
-    }),
-    new Button({ 
-      backgroundColor: color(colors.booger),
-      type: "X",
-      content: icons.close, 
-      width: 50, 
-      height: 50, 
-      shadowOffset:6,
-      fontSize: 16,
-      onUpdate: function() {
-        this.x = width / 2 - oModal.width / 2 + 250;
-        this.y = height / 2 - oModal.height / 2 + marginTop + 3 * lineHeight - 15;
-      }
-    }),
-    new Button({
-      backgroundColor: color('#3C5A99'),
-      type: 'f',
-      content: icons.fb,
-      width: 50,
-      height: 50,
-      shadowOffset: 6,
-      fontSize: 25,
-      onUpdate: function() {
-        this.x = width / 2 + 230;
-        this.y = height / 2 - oModal.height / 2 + marginTop + 3 * lineHeight - 15;
-      }
-    })
+    this.statResetButton,
+    this.statCloseButton,
+    this.statShareButton
   ];
+
   this.quitButtons = [
     new Button({
       color: 'black',
@@ -82,19 +74,13 @@ function Modal(options) {
       }
     })
   ];
-  this.pauseButton = new Button({
-    backgroundColor: color(colors.beige),
-    color: color(colors.darkForestGreen),
-    content: '>',
-    width: 50,
-    height: 50,
-    shadowOffset: 5,
-    fontSize: 20,
-    onUpdate: function() {
-      this.x = width / 2;
-      this.y = height / 2 + 70;
-    }
-  })
+
+  this.resumeBtn = new ControlButton(pngIcons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, pngIcons.resume.w, pngIcons.resume.h);
+  this.resumeBtn.typeText = 'resume';
+  this.resumeBtn.onUpdate = function() {
+    this.x = width / 2 + resumeTextWidth / 2 + 20;
+    this.y = height / 2;
+  }
   
   this.drawStats = function() {
     push();
@@ -161,6 +147,7 @@ function Modal(options) {
   this.drawPause = function() {
     push();
 
+    background(overlayColor.r, overlayColor.g, overlayColor.b, 255 * 0.5);
     fill(shadowColor);
     rectMode(CENTER);
     noStroke();
@@ -174,10 +161,11 @@ function Modal(options) {
     textSize(this.fontSize);
     textLeading(35);
     textFont(this.font);
-    text('TamaSis gagrZeleba', width / 2, height / 2 - this.height / 2 + 70);
+    text(resumeText, width / 2 - 20, height / 2);
+    resumeTextWidth = textWidth(resumeText)
 
-    this.pauseButton.update();
-    this.pauseButton.draw();
+    this.resumeBtn.update();
+    this.resumeBtn.draw();
 
     pop();
   }

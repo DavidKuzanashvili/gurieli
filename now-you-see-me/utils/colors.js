@@ -2,6 +2,7 @@ var colors = {
   mainTheme: '#003919',
   sefoamBlue: '#6bc8a7',
   seafoamBlueTwo: '#5bc7cf',
+  frenchBlue: '#4367b2',
   darkPink: '#cc2f5c',
   darkForestGreen: '#003919',
   spruce: '#07593f',
@@ -19,5 +20,7 @@ var colors = {
   sea: '#388c92',
   cherry: '#e40035',
   lightMossGreen: '#97cc7c',
-  paleOrange: '#fdb05e'
+  paleOrange: '#fdb05e',
+  dullYellow: '#eacb53',
+  sickGreen: '#bc9d2f'
 }

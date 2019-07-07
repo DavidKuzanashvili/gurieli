@@ -16,15 +16,23 @@ function Game() {
   var arrowSize = 72;
   var score = 0;
   var dance = null;
-  var activeAreaStart = height - 200;
+  var activeAreaStart = height - 300;
   var inCorrectArrowsLimit = 3;
+
+  //Toggles
+  var isSound = true;
 
   this.enter = function() {
     initGame();
   }
 
   this.setup = function() {
-    sounds.background.setVolume(0.5);
+    if(!sounds.background.isLoaded()) {
+      setTimeout(this.setup, 50);
+      return;
+    }
+
+    sounds.background.setVolume(0.2);
     sounds.background.loop();
   }
 
@@ -163,12 +171,22 @@ function Game() {
   }
 
   this.mousePressed = function() {
-    var headerButtons = header.btns;
-    headerButtons.forEach(function(btn) {
-      if(btn.contains(mouseX, mouseY)) {
-        console.log('mouse pressed!');
+    if(header.soundBtn.contains(mouseX, mouseY)) {
+      if(isSound) {
+        for(key in sounds) {
+          sounds[key].setVolume(0);
+        }
+      } else {
+        for(key in sounds) {
+          if(key === 'background') {
+            sounds[key].setVolume(0.2);
+          } else {
+            sounds[key].setVolume(0.5);
+          }
+        }
       }
-    });
+      isSound = !isSound;
+    }    
 
     if(header.pauseBtn.contains(mouseX, mouseY)) {
       pauseGame();
@@ -252,7 +270,7 @@ function Game() {
     }
 
     dance.frame.addAnimation('moving', 26, 59);
-    dance.animate('moving', floor(1000 / 20));
+    dance.animate('moving', floor(1000 / 15));
     oDancer.xushturi = dance;
   }
 

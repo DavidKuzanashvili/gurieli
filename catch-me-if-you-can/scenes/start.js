@@ -14,6 +14,7 @@ window.requestQueryParams = window.location.href
 
 var imgPath = 'assets/imgs/';
 var fontsPath = 'assets/fonts/';
+var iconsPath = 'assets/imgs/icons/';
 var bgImage;
 var leaves = null;
 var bottleImages = {};
@@ -23,6 +24,7 @@ var lifeImages = {};
 var leavesImages = {};
 var fonts = {};
 var icons = {};
+var pngIcons = {};
 var sprites = {};
 var sounds = {};
 var sequenceImage = null;
@@ -55,7 +57,7 @@ function setup() {
         return;
     }
 
-    sounds.background.setVolume(0.5);
+    sounds.background.setVolume(0.2);
     sounds.background.loop();
     frameRate(60);
     var canvas = createCanvas(windowWidth, windowHeight);
@@ -123,6 +125,46 @@ function loadIcons() {
     icons.reload = loadImage(imgPath + 'icons/reload.svg');
     icons.pause = loadImage(imgPath + 'icons/pause.svg');
     icons.music = loadImage(imgPath + 'icons/music.svg');
+    pngIcons.sound = {
+        img: loadImage(iconsPath + 'sound.png'),
+        w: 52,
+        h: 38
+    };
+    pngIcons.pause = {
+      img: loadImage(iconsPath + 'pause.png'),
+      w: 43,
+      h: 38
+    };
+    pngIcons.reset = {
+      img: loadImage(iconsPath + 'reset.png'),
+      w: 36,
+      h: 38
+    };
+    pngIcons.close = {
+      img: loadImage(iconsPath + 'close.png'),
+      w: 38,
+      h: 38
+    };
+    pngIcons.resume = {
+      img: loadImage(iconsPath + 'resume.png'),
+      w: 27,
+      h: 38
+    };
+    pngIcons.share = {
+      img: loadImage(iconsPath + 'share.png'),
+      w: 45,
+      h: 38
+    };
+    // arrow = {
+    //   img: loadImage(iconsPath + 'arrow-down.png'),
+    //   w: 38,
+    //   h: 46
+    // };
+    // whiteDownArrow = {
+    //   img: loadImage(iconsPath + 'white-down-arrow.png'),
+    //   w: 38,
+    //   h: 46
+    // };
 }
 
 function loadSprite() {

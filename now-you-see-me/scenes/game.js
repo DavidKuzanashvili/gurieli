@@ -5,6 +5,12 @@ function Game() {
   var muteButton = null;
   var resetButton = null;
   var headerButtons = [];
+  var closeBtn = null;
+  var pauseBtn = null;
+  var muteBtn = null;
+  var resetBtn = null;
+  var gapBetweenBtns = 30;
+  var headerMargin = 100;
   var pauseGameModal = null;
   var quitGameModal  = null;
   var statsGameModal = null;
@@ -191,8 +197,9 @@ function Game() {
       });
     }
 
-    if(pauseGameModal.pauseButton.contains(mouseX, mouseY)) {
-      pauseGameModal.pauseButton.animate('down');
+    if(pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
+      showPauseModal = false;
+      unpouseGame();
     } 
 
     quitGameModal.quitButtons.forEach(function(btn){
@@ -203,7 +210,10 @@ function Game() {
 
     statsGameModal.statButtons.forEach(function(btn) {
       if(btn.contains(mouseX, mouseY)) {
-        btn.animate('down');
+        if(btn.typeText === 'reset') {
+          showStats = false;
+          resetGame();
+        }
       }
     });
 
@@ -212,6 +222,17 @@ function Game() {
         if(cup.contains(mouseX, mouseY)) {
           cup.animate('reveal');
           clickableCups = false;
+          
+
+          console.log(cup.events.reveal.hasOwnProperty("start"));
+          cup.events.reveal.start = function() {
+            console.log('skjf');
+            if(cup.xushturi) {
+              console.log('hi');
+              cup.xushturi.switchAnimation('win');
+            }
+          }
+
           cup.events.reveal.end = function(){
             delete cup.events.reveal.end;
             if(cup.xushturi) {
@@ -244,6 +265,11 @@ function Game() {
                 setTimeout(function(){
                   cup.animate('hide');
                   setTimeout(function(){
+                    winningCup.events.reveal.start = function() {
+                      delete winningCup.events.reveal.start;
+                      winningCup.xushturi.switchAnimation('lose');                      
+                    }
+
                     winningCup.events.reveal.end = function(){
                       setTimeout(function(){
                         winningCup.animate('hide');
@@ -349,7 +375,8 @@ function Game() {
 
   function initGame() {
     xushturi = new Xushturi(0,0);
-    hearts  = new LifeFactory(lifes.active, 3, width / 2 - 3 * (43 + 50) / 2, 43, 40, 50);
+    xushturi.switchAnimation('start');
+    hearts  = new LifeFactory(lifes.active, 3, width / 2 - 3 * (36 + 50) / 2, 36, 31, 50);
     cups.push(new Cup(width / 2 - gap - cupImgObj.width, height / 2));
     cups.push(new Cup(width / 2, height / 2));
     cups.push(new Cup(width / 2 + gap + cupImgObj.width, height / 2));
@@ -357,73 +384,31 @@ function Game() {
     cups[1].xushturi = xushturi;
     winningCup = cups[1];
 
-    headerButtons.push(new Button({
-      y: marginTop,
-      backgroundColor: color(colors.sand),
-      type: "X",
-      content: icons.close,
-      width: 50,
-      height: 50,
-      shadowOffset: 6,
-      fontSize: 16,
-      onUpdate: function() {
-        this.x = width - (100 * sizes.headerMarginCoefficient) - 25;
-      }
-    }));
-    closeButton = headerButtons[0];
-
-    closeButton.events.down.end = function() {
-      showQuitModal = true;
+    closeBtn = new ControlButton(pngIcons.close.img, width - 100 - pngIcons.close.w / 2, 70, pngIcons.close.w, pngIcons.close.h);
+    closeBtn.typeText = 'close';
+    closeBtn.onUpdate = function() {
+        this.x = width - 100 - pngIcons.close.w / 2;
     }
 
-    headerButtons.push(new Button({
-      y: marginTop,
-      backgroundColor: color(colors.booger),
-      type: "P",
-      content: icons.pause,
-      width: 50,
-      height: 50,
-      shadowOffset: 6,
-      fontSize: 16,
-      onUpdate: function() {
-        this.x = width - (100 * sizes.headerMarginCoefficient + 80)- 25;
-      }
-    }));
-    pauseButton = headerButtons[1];
-
-    pauseButton.events.down.end = function() {
-      isPaused = true;
+    pauseBtn = new ControlButton(pngIcons.pause.img, width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2), 70, pngIcons.pause.w, pngIcons.pause.h);
+    pauseBtn.typeText = 'pause';
+    pauseBtn.onUpdate = function() {
+        this.x = width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2);
     }
 
-    headerButtons.push(new Button({
-      y: marginTop,
-      backgroundColor: color(colors.seafoamBlueTwo),
-      type: "M",
-      content: icons.music,
-      width: 50,
-      height: 50,
-      shadowOffset: 6,
-      fontSize: 16,
-      onUpdate: function() {
-        this.x = width - (100 * sizes.headerMarginCoefficient + 160) - 25;
-      }
-    }));
-    muteButton = headerButtons[2];
+    muteBtn = new ControlButton(pngIcons.sound.img, width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2), 70, pngIcons.sound.w, pngIcons.sound.h);
+    muteBtn.typeText = 'mute';
+    muteBtn.onUpdate = function() {
+        this.x = width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2);
+    }
 
-    headerButtons.push(new Button({
-      y:  marginTop,
-      backgroundColor: color(colors.lipstick),
-      type: "R",
-      content: icons.reload,
-      width: 50,
-      height: 50,
-      shadowOffset: 6,
-      fontSize: 16,
-      onUpdate: function() {
-        this.x = width - (100 * sizes.headerMarginCoefficient + 240) - 25;
-      }
-    }));
-    resetButton = headerButtons[3];
+    resetBtn = new ControlButton(pngIcons.reset.img, width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2), 70, pngIcons.reset.w, pngIcons.reset.h);
+    resetBtn.typeText = 'reset';
+    resetBtn.onUpdate = function() {
+        this.x = width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2);
+    }
+
+    headerButtons = [ closeBtn, pauseBtn, muteBtn, resetBtn ];
 
     scoreCircle = new Score();
     scoreCircle.setScore(score);
@@ -444,25 +429,12 @@ function Game() {
     }
 
     pauseGameModal = new Modal({
-      width: 400,
-      height: 300,
+      width: 499,
+      height: 154,
       shadowOffsetTop: 12
     });
 
-    pauseGameModal.pauseButton.events.down.end = function () {
-      showPauseModal = false;
-      unpouseGame();
-    }
-
     statsGameModal = new Modal();
-
-    statsGameModal.statButtons.forEach(function(btn) {
-      if(btn.type === 'R') {
-        btn.events.down.end = function() {
-          resetGame();
-        }
-      }
-    })
   }
 
   function drawHigestScore() {
@@ -501,6 +473,10 @@ function Game() {
     winningCup = cups[1];
 
     cups[1].animate('reveal');
+    cups[1].events.reveal.start = function() {
+      delete events.reveal.start;
+      winningCup.xushturi.switchAnimation('start');
+    }
     cups[1].events.reveal.end = function() {
       delete cups[1].events.reveal.end;
       setTimeout(function() {

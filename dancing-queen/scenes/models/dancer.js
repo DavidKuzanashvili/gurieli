@@ -12,7 +12,7 @@ function Dancer(img, offsetTop) {
   var animations ={
     shake: {
       setup: function() {
-        shake = 20;
+        shake = 15;
       },
       update: function() {
         shake = Math.max(shake - calmShakeSpeed, 0);

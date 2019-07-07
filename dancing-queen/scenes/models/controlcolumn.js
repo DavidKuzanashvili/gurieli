@@ -10,7 +10,7 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
   var backgroundColor = hexToRgb(colors.boogerTwo);
   var alpha = 0.3;
   var btnSize = 50;
-  var activeAreaStart = height - 200;
+  var activeAreaStart = height - 300;
   this.arrows = [];
   this.arrowRotation = 0;
   this.btn = new ControlButton(arrow.img, 0, 0, arrow.w, arrow.h);

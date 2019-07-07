@@ -1,8 +1,11 @@
 var fontsPath = 'assets/fonts/';
 var imgsPath = 'assets/imgs/';
+var iconsPath = imgsPath + 'icons/';
 var fonts = {};
 var icons = {};
+var pngIcons = {};
 var lifes = {};
+var sequences = {};
 var cupImgObj = null;
 var sizes = {
   cupSizeCoefficient: 0,
@@ -18,6 +21,7 @@ var sizes = {
 
 function preload() {
   loadFonts();
+  loadSequnces();
   loadCup();
   loadIcons();
   loadLifes();
@@ -51,6 +55,36 @@ function loadIcons() {
   icons.reload = loadImage(imgsPath + 'icons/reload.svg');
   icons.pause = loadImage(imgsPath + 'icons/pause.svg');
   icons.music = loadImage(imgsPath + 'icons/music.svg');
+  pngIcons.sound = {
+    img: loadImage(iconsPath + 'sound.png'),
+    w: 52,
+    h: 38
+  };
+  pngIcons.pause = {
+    img: loadImage(iconsPath + 'pause.png'),
+    w: 43,
+    h: 38
+  };
+  pngIcons.reset = {
+    img: loadImage(iconsPath + 'reset.png'),
+    w: 36,
+    h: 38
+  };
+  pngIcons.close = {
+    img: loadImage(iconsPath + 'close.png'),
+    w: 38,
+    h: 38
+  };
+  pngIcons.resume = {
+    img: loadImage(iconsPath + 'resume.png'),
+    w: 27,
+    h: 38
+  };
+  pngIcons.share = {
+    img: loadImage(iconsPath + 'share.png'),
+    w: 45,
+    h: 38
+  };
 }
 
 function loadLifes() {
@@ -80,4 +114,10 @@ function changeSizes() {
     sizes.cupsGapCoefficeint = 0.7;
     sizes.headerMarginCoefficient = 0.7;
   }
+}
+
+function loadSequnces() {
+  sequences.start = loadImage('assets/imgs/start.png');
+  sequences.found = loadImage('assets/imgs/povna.png');
+  sequences.notFound = loadImage('assets/imgs/verpovna.png');
 }

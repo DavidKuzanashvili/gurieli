@@ -1,60 +1,53 @@
 function Modal(options) {
   options = options || {};
   var oModal = this;
-  this.backgroundColor = options.backgroundColor || colors.sand;
+  this.backgroundColor = options.backgroundColor || colors.dullYellow;
   this.shadowOffsetTop = options.shadowOffsetTop || 20;
   this.width = options.width || 419;
   this.height = options.height || 529;
   this.fontSize = options.fontSize || 40;
   this.font = options.font || fonts.LGVBold;
   this.score = 0;
+  this.resetBtn = null;
+  this.closeBtn = null;
+  this.shareBtn = null;
   var shadowColor = darken(color(this.backgroundColor));
   var marginLeft = 50;
   var marginTop = 80;
   var lineHeight = 90;
+  var overlayColor = hexToRgb(colors.seafoamBlueTwo);
+  var resumeText = 'TamaSis gagrZeleba';
+  var resumeTextWidth;
   var statButtonOffsetX = 40;
   var overlayColor = hexToRgb(colors.seafoamBlueTwo);
+
+  this.resetBtn = new ControlButton(pngIcons.reset.img, width / 2 + statButtonOffsetX, height / 2 - this.height / 2 + marginTop + 2 * lineHeight, pngIcons.reset.w, pngIcons.reset.h);
+  this.resetBtn.typeText = 'reset';
+  this.resetBtn.onUpdate = function() {
+    this.x = width / 2 + statButtonOffsetX;
+    this.y = height / 2 - oModal.height / 2 + marginTop + 2 * lineHeight;
+  }
+
+  this.closeBtn = new ControlButton(pngIcons.close.img, width / 2 + statButtonOffsetX, height / 2 - this.height / 2 + marginTop + 3 * lineHeight, pngIcons.close.w, pngIcons.close.h);
+  this.closeBtn.typeText = 'close';
+  this.closeBtn.onUpdate = function() {
+    this.x = width / 2 + statButtonOffsetX;
+    this.y = height / 2 - oModal.height / 2 + marginTop + 3 * lineHeight;
+  }
+
+  this.shareBtn = new ControlButton(pngIcons.share.img, width / 2 + statButtonOffsetX, height / 2 - oModal.height / 2 + marginTop + 4 * lineHeight, pngIcons.share.w, pngIcons.share.h);
+  this.shareBtn.typeText = 'share';
+  this.shareBtn.onUpdate = function() {
+    this.x = width / 2 + statButtonOffsetX;
+    this.y = height / 2 - oModal.height / 2 + marginTop + 4 * lineHeight;
+  }
+
   this.statButtons = [
-    new Button({ 
-      backgroundColor: color(colors.seafoamBlueTwo),
-      type: "R",
-      content: icons.reload, 
-      width: 50, 
-      height: 50, 
-      shadowOffset:6,
-      fontSize: 16,
-      onUpdate: function() {
-        this.x = width / 2 + statButtonOffsetX;
-        this.y = height / 2 - oModal.height / 2 + marginTop + 2 * lineHeight;
-      }
-    }),
-    new Button({ 
-      backgroundColor: color(colors.booger),
-      type: "X",
-      content: icons.close, 
-      width: 50, 
-      height: 50, 
-      shadowOffset:6,
-      fontSize: 16,
-      onUpdate: function() {
-        this.x = width / 2 + statButtonOffsetX;
-        this.y = height / 2 - oModal.height / 2 + marginTop + 3 * lineHeight;
-      }
-    }),
-    new Button({
-      backgroundColor: color('#3C5A99'),
-      type: 'f',
-      content: icons.fb,
-      width: 50,
-      height: 50,
-      shadowOffset: 6,
-      fontSize: 25,
-      onUpdate: function() {
-        this.x = width / 2 + statButtonOffsetX;
-        this.y = height / 2 - oModal.height / 2 + marginTop + 4 * lineHeight;
-      }
-    })
+    this.resetBtn,
+    this.closeBtn,
+    this.shareBtn
   ];
+
   this.quitButtons = [
     new Button({
       color: 'black',
@@ -84,19 +77,13 @@ function Modal(options) {
       }
     })
   ];
-  this.pauseButton = new Button({
-    backgroundColor: color(colors.beige),
-    color: color(colors.darkForestGreen),
-    content: '>',
-    width: 50,
-    height: 50,
-    shadowOffset: 5,
-    fontSize: 20,
-    onUpdate: function() {
-      this.x = width / 2;
-      this.y = height / 2 + 70;
-    }
-  })
+
+  this.resumeBtn = new ControlButton(pngIcons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, pngIcons.resume.w, pngIcons.resume.h);
+  this.resumeBtn.typeText = 'resume';
+  this.resumeBtn.onUpdate = function() {
+    this.x = width / 2 + resumeTextWidth / 2 + 20;
+    this.y = height / 2;
+  }
   
   this.drawStats = function() {
     push();
@@ -114,10 +101,14 @@ function Modal(options) {
 
     textFont(this.font);
     textAlign(LEFT, CENTER);
+    fill(colors.sickGreen);
     text('umaRlesi qula: 3224', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);
+    fill(255);
     text('qula: ' + this.score, width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop + lineHeight);
+    fill(colors.sickGreen);
     text('Tavidan ', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop + 2 * lineHeight);
     text('gamorTva ', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop + 3 * lineHeight);
+    fill(colors.frenchBlue);
     text('gaaziare ', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop + 4 * lineHeight);
 
     this.statButtons.forEach(function(btn) {
@@ -160,13 +151,13 @@ function Modal(options) {
 
   this.drawPause = function() {
     push();
-    
-    background(overlayColor.r, overlayColor.g, overlayColor.b, 255*0.5);
 
+    background(overlayColor.r, overlayColor.g, overlayColor.b, 255 * 0.5);
     fill(shadowColor);
     rectMode(CENTER);
     noStroke();
     rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 40);
+    fill(colors.boogerTwo);
     fill(this.backgroundColor);
     rect(width / 2, height / 2, this.width, this.height, 40);
 
@@ -176,10 +167,11 @@ function Modal(options) {
     textSize(this.fontSize);
     textLeading(35);
     textFont(this.font);
-    text('TamaSis gagrZeleba', width / 2, height / 2 - this.height / 2 + 70);
+    text(resumeText, width / 2 - 20, height / 2);
+    resumeTextWidth = textWidth(resumeText)
 
-    this.pauseButton.update();
-    this.pauseButton.draw();
+    this.resumeBtn.update();
+    this.resumeBtn.draw();
 
     pop();
   }

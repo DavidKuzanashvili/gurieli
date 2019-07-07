@@ -2,7 +2,7 @@ function Timer(timerStart, maxTime = 60) {
   this.timerStart = timerStart;
   this.font = fonts.LGVBold;
   var timerColor = colors.beige;
-  var timerShadow = colors.mossyGreenTwo;
+  var timerShadow = '#dddddd';
   var seconds = 0;
 
   this.draw = function () {
@@ -14,7 +14,7 @@ function Timer(timerStart, maxTime = 60) {
     arc(width / 2, 0, 250, 250, 0, PI);
 
     fill(timerColor);
-    arc(width / 2, 0, 240, 220, 0, PI);
+    arc(width / 2, 0, 250, 220, 0, PI);
 
     textAlign(CENTER, CENTER);
     fill('#db2643');
