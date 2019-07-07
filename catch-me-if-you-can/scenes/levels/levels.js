@@ -1,6 +1,7 @@
 const LEVEL = [
   {
     leaves: 'mint',
+    leavesHeight: 314,
     introFruit: {
       name: 'mint',
       width: 355,
@@ -14,11 +15,11 @@ const LEVEL = [
       }
     ],
     fruitSpeedRange: {
-      start: 5,
-      end: 2
+      start: 6,
+      end: 1
     },
     correctFruits: ['leaves'],
-    fruitName: 'pitna',
+    fruitName: 'rac gepitnaveba',
     bottle: 'mintBottle',
     color: colors.sefoamBlue,
     maxFruitsToGather: 25,
@@ -26,6 +27,7 @@ const LEVEL = [
   },
   {
     leaves: 'feijoa',
+    leavesHeight: 315,
     introFruit: {
       name: 'feijoa',
       width: 300,
@@ -48,44 +50,45 @@ const LEVEL = [
       end: 2
     },
     correctFruits: ['feijoa'],
-    fruitName: 'feixoia',
+    fruitName: 'mxolod feixoa',
     bottle: 'feijoaBottle',
     color: colors.lightMossGreen,
     maxFruitsToGather: 25,
     fruitGenerateSpeed: 500
   },
-  {
-    leaves: 'cherry',
-    introFruit: {
-      name: 'cherry',
-      width: 290,
-      height: 145
-    },
-    fruits: [
-      {
-        fruit: 'cherry',
-        width: 45,
-        height: 110
-      },
-      {
-        fruit: 'feijoa',
-        width: 80,
-        height: 115
-      },
-    ],
-    fruitSpeedRange: {
-      start: 6,
-      end: 2
-    },
-    correctFruits: ['cherry'],
-    fruitName: 'alubali',
-    bottle: 'cherryBottle',
-    color: colors.lipstick,
-    maxFruitsToGather: 25,
-    fruitGenerateSpeed: 450
-  },
+  // {
+  //   leaves: 'cherry',
+  //   introFruit: {
+  //     name: 'cherry',
+  //     width: 290,
+  //     height: 145
+  //   },
+  //   fruits: [
+  //     {
+  //       fruit: 'cherry',
+  //       width: 45,
+  //       height: 110
+  //     },
+  //     {
+  //       fruit: 'feijoa',
+  //       width: 80,
+  //       height: 115
+  //     },
+  //   ],
+  //   fruitSpeedRange: {
+  //     start: 6,
+  //     end: 2
+  //   },
+  //   correctFruits: ['cherry'],
+  //   fruitName: 'mxolod alubali',
+  //   bottle: 'cherryBottle',
+  //   color: colors.lipstick,
+  //   maxFruitsToGather: 25,
+  //   fruitGenerateSpeed: 450
+  // },
   {
     leaves: 'peach',
+    leavesHeight: 345,
     introFruit: {
       name: 'peach',
       width: 310,
@@ -98,7 +101,7 @@ const LEVEL = [
         height: 85
       },
       {
-        fruit: 'cherry',
+        fruit: 'feijoa',
         width: 45,
         height: 110
       }
@@ -108,7 +111,7 @@ const LEVEL = [
       end: 3
     },
     correctFruits: ['peach'],
-    fruitName: 'atami',
+    fruitName: 'mxolod atami',
     bottle: 'peachBottle',
     color: colors.paleOrange,
     maxFruitsToGather: 25,
@@ -116,6 +119,7 @@ const LEVEL = [
   },
   {
     leaves: 'raspberry',
+    leavesHeight: 276,
     introFruit: {
       name: 'raspberry',
       width: 340,
@@ -148,7 +152,7 @@ const LEVEL = [
       end: 2
     },
     correctFruits: ['raspberry', 'vanilla'],
-    fruitName: 'jolo',
+    fruitName: 'mxolod jolo da vanili',
     bottle: 'raspberryBottle',
     color: colors.darkPink,
     maxFruitsToGather: 25,

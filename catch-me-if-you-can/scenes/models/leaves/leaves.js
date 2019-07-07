@@ -1,8 +1,10 @@
-function Leaves(leavesType) {
+function Leaves(leavesType, currentHeight) {
   this.y = -300;
   this.leavesType = leavesType;
   this.leafRotationSpeed = 0.2;
   this.changeX = 10;
+  this.currentHeight = currentHeight;
+  var ratio;
   var activeAnimation = 'in';
   var translateLeaves = -300;
   var translateSpeed = 10;
@@ -29,12 +31,13 @@ function Leaves(leavesType) {
   this.draw = function () {
     push();
 
-    image(leavesImages[this.leavesType][0], 0, this.y, width, 300);
+    image(leavesImages[this.leavesType][0], 0, this.y, width, windowWidth * ratio);
 
     pop();
   }
 
   this.update = function () {
+    ratio = this.currentHeight / 1920;
     UpdateAnimation();
   }
 

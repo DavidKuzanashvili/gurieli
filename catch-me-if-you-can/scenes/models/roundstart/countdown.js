@@ -3,8 +3,8 @@ function CountDown(x, y, countNumber, numberColor) {
   this.y = y;
   this.countNumber = countNumber;
   this.color = hexToRgb(numberColor);
-  this.fontSize = 250;
-  this.translate = 600;
+  this.fontSize = 150;
+  this.translate = 450;
   this.startTime = millis();
   this.isNextScene = false;
   this.alpha = 1;
@@ -75,18 +75,18 @@ function CountDown(x, y, countNumber, numberColor) {
 
       var currentFontSize = getFontSizeFor(offset);
       textSize(currentFontSize);
-      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1) * currentAlpha);
+      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.1, 1) * currentAlpha);
       text('3', this.x + offset, this.y + (this.fontSize - currentFontSize / 2) / 2);
 
-      currentFontSize = getFontSizeFor(offset + 200);
+      currentFontSize = getFontSizeFor(offset + (this.translate / 3));
       textSize(currentFontSize);
-      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1) * currentAlpha);
-      text('2', this.x + offset + 200, this.y + (this.fontSize - currentFontSize / 2) / 2);
+      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.1, 1) * currentAlpha);
+      text('2', this.x + offset + (this.translate / 3), this.y + (this.fontSize - currentFontSize / 2) / 2);
 
-      currentFontSize = getFontSizeFor(offset + 400);
+      currentFontSize = getFontSizeFor(offset + (this.translate * 2 / 3));
       textSize(currentFontSize);
-      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.25, 1) * currentAlpha);
-      text('1', this.x + offset + 400, this.y + (this.fontSize - currentFontSize / 2) / 2);
+      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.1, 1) * currentAlpha);
+      text('1', this.x + offset + (this.translate * 2 / 3), this.y + (this.fontSize - currentFontSize / 2) / 2);
     }
 
     pop();
@@ -96,7 +96,7 @@ function CountDown(x, y, countNumber, numberColor) {
     this.onUpdate();
     UpdateAnimation();
 
-    if (this.fontSize <= 200) {
+    if (this.fontSize <= this.fontSize - 50) {
       return;
     }
 

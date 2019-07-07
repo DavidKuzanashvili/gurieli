@@ -49,8 +49,7 @@ function GameOver()
     this.mousePressed = function() {
         modal.statButtons.forEach(function(btn) {
             if (btn.contains(mouseX, mouseY)) {
-                console.log(btn);
-                if(btn.textType === 'reset') {
+                if(btn.typeText === 'reset') {
                     CURRENT_LEVEL = 0;
                     oRoundStart.reset();
                     oGame.reset();
@@ -58,7 +57,7 @@ function GameOver()
                     bindGameOverObject.sceneManager.showScene( RoundStart );
                 }
     
-                if(btn.textType === 'close') {
+                if(btn.typeText === 'close') {
                     CURRENT_LEVEL = 0;
                     oRoundStart.reset();
                     oGame.reset();

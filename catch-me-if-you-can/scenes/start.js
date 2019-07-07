@@ -36,6 +36,21 @@ var score = 0;
 
 var CURRENT_LEVEL = 0;
 
+var sizes = {
+    bottleSizesCoefficient: 0,
+    fruitsCoefficient: 0,
+    fontCoefficient: 0,
+    scoreOffsetCoefficientRight: 0,
+    scoreOffsetCoefficientBottom: 0,
+    tooltipCoefficient: 0,
+    timerCoefficient: 0,
+    timerTextCoefficient: 0,
+    iconsCoefficients: 0,
+    headerMarginCoefficient: 0,
+    showHigestScore: true,
+    showSettings: false
+};
+
 function preload() {
     soundFormats('mp3', 'ogg');
     loadSoundEffects();
@@ -52,6 +67,7 @@ function preload() {
 }
 
 function setup() {
+    changeSizes();
     if(!sounds.background.isLoaded()) {
         setTimeout(setup, 50);
         return;
@@ -63,7 +79,7 @@ function setup() {
     var canvas = createCanvas(windowWidth, windowHeight);
     canvas.parent('canvas');
 
-    leaves = new Leaves(LEVEL[CURRENT_LEVEL].leaves);
+    leaves = new Leaves(LEVEL[CURRENT_LEVEL].leaves, LEVEL[CURRENT_LEVEL].leavesHeight);
 
     var mgr = new SceneManager();
     mgr.wire();
@@ -71,6 +87,7 @@ function setup() {
 }
 
 function windowResized() {
+    changeSizes();
     resizeCanvas(windowWidth, windowHeight);
 }
 
@@ -93,12 +110,33 @@ function loadBottles() {
 }
 
 function loadFruits() {
-    fruitImages.raspberry = [loadImage(imgPath + 'raspberry/raspberryright.png'), loadImage(imgPath + 'raspberry/raspberryleft.png')];
-    fruitImages.vanilla = [loadImage(imgPath + 'vanilla/vanillaleft.png'), loadImage(imgPath + 'vanilla/vanillaright.png')];
-    fruitImages.leaves = [loadImage(imgPath + 'mint/mintleft.png'), loadImage(imgPath + 'mint/mintright.png')];
-    fruitImages.cherry = [loadImage(imgPath + 'cherry/cherryright.png')];
-    fruitImages.feijoa = [loadImage(imgPath + 'feijoa/feijoaleft.png'), loadImage(imgPath + 'feijoa/feijoaright.png')];
-    fruitImages.peach = [loadImage(imgPath + 'peach/peachleft.png'), loadImage(imgPath + 'peach/peachright.png')];
+    fruitImages.raspberry = [
+        { img: loadImage(imgPath + 'raspberry/raspberryright.png'), w: 92, h:88 },
+        { img: loadImage(imgPath + 'raspberry/raspberryleft.png'), w: 92, h: 86 }
+      ];
+      fruitImages.vanilla = [
+        { img: loadImage(imgPath + 'vanilla/vanillaleft.png'), w: 87, h: 78 }, 
+        { img: loadImage(imgPath + 'vanilla/vanillaright.png'), w: 88, h: 83},
+      ];
+      fruitImages.leaves = [
+        { img: loadImage(imgPath + 'mint/mintleft.png'), w: 68, h: 120 }, 
+        { img: loadImage(imgPath + 'mint/mintright.png'), w: 68, h: 113 }
+      ];
+      fruitImages.cherry = [
+        { img: loadImage(imgPath + 'cherry/cherryright.png'), w: 43, h: 110 }
+      ];
+      fruitImages.feijoa = [
+        { img: loadImage(imgPath + 'feijoa/feijoaleft.png'), w: 80, h: 113 }, 
+        { img: loadImage(imgPath + 'feijoa/feijoaright.png'), w: 77, h: 112 },
+        { img: loadImage(imgPath + 'feijoa/feijoa-slice-left.png'), w: 80, h: 83 },
+        { img: loadImage(imgPath + 'feijoa/feijoa-slice-right.png'), w: 85, h: 83 }
+      ];
+      fruitImages.peach = [
+        { img: loadImage(imgPath + 'peach/peachleft.png'), w: 83, h: 84}, 
+        { img: loadImage(imgPath + 'peach/peachright.png'), w: 82, h: 90}, 
+        { img: loadImage(imgPath + 'peach/peach-slice-left.png'), w: 75, h: 79}, 
+        { img: loadImage(imgPath + 'peach/peach-slice-right.png'), w: 65, h: 79 }
+      ];
 }
 
 function loadLeaves() {
@@ -106,7 +144,7 @@ function loadLeaves() {
     leavesImages.raspberry = [loadImage(imgPath + 'leaves/raspberry/raspberry-leaves.png')];
     leavesImages.cherry = [loadImage(imgPath + 'leaves/cherry/cherry-leaves.png')];
     leavesImages.peach = [loadImage(imgPath + 'leaves/peach/peach-leaves.png')];
-    leavesImages.feijoa = [loadImage(imgPath + 'leaves/feijoa/peach-leaves.png')];
+    leavesImages.feijoa = [loadImage(imgPath + 'leaves/feijoa/feijoa-leaves.png')];
 }
 
 function loadLife() {
@@ -155,16 +193,32 @@ function loadIcons() {
       w: 45,
       h: 38
     };
-    // arrow = {
-    //   img: loadImage(iconsPath + 'arrow-down.png'),
-    //   w: 38,
-    //   h: 46
-    // };
-    // whiteDownArrow = {
-    //   img: loadImage(iconsPath + 'white-down-arrow.png'),
-    //   w: 38,
-    //   h: 46
-    // };
+    pngIcons.settings = {
+      img: loadImage(iconsPath + 'settings.png'),
+      w: 45,
+      h: 38
+    };
+
+    pngIcons.yellowSound = {
+        img: loadImage(iconsPath + 'yellowsound.png'),
+        w: 52,
+        h: 38
+    };
+    pngIcons.yellowPause = {
+      img: loadImage(iconsPath + 'yellowpause.png'),
+      w: 43,
+      h: 38
+    };
+    pngIcons.yellowReset = {
+      img: loadImage(iconsPath + 'yellowreset.png'),
+      w: 36,
+      h: 38
+    };
+    pngIcons.yellowClose = {
+      img: loadImage(iconsPath + 'yellowclose.png'),
+      w: 38,
+      h: 38
+    };
 }
 
 function loadSprite() {
@@ -182,3 +236,85 @@ function loadSoundEffects() {
     sounds.countDown = loadSound('sound-effects/CountDown.wav');
     sounds.timeLeft = loadSound('sound-effects/TimeLeft.wav');
 }
+
+function changeSizes() {
+    if(windowWidth >= 1600) {
+      sizes.bottleSizesCoefficient = 1;
+      sizes.fruitsCoefficient = 1;
+      sizes.fontCoefficient = 1;
+      sizes.scoreOffsetCoefficientRight = 0.8;
+      sizes.scoreOffsetCoefficientBottom = 1;
+      sizes.tooltipCoefficient = 1;
+      sizes.timerCoefficient = 1;
+      sizes.timerTextCoefficient = 1;
+      sizes.iconsCoefficients = 1;
+      sizes.headerMarginCoefficient = 1;
+      sizes.showHigestScore = true;
+      sizes.showSettings = false;
+    } else if(windowWidth >= 1440 && windowWidth < 1600) {
+      sizes.bottleSizesCoefficient = 0.85;
+      sizes.fruitsCoefficient = 0.8;
+      sizes.fontCoefficient = 0.9;
+      sizes.scoreOffsetCoefficientRight = 0.7;
+      sizes.scoreOffsetCoefficientBottom = 1;
+      sizes.tooltipCoefficient = 0.95;
+      sizes.timerCoefficient = 0.9;
+      sizes.timerTextCoefficient = 0.9;
+      sizes.iconsCoefficients = 0.8;
+      sizes.headerMarginCoefficient = 0.8;
+      sizes.showHigestScore = true;
+      sizes.showSettings = false;
+    } else if(windowWidth >= 1200 && windowWidth < 1440) {
+      sizes.bottleSizesCoefficient = 0.85;
+      sizes.fruitsCoefficient = 0.8;
+      sizes.fontCoefficient = 0.9;
+      sizes.scoreOffsetCoefficientRight = 0.7;
+      sizes.scoreOffsetCoefficientBottom = 1;
+      sizes.tooltipCoefficient = 0.95;
+      sizes.timerCoefficient = 0.8;
+      sizes.timerTextCoefficient = 0.9;
+      sizes.iconsCoefficients = 0.8;
+      sizes.headerMarginCoefficient = 0.8;
+      sizes.showHigestScore = true;
+      sizes.showSettings = false;
+    } else if(windowWidth >= 1000 && windowWidth < 1200) {
+      sizes.bottleSizesCoefficient = 0.85;
+      sizes.fruitsCoefficient = 0.8;
+      sizes.fontCoefficient = 0.9;
+      sizes.scoreOffsetCoefficientRight = 0.7;
+      sizes.scoreOffsetCoefficientBottom = 0.9;
+      sizes.tooltipCoefficient = 0.95;
+      sizes.timerCoefficient = 0.8;
+      sizes.timerTextCoefficient = 0.9;
+      sizes.iconsCoefficients = 0.8;
+      sizes.headerMarginCoefficient = 0.8;
+      sizes.showHigestScore = false;
+      sizes.showSettings = true;
+    } else if(windowWidth >= 700 && windowWidth < 1000) {
+      sizes.bottleSizesCoefficient = 0.8;
+      sizes.fruitsCoefficient = 0.8;
+      sizes.fontCoefficient = 0.6;
+      sizes.scoreOffsetCoefficientRight = 0.5;
+      sizes.scoreOffsetCoefficientBottom = 0.6;
+      sizes.tooltipCoefficient = 0.95;
+      sizes.timerCoefficient = 0.8;
+      sizes.timerTextCoefficient = 0.9;
+      sizes.iconsCoefficients = 0.8;
+      sizes.headerMarginCoefficient = 0.8;
+      sizes.showHigestScore = false;
+      sizes.showSettings = true;
+    } else if(windowWidth < 700) {
+      sizes.bottleSizesCoefficient = 0.6
+      sizes.fruitsCoefficient = 0.5;
+      sizes.fontCoefficient = 0.5;
+      sizes.scoreOffsetCoefficientRight = 0.2;
+      sizes.scoreOffsetCoefficientBottom = 0.5;
+      sizes.tooltipCoefficient = 0.95;
+      sizes.timerCoefficient = 0.7;
+      sizes.timerTextCoefficient = 0.8;
+      sizes.iconsCoefficients = 0.7;
+      sizes.headerMarginCoefficient = 0.7;
+      sizes.showHigestScore = false;
+      sizes.showSettings = true;
+    }
+  }

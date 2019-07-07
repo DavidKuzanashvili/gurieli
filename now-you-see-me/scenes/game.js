@@ -192,7 +192,9 @@ function Game() {
     if(!isPaused) {
       headerButtons.forEach(function(btn) {
         if(btn.contains(mouseX, mouseY)) {
-          btn.animate('down');
+          if(btn.typeText === 'reset') {
+            resetGame();
+          }
         }
       });
     }
@@ -220,18 +222,13 @@ function Game() {
     if(isCupsClickable()) {
       cups.forEach(function(cup) {
         if(cup.contains(mouseX, mouseY)) {
-          cup.animate('reveal');
-          clickableCups = false;
-          
-
-          console.log(cup.events.reveal.hasOwnProperty("start"));
           cup.events.reveal.start = function() {
-            console.log('skjf');
             if(cup.xushturi) {
-              console.log('hi');
               cup.xushturi.switchAnimation('win');
             }
           }
+          cup.animate('reveal');
+          clickableCups = false;
 
           cup.events.reveal.end = function(){
             delete cup.events.reveal.end;
@@ -472,11 +469,11 @@ function Game() {
     cups[1].xushturi = xushturi;
     winningCup = cups[1];
 
-    cups[1].animate('reveal');
-    cups[1].events.reveal.start = function() {
-      delete events.reveal.start;
+    winningCup.events.reveal.start = function() {
+      delete winningCup.events.reveal.start;
       winningCup.xushturi.switchAnimation('start');
     }
+    cups[1].animate('reveal');
     cups[1].events.reveal.end = function() {
       delete cups[1].events.reveal.end;
       setTimeout(function() {

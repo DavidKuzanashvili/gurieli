@@ -19,5 +19,7 @@ var colors = {
   seafoamBlueTwo: '#5bc7cf',
   cherry: '#e40035',
   lightMossGreen: '#97cc7c',
-  paleOrange: '#fdb05e'
+  paleOrange: '#fdb05e',
+  sixD: '#dddddd',
+  sapGreen: '#53951d'
 }

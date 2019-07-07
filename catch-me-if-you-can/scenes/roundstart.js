@@ -11,6 +11,7 @@ function RoundStart() {
   }
 
   this.setup = function() {
+    
   }
 
   this.draw = function () {
@@ -77,6 +78,7 @@ function RoundStart() {
   function roundStartInit() {
     drawIntroFruit = drawIntroFruitIn;
     leaves.leavesType = LEVEL[CURRENT_LEVEL].leaves;
+    leaves.currentHieght = LEVEL[CURRENT_LEVEL].leavesHeight;
     leaves.animate('in');
     counter = new CountDown(width / 2, height / 2, 3, LEVEL[CURRENT_LEVEL].color);
     counter.onUpdate = function() {
@@ -91,7 +93,7 @@ function RoundStart() {
     }
     title.animate('in');
 
-    subTitle = new Title(width / 2, height - 70, 'Seagrove mxolod ' + LEVEL[CURRENT_LEVEL].fruitName, LEVEL[CURRENT_LEVEL].color, 40);
+    subTitle = new Title(width / 2, height - 70, 'Seagrove ' + LEVEL[CURRENT_LEVEL].fruitName, LEVEL[CURRENT_LEVEL].color, 40);
     subTitle.onUpdate = function() {
       this.x = width / 2;
       this.y = height - 70;

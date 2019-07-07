@@ -23,6 +23,9 @@ function Game() {
     var pauseBtn = null;
     var muteBtn = null;
     var resetBtn = null;
+    var settingsBtn = null;
+    var acceptQuit = null;
+    var refuseQuit = null;
     var gapBetweenBtns = 30;
     var headerMargin = 100;
 
@@ -43,28 +46,40 @@ function Game() {
     this.setup = function () {
         oRoundStart = this.sceneManager.findScene(RoundStart).oScene;
 
-        closeBtn = new ControlButton(pngIcons.close.img, width - 100 - pngIcons.close.w / 2, 70, pngIcons.close.w, pngIcons.close.h);
+        settingsBtn = new ControlButton(pngIcons.settings.img, width - 100 - pngIcons.settings.w / 2, 70, pngIcons.settings.w, pngIcons.settings.h, 'settings');
+        settingsBtn.typeText = 'settings';
+        settingsBtn.onUpdate = function() {
+            this.w = pngIcons.settings.w * sizes.iconsCoefficients;
+            this.h = pngIcons.settings.h * sizes.iconsCoefficients;
+            this.x = width - (headerMargin * sizes.headerMarginCoefficient + pngIcons.settings.w * sizes.iconsCoefficients / 2);
+        }
+
+        closeBtn = new ControlButton(pngIcons.close.img, width - 100 - pngIcons.close.w / 2, 70, pngIcons.close.w, pngIcons.close.h, 'close');
         closeBtn.typeText = 'close';
         closeBtn.onUpdate = function() {
-            this.x = width - 100 - pngIcons.close.w / 2;
+            this.w = pngIcons.close.w * sizes.iconsCoefficients;
+            this.h = pngIcons.close.h * sizes.iconsCoefficients;
         }
 
-        pauseBtn = new ControlButton(pngIcons.pause.img, width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2), 70, pngIcons.pause.w, pngIcons.pause.h);
+        pauseBtn = new ControlButton(pngIcons.pause.img, width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2), 70, pngIcons.pause.w, pngIcons.pause.h, 'pause');
         pauseBtn.typeText = 'pause';
         pauseBtn.onUpdate = function() {
-            this.x = width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2);
+            this.w = pngIcons.pause.w * sizes.iconsCoefficients;
+            this.h = pngIcons.pause.h * sizes.iconsCoefficients;
         }
 
-        muteBtn = new ControlButton(pngIcons.sound.img, width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2), 70, pngIcons.sound.w, pngIcons.sound.h);
-        muteBtn.typeText = 'mute';
+        muteBtn = new ControlButton(pngIcons.sound.img, width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2), 70, pngIcons.sound.w, pngIcons.sound.h, 'sound');
+        muteBtn.typeText = 'sound';
         muteBtn.onUpdate = function() {
-            this.x = width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2);
+            this.w = pngIcons.sound.w * sizes.iconsCoefficients;
+            this.h = pngIcons.sound.h * sizes.iconsCoefficients;
         }
 
-        resetBtn = new ControlButton(pngIcons.reset.img, width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2), 70, pngIcons.reset.w, pngIcons.reset.h);
+        resetBtn = new ControlButton(pngIcons.reset.img, width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2), 70, pngIcons.reset.w, pngIcons.reset.h, 'reset');
         resetBtn.typeText = 'reset';
         resetBtn.onUpdate = function() {
-            this.x = width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2);
+            this.w = pngIcons.reset.w * sizes.iconsCoefficients;
+            this.h = pngIcons.reset.h * sizes.iconsCoefficients;
         }
 
         headerButtons = [ closeBtn, pauseBtn, muteBtn, resetBtn ];
@@ -75,12 +90,19 @@ function Game() {
             shadowOffsetTop: 12
         });
 
-        quitGameModal.quitButtons[0].events.down.end = function () {
+        acceptQuit = quitGameModal.quitButtons[0];
+        refuseQuit = quitGameModal.quitButtons[1];
+
+        acceptQuit.events.down.end = function () {
+            unpouseGame();
+            turnOnSounds();
             bindGameObject.sceneManager.showScene(GameOver);
         }
 
-        quitGameModal.quitButtons[1].events.down.end = function () {
+        refuseQuit.events.down.end = function () {
             showQuitModal = false;
+            turnOnSounds();
+            unpouseGame();
         }
 
         pauseGameModal = new Modal({
@@ -94,6 +116,8 @@ function Game() {
     }
 
     this.draw = function () {
+
+        this.update();
         if (!isPaused) {
             generateFruits();
             updateFruits();
@@ -157,12 +181,56 @@ function Game() {
         
         headerButtons.forEach(function(x) { x.draw() });
 
+        if(sizes.showSettings) {
+            settingsBtn.draw();
+        }
+
         if (showQuitModal) {
             drawQuitGameModal();
         }
 
         if (showPauseModal) {
             drawPauseGame();
+        }
+    }
+
+    this.update = function() {
+        if(windowWidth <= 1000) {
+            headerButtons.forEach(function(btn) {
+                btn.x = width - headerMargin * sizes.headerMarginCoefficient;
+
+                if(btn.typeText === 'close') {
+                    btn.y = 70 + btn.h / 2;
+                }
+                if(btn.typeText === 'pause') {
+                    btn.y = 70 + closeBtn.h + btn.h / 2;
+                }
+                if(btn.typeText === 'sound') {
+                    btn.y = 70 + (closeBtn.h + pauseBtn.h) + btn.h / 2;
+                }
+                if(btn.typeText === 'reset') {
+                    btn.y = 70 + (closeBtn.h + pauseBtn.h + muteBtn.h) +  btn.h / 2;
+                }
+            })
+        } else {
+            headerButtons.forEach(function(btn) {
+                if(btn.typeText === 'close') {
+                    btn.x = width - (headerMargin * sizes.headerMarginCoefficient + pngIcons.close.w * sizes.iconsCoefficients / 2);
+                    btn.y = 70 + btn.h / 2;
+                }
+                if(btn.typeText === 'pause') {
+                    btn.x = width - (headerMargin * sizes.headerMarginCoefficient + gapBetweenBtns + pngIcons.close.w * sizes.iconsCoefficients + pngIcons.pause.w * sizes.iconsCoefficients / 2);
+                    btn.y = 70 + closeBtn.h + btn.h / 2;
+                }
+                if(btn.typeText === 'sound') {
+                    btn.x = width - (headerMargin * sizes.headerMarginCoefficient + 2*gapBetweenBtns + pngIcons.close.w * sizes.iconsCoefficients + pngIcons.pause.w * sizes.iconsCoefficients + pngIcons.sound.w / 2);
+                    btn.y = 70 + (closeBtn.h + pauseBtn.h) + btn.h / 2;
+                }
+                if(btn.typeText === 'reset') {
+                    btn.x = width - (headerMargin * sizes.headerMarginCoefficient + 3*gapBetweenBtns + pngIcons.close.w * sizes.iconsCoefficients + pngIcons.pause.w * sizes.iconsCoefficients + pngIcons.sound.w * sizes.iconsCoefficients + pngIcons.reset.w * sizes.iconsCoefficients / 2);
+                    btn.y = 70 + (closeBtn.h + pauseBtn.h + muteBtn.h) +  btn.h / 2;
+                }
+            });
         }
     }
 
@@ -173,7 +241,7 @@ function Game() {
         stats = new Statistics(3224, 100);
         stats.score = score;
         
-        timer = new Timer(millis(), 30);
+        timer = new Timer(millis(), 35);
         hearts = new LifeFactory(100, 5);
         hearts.generateLifes();
         for(var i = 0; i < deadHearts; i++) {
@@ -185,7 +253,9 @@ function Game() {
             color: LEVEL[CURRENT_LEVEL].color,
             max: maxFruitCount
         }));
+
         bottle.animate('in');
+
         fruits = [];
         cutSequence();
     }
@@ -295,7 +365,7 @@ function Game() {
             score -= currentLevelFruitCount;
             stats.setScore(score);
             console.log(score, username);
-            axios.post("http://gurieli-api.leavingstone.club/api/game", {
+            axios.post("https://gurieli-api.leavingstone.club/api/game", {
                 type: 1,
                 point: score,
                 name: username
@@ -305,7 +375,7 @@ function Game() {
                 console.log(error);
             });
         } else {
-            axios.post("http://gurieli-api.leavingstone.club/api/game", {
+            axios.post("https://gurieli-api.leavingstone.club/api/game", {
                 type: 1,
                 point: score,
                 name: username
@@ -325,6 +395,8 @@ function Game() {
             if (btn.contains(mouseX, mouseY)) {
                 if(btn.typeText === 'close') {
                     showQuitModal = true;
+                    muteSounds();
+                    pauseGame();
                     sounds.popUp.play();
                 }
 
@@ -334,10 +406,15 @@ function Game() {
                     pauseGame();
                 }
 
-                if(btn.typeText === 'mute') {
+                if(btn.typeText === 'sound') {
                     soundsVolume = soundsVolume ? 0 : 1;
                     for(key in sounds) {
-                        sounds[key].setVolume(soundsVolume);
+
+                        if(key === 'background') {
+                            sounds[key].setVolume(soundsVolume / 2);
+                        } else {
+                            sounds[key].setVolume(soundsVolume)
+                        }
                     }
                 }
 
@@ -371,40 +448,45 @@ function Game() {
         switch(keyCode) {
             case SPACE: {
                 togglePause = !togglePause;
-                var puaseBtn = headerButtons.find(function(x) {
-                    return x.type === '| |';
-                });
-
                 if(togglePause) {
-                    puaseBtn.animate('down');
+                    sounds.popUp.play();
+                    showPauseModal = true;
+                    pauseGame();
                 } else {
-                    pauseGameModal.pauseButton.animate('down');
+                    sounds.popUp.play();
+                    showPauseModal = false;
+                    unpouseGame();
                 }
             }
             break;
             case (M || m): {
-                var musicBtn = headerButtons.find(function(x) {
-                    return x.type === 'm';
-                });
-                musicBtn.animate('down');
+                soundsVolume = soundsVolume ? 0 : 1;
+                for(key in sounds) {
+                    if(key === 'background') {
+                        sounds[key].setVolume(soundsVolume / 2);
+                    } else {
+                        sounds[key].setVolume(soundsVolume)
+                    }
+                }
             }
             break;
             case(R || r): {
-                var resetBtn = headerButtons.find(function(x) {
-                    return x.type === 'R';
-                });
-                resetBtn.animate('down');
+                bindGameObject.reset();
+                oRoundStart.reset();
+                bindGameObject.sceneManager.showScene( RoundStart );
             }
             break;
             case ESCAPE: {
                 toggleClose = !toggleClose;
-                var closeBtn = headerButtons.find(function(x) {
-                    return x.type === 'X';
-                });
+
                 if(toggleClose) {
-                    closeBtn.animate('down');
+                    showQuitModal = true;
+                    muteSounds();
+                    pauseGame();
+                    sounds.popUp.play();
                 } else {
-                    quitGameModal.quitButtons[1].animate('down');
+                    sounds.popUp.play();
+                    refuseQuit.animate('down');
                 }
             }
             break;
@@ -441,6 +523,22 @@ function Game() {
         timer.fixTime(millis() - pauseStart);
         isPaused = false;
         delete pauseStart;
+    }
+
+    function muteSounds() {
+        for(key in sounds) {
+            sounds[key].setVolume(0);
+        }
+    }
+
+    function turnOnSounds() {
+        for(key in sounds) {
+            if(key === 'background') {
+                sounds[key].setVolume(0.5);
+            } else {
+                sounds[key].setVolume(1);
+            }
+        }
     }
 
     function cutSequence() {

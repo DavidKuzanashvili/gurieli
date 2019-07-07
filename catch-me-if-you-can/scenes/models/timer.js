@@ -2,7 +2,9 @@ function Timer(timerStart, maxTime = 60) {
   this.timerStart = timerStart;
   this.font = fonts.LGVBold;
   var timerColor = '#f9f5ed';
-  var timerShadow = '#aeaeae';
+  var textColor = colors.sapGreen;
+  var textOffsetX = 0;
+  var timerShadow = colors.sixD;
   var seconds = 0;
   var startSound = 0;
 
@@ -33,16 +35,16 @@ function Timer(timerStart, maxTime = 60) {
     translate(0, offsetTop);
     noStroke();
     fill(timerShadow);
-    arc(width / 2, 0, 250, 250, 0, PI);
+    arc(width / 2, 0, 250 * sizes.timerCoefficient, 250 * sizes.timerCoefficient, 0, PI);
 
     fill(timerColor);
-    arc(width / 2, 0, 240, 220, 0, PI);
+    arc(width / 2, 0, 240 * sizes.timerCoefficient, 220 * sizes.timerCoefficient, 0, PI);
 
     textAlign(CENTER, CENTER);
-    fill('#db2643');
-    textSize(30);
+    fill(textColor);
+    textSize(30 * sizes.timerTextCoefficient);
     textFont(this.font);
-    text(this.getTimeText(), width / 2, 50);
+    text(this.getTimeText(), width / 2 + textOffsetX, 50 * sizes.timerCoefficient);
 
     pop();
   }
@@ -53,9 +55,14 @@ function Timer(timerStart, maxTime = 60) {
 
     if(this.getSecondsLeft() === 10) {
       startSound++;
-      if(startSound === 60) {
+      if(startSound >= 60) {
+        textColor = colors.cherry;
         sounds.timeLeft.play();
       } 
+    }
+
+    if(this.getSecondsLeft() <= 9) {
+      textOffsetX = round(random(-1, 1));
     }
   }
 

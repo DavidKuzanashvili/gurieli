@@ -4,6 +4,11 @@ function Statistics(higestScore, startingPoint) {
   this.score = 0;
   this.round = 1;
   this.font = fonts.LGVBold;
+  var pointX = 0;
+  var roundX = 0;
+  var roundY = 0;
+  var pointAlign;
+  var roundAlign;
   var marginTop = 70;
   var higestScoreColor = hexToRgb(colors.sand);
 
@@ -56,18 +61,32 @@ function Statistics(higestScore, startingPoint) {
     textSize(32);
     textFont(this.font);
     textAlign(LEFT, CENTER);
-    text('umaRlesi qula: ' + this.higestScore, this.startingPoint, marginTop);
+    if(sizes.showHigestScore) {
+      text('umaRlesi qula: ' + this.higestScore, this.startingPoint * sizes.headerMarginCoefficient, marginTop);
+    }
     fill(255, 255, 255, 255 * a);
-    textAlign(RIGHT, CENTER);
-    text('qula: ' + this.score, width / 2 - 200, marginTop);
-    textAlign(LEFT, CENTER);
-    text('raundi: ' + this.round, width / 2 + 200, marginTop);
+    textAlign(pointAlign, CENTER);
+    text('qula: ' + this.score, pointX, marginTop);
+    textAlign(roundAlign, CENTER);
+    text('raundi: ' + this.round, roundX, roundY);
 
     pop();
   }
 
   this.update = function() {
     updateAnimtion();
+
+    if(windowWidth >= 1200) {
+      pointAlign = RIGHT;
+      roundAlign = LEFT;
+      pointX = width / 2 - 200 * sizes.headerMarginCoefficient;
+      roundX = width / 2 + 200 * sizes.headerMarginCoefficient;
+      roundY = marginTop;
+    } else {
+      pointX = roundX = this.startingPoint * sizes.headerMarginCoefficient;
+      roundY = marginTop + 50;
+      pointAlign = roundAlign = LEFT;
+    }
   }
 
   this.animate = function(type) {

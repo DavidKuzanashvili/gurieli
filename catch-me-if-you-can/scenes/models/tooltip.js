@@ -8,6 +8,7 @@ function Tooltip(options) {
   this.max = options.max || 100;
   this.min = options.min || 0;
   this.speed = 1;
+  this.onUpdate = function() {};
   var fillLevel = this.min;
   var currentHeight = 0;
 
@@ -59,6 +60,7 @@ function Tooltip(options) {
   }
 
   this.update = function() {
+    this.onUpdate();
     updateAnimation(); 
     if(currentHeight != this.getCurrentHeight()) {
       if(currentHeight < this.getCurrentHeight()) {

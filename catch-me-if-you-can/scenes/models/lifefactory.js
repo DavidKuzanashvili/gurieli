@@ -8,6 +8,8 @@ function LifeFactory(startDrawFrom, lifeNumber) {
   var step = lifeWidth + gap;
 
   this.draw = function() {
+    push();
+    imageMode(CENTER);
     this.inactiveLifes.forEach(function(inactiveLife) {
       inactiveLife.draw();
       inactiveLife.update();
@@ -16,6 +18,7 @@ function LifeFactory(startDrawFrom, lifeNumber) {
       life.update();
       life.draw();
     });
+    pop();
   }
   
   this.generateLifes = function() {

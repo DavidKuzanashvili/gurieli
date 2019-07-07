@@ -7,7 +7,6 @@ function Bottle(x, type, speed, tooltip) {
   this.height = 475;
   this.startPoint = -(this.height + 100);
   this.endPoint = height - this.height / 4 + 10;
-  this.y = height - this.height / 4 + 10;
   this.tooltip = tooltip || null;
   this.fruits = [];
   var fruitsOffsetXSpeed = 10;
@@ -26,7 +25,8 @@ function Bottle(x, type, speed, tooltip) {
         this.y = Math.min(this.y + dropSpeed, this.endPoint);
         
         if(this.y >= this.endPoint) {
-          this.events.in.end();
+          this.y = this.endPoint;
+          this.animate();
         }
       }.bind(this)
     }
@@ -75,6 +75,9 @@ function Bottle(x, type, speed, tooltip) {
   }
 
   this.update = function() {
+    this.width = 140 * sizes.bottleSizesCoefficient;
+    this.height = 475 * sizes.bottleSizesCoefficient;
+
     this.updateFruits();
     if(this.y >= this.endPoint) {
       if(mouseX > this.x) {
@@ -84,12 +87,15 @@ function Bottle(x, type, speed, tooltip) {
       if(mouseX < this.x) {
         this.x = Math.max(this.x - this.speed, mouseX);
       }
+
+      this.endPoint = height - this.height / 4 + 10;;
+      this.y = this.endPoint;
     } else {
       updateAnimation();
     }
 
-    if(this.tooltip){
-      this.tooltip.y = height - 20 - this.tooltip.height / 2;
+    if(this.tooltip) {
+      this.tooltip.y = height - 20 * sizes.bottleSizesCoefficient - this.tooltip.height / 2;
       this.tooltip.x = this.x + 75 + 30;
       this.tooltip.update();
     }

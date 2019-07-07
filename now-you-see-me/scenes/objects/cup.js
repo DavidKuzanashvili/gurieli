@@ -159,28 +159,37 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
     this.events[key] = {};
   }
 
-  this.draw = function() {
-    if(this.xushturi && this.xushturiOn) {
-      this.xushturi.draw();
-    }
+  this.draw = function () {
     push();
 
     imageMode(CENTER);
     translate(this.x + this.offsetX, this.y + this.offsetY);
     rotate(this.rotation);
     drawShadow();
+
+    pop();
+
+    if (this.xushturi && this.xushturiOn) {
+      this.xushturi.draw();
+    }
+
+    push();
+
+    imageMode(CENTER);
+    translate(this.x + this.offsetX, this.y + this.offsetY);
+    rotate(this.rotation);
     image(cupImgObj.img, 0, 0, this.width, this.height);
 
     pop();
   }
 
-  this.update = function() {
+  this.update = function () {
     this.onUpdate();
 
-    if(this.xushturi && this.xushturiOn) {
+    if (this.xushturi && this.xushturiOn) {
       this.xushturi.update();
       this.xushturi.x = this.x;
-      this.xushturi.y = this.y;
+      this.xushturi.y = this.y + this.height / 2;
     }
 
     updateAnimation();

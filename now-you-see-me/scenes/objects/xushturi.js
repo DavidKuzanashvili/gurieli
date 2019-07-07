@@ -12,18 +12,19 @@ function Xushturi(x, y) {
   var speed = 0;
   var sequence = null;
 
-  this.draw = function() {
+  this.draw = function () {
     push();
 
     // rectMode(CENTER);
     // fill('yellow');
     // noStroke();
     // rect(this.x, this.y, this.width, this.height);
-    if(model) {
-      imageMode(CENTER);
-      model.translateX = this.x;
-      model.translateY = this.y;
+    if (model) {
+      imageMode(CORNER);
       model.update();
+      var sprite = model.frame.sequence[model.currentIndex];
+      model.translateX = this.x - sprite.width / 2;
+      model.translateY = this.y - sprite.height;
       model.draw();
     }
 

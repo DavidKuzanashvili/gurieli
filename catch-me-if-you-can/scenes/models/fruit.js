@@ -36,7 +36,7 @@ function Fruit(options = {}) {
 
     imageMode(CENTER);
 
-    image(fruitImages[this.type][this.imageTypeIndex], this.x, this.y, this.width * scaleCoefficient, this.height * scaleCoefficient);
+    image(fruitImages[this.type][this.imageTypeIndex].img, this.x, this.y, fruitImages[this.type][this.imageTypeIndex].w * sizes.fruitsCoefficient * scaleCoefficient, fruitImages[this.type][this.imageTypeIndex].h * sizes.fruitsCoefficient * scaleCoefficient);
 
     pop();
   }
