@@ -8,14 +8,14 @@ function Tooltip(options) {
   this.max = options.max || 100;
   this.min = options.min || 0;
   this.speed = 1;
-  this.onUpdate = function() {};
+  this.onUpdate = function () { };
   var fillLevel = this.min;
   var currentHeight = 0;
 
   var darkenColor = darken(this.color);
   var fillObject = null;
 
-  this.getCurrentHeight = function(){
+  this.getCurrentHeight = function () {
     return parseInt(map(fillLevel, this.min, this.max, 0, this.height));
   }
 
@@ -27,43 +27,46 @@ function Tooltip(options) {
 
   var animations = {
     in: {
-      setup: function() {
+      setup: function () {
         a = 0;
         hideX = -100;
       },
-      update: function() {
+      update: function () {
         a = Math.min(a + alphaChangeSpeed, 1);
         offsetLeft = Math.min(offsetLeft + reavealAnimationSpeed, 0);
-      } 
+      }
     }
   };
 
   this.events = {};
 
-  for(var key in animations) {
+  for (var key in animations) {
     this.events[key] = {};
   }
 
-  this.draw = function() {
+  this.draw = function () {
     push();
+    var w = floor(this.width * sizes.tooltipCoefficient);
+    var h = floor(this.height * sizes.tooltipCoefficient);
+    var ch = floor(currentHeight * sizes.tooltipCoefficient);
 
     rectMode(CENTER);
     noFill();
     stroke(color(255, 255, 255, 75 * a));
     strokeWeight(2);
-    rect(this.x, this.y, this.width, this.height, 20);
-    
+    rect(this.x, this.y, w, h, 20);
+
     tint(255, 255 * a);
-    image(fillObject, this.x - this.width / 2, this.y - this.height / 2 + (this.height - currentHeight), this.width, currentHeight, 0, this.height - currentHeight, this.width, currentHeight);
+    image(fillObject, this.x - w / 2, this.y - h / 2 + (h - ch), w, ch, 0, this.height - currentHeight, this.width, currentHeight);
 
     pop();
   }
 
-  this.update = function() {
+  this.update = function () {
     this.onUpdate();
-    updateAnimation(); 
-    if(currentHeight != this.getCurrentHeight()) {
-      if(currentHeight < this.getCurrentHeight()) {
+    updateAnimation();
+    if (currentHeight != this.getCurrentHeight()) {
+      if (currentHeight < this.getCurrentHeight()) {
         currentHeight += this.speed;
       } else {
         currentHeight -= this.speed;
@@ -71,29 +74,29 @@ function Tooltip(options) {
     }
   }
 
-  this.setLevel = function(point){
+  this.setLevel = function (point) {
     fillLevel = Math.max(Math.min(point, this.max), this.min);
-    
+
     return -(this.max - point);
   }
 
-  this.increase = function(point) {
+  this.increase = function (point) {
     return this.setLevel(fillLevel + (point || 1));
   }
 
-  this.decrease = function(point) {
+  this.decrease = function (point) {
     return this.setLevel(fillLevel - (point || 1));
   }
 
-  this.reset = function() {
+  this.reset = function () {
     this.setLevel(this.min);
   }
 
-  this.reload = function(){
-    if(!!fillObject) {
+  this.reload = function () {
+    if (!!fillObject) {
       delete fillObject;
     }
-    
+
     fillObject = createGraphics(this.width, this.height);
 
     fillObject.clear();
@@ -109,9 +112,9 @@ function Tooltip(options) {
       a: alpha(darkenColor),
       w: round((this.width - 4) / 3)
     };
-    
-    for(var i = 2; i < c.w + 2; i++) {
-      for(var j = 2; j < this.height - 2; j++) {        
+
+    for (var i = 2; i < c.w + 2; i++) {
+      for (var j = 2; j < this.height - 2; j++) {
         var index = (i + j * this.width) * 4;
 
         fillObject.pixels[index + 0] = c.r;
@@ -123,12 +126,12 @@ function Tooltip(options) {
     fillObject.updatePixels();
   }
 
-  this.animate = function(type) {
-    if(activeAnimation) {
+  this.animate = function (type) {
+    if (activeAnimation) {
       triggerAnimationEvent(activeAnimation, 'end');
     }
 
-    if(animations.hasOwnProperty(type)) {
+    if (animations.hasOwnProperty(type)) {
       activeAnimation = type;
       animations[activeAnimation].setup();
       triggerAnimationEvent(activeAnimation, 'start');
@@ -138,15 +141,15 @@ function Tooltip(options) {
   }
 
   function updateAnimation() {
-    if(activeAnimation === '') {
+    if (activeAnimation === '') {
       return;
     }
 
     animations[activeAnimation].update();
   }
 
-  var triggerAnimationEvent = function(animation, event) {
-    if(this.events.hasOwnProperty(animation) && this.events[animation].hasOwnProperty(event)) {
+  var triggerAnimationEvent = function (animation, event) {
+    if (this.events.hasOwnProperty(animation) && this.events[animation].hasOwnProperty(event)) {
       return this.events[animation][event]();
     }
 
