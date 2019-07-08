@@ -101,4 +101,7 @@ function loadSequences() {
 
 function loadSounds() {
   sounds.background = loadSound('assets/sound-effects/background.wav');
+  sounds.wrong = loadSound('assets/sound-effects/wrong.wav');
+  sounds.before = loadSound('assets/sound-effects/before.wav');
+  sounds.correct = loadSound('assets/sound-effects/correct.wav');
 }

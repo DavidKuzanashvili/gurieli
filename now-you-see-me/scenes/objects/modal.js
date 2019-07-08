@@ -107,7 +107,7 @@ function Modal(options) {
     textFont(this.font);
     textAlign(LEFT, CENTER);
     fill(colors.sickGreen);
-    text('umaRlesi qula: 3224', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);
+    text('umaRlesi qula: 57', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);
     fill(255);
     text('qula: ' + this.score, width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop + lineHeight);
     fill(colors.sickGreen);

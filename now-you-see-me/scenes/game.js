@@ -38,10 +38,10 @@ function Game() {
   //Levels
   var startSpeed = 0.1;
   var startSwaps = 5;
-  var increaseSpeed = 0.1;
-  var increaseSwaps = 3;
-  var endSpeed = 0.5;
-  var endSwaps = 25;
+  var increaseSpeed = 0.02;
+  var increaseSwaps = 1;
+  var endSpeed = 0.4;
+  var endSwaps = 15;
   var CURRENT_LEVEL = 0;
 
   var isCupsClickable = function(){
@@ -100,7 +100,7 @@ function Game() {
           delete cups[1].events.hide.end;
           startLevel(0);
         };
-      }, 1000);
+      }, 1500);
     }
   }
 
@@ -318,7 +318,7 @@ function Game() {
                   delete cup.events.hide.end;
                   startLevel(CURRENT_LEVEL);
                 }
-              }, 500);
+              }, 1500);
             } else {
               sounds.giggle.play();
               if(score > 0) {
@@ -355,11 +355,11 @@ function Game() {
                           delete winningCup.events.hide.end;
                           startLevel(CURRENT_LEVEL);
                         }
-                      }, 200);
+                      }, 800);
                     }
                     winningCup.animate('reveal');
-                  }, 50);
-                }, 200);
+                  }, 800);
+                }, 800);
               }
             }
 
@@ -548,7 +548,7 @@ function Game() {
     textSize(40 * sizes.fontCoefficient);
     textFont(fonts.LGVBold);
     textAlign(LEFT, CENTER);
-    text('umaRlesi qula: 3224', 100 * sizes.headerMarginCoefficient, marginTop);
+    text('umaRlesi qula: 57', 100 * sizes.headerMarginCoefficient, marginTop);
 
     pop();
   }
@@ -574,34 +574,35 @@ function Game() {
   }
 
   function resetGame() {
-    showStats = false;
-    score = 0;
-    scoreCircle.setScore(score);
-    CURRENT_LEVEL = 0;
+  //   showStats = false;
+  //   score = 0;
+  //   scoreCircle.setScore(score);
+  //   CURRENT_LEVEL = 0;
 
-    hearts.generateLifes(false);
+  //   hearts.generateLifes(false);
     
-    cups.forEach(function(cup) {
-      cup.xushturi = null;
-    });
+  //   cups.forEach(function(cup) {
+  //     cup.xushturi = null;
+  //   });
 
-    cups[1].xushturi = xushturi;
-    winningCup = cups[1];
+  //   cups[1].xushturi = xushturi;
+  //   winningCup = cups[1];
 
-    winningCup.events.reveal.start = function() {
-      delete winningCup.events.reveal.start;
-      winningCup.xushturi.switchAnimation('start');
-    }
-    cups[1].animate('reveal');
-    cups[1].events.reveal.end = function() {
-      delete cups[1].events.reveal.end;
-      setTimeout(function() {
-        cups[1].animate('hide');
-        cups[1].events.hide.end = function(){
-          delete cups[1].events.hide.end;
-          startLevel(0);
-        };
-      }, 1000);
-    }
+  //   winningCup.events.reveal.start = function() {
+  //     delete winningCup.events.reveal.start;
+  //     winningCup.xushturi.switchAnimation('start');
+  //   }
+  //   cups[1].animate('reveal');
+  //   cups[1].events.reveal.end = function() {
+  //     delete cups[1].events.reveal.end;
+  //     setTimeout(function() {
+  //       cups[1].animate('hide');
+  //       cups[1].events.hide.end = function(){
+  //         delete cups[1].events.hide.end;
+  //         startLevel(0);
+  //       };
+  //     }, 1000);
+  //   }
+      document.location.reload();
   }
 }

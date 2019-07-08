@@ -16,7 +16,7 @@ function Modal(options) {
   var resumeText = 'TamaSis gagrZeleba';
   var resumeTextWidth;
   var overlayColor = hexToRgb(colors.darkForestGreen);
-  var lines = 'umaRlesi qula: 3224\nqula: ' + this.score +'\nTavidan\ngamorTva';
+  var lines = 'umaRlesi qula: 547\nqula: ' + this.score +'\nTavidan\ngamorTva';
   var controlButtonsOffsetX = textWidth('gamorTva') * this.fontSize / 12;
   var lineHeight = 90;
   this.statResetButton = new ControlButton(pngIcons.reset.img, width / 2, height / 2, pngIcons.reset.w, pngIcons.reset.h, 'reset');
@@ -122,10 +122,10 @@ function Modal(options) {
     textLeading(lh);
     textFont(this.font);
     if(!sizes.modalMobile) {
-      text('umaRlesi qula: 3224\nqula: ' + this.score +'\nTavidan\ngamorTva', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
+      text('umaRlesi qula: 547\nqula: ' + this.score +'\nTavidan\ngamorTva', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
       text('gaaziare', width / 2 - w / 2 + 350, height / 2 - h / 2 + mt + 3 * lh);
     } else {
-      text('umaRlesi qula: 3224\nqula: ' + this.score +'\nTavidan\ngamorTva\ngaaziare', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
+      text('umaRlesi qula: 547\nqula: ' + this.score +'\nTavidan\ngamorTva\ngaaziare', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
     }
 
     //Buttons

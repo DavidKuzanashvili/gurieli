@@ -413,25 +413,25 @@ function Game() {
             score -= currentLevelFruitCount;
             stats.setScore(score);
             console.log(score, username);
-            axios.post("https://gurieli-api.leavingstone.club/api/game", {
-                type: 1,
-                point: score,
-                name: username
-            }).then(function(response) {
-                console.log(response);
-            }).catch(function(error) {
-                console.log(error);
-            });
+            // axios.post("https://gurieli-api.leavingstone.club/api/game", {
+            //     type: 1,
+            //     point: score,
+            //     name: username
+            // }).then(function(response) {
+            //     console.log(response);
+            // }).catch(function(error) {
+            //     console.log(error);
+            // });
         } else {
-            axios.post("https://gurieli-api.leavingstone.club/api/game", {
-                type: 1,
-                point: score,
-                name: username
-            }).then(function(response) {
-                console.log(response);
-            }).catch(function(error) {
-                console.log(error);
-            });
+            // axios.post("https://gurieli-api.leavingstone.club/api/game", {
+            //     type: 1,
+            //     point: score,
+            //     name: username
+            // }).then(function(response) {
+            //     console.log(response);
+            // }).catch(function(error) {
+            //     console.log(error);
+            // });
         }
         index = 0; 
         currentLevelFruitCount = 0;

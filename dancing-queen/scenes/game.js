@@ -59,6 +59,11 @@ function Game() {
     if(isPaused) {
       pauseGameModal.drawPause();
     }
+
+    if(showStats) {
+      statsModal.setScore(score);
+      statsModal.drawStats();
+    }
     
     pop();
   }
@@ -238,6 +243,7 @@ function Game() {
   function gameAction(keyCode){
     if(ACTIVE_KEY_CODES.has(keyCode)) {
       score++;
+      sounds.correct.play();
       for(var i = 0; i < controlColumns.length; i++) {
         if(controlColumns[i].btnTypeCode === keyCode) {
           for(var j = 0; j < controlColumns[i].arrows.length; j++) {
@@ -267,6 +273,7 @@ function Game() {
                 
                 if(controlColumns[i].isInActiveArea(controlColumns[i].arrows[j].y)) {
                   score--;
+                  sounds.wrong.play();
                   controlColumns[i].arrows[j].incorrect();
                   oDancer.animate('shake');
 
@@ -300,9 +307,10 @@ function Game() {
   }
 
   this.reset = function() {
-    score = 0;
-    header.setScore(score);
-    showStats = false;
-    unpouseGame();
+    // score = 0;
+    // header.setScore(score);
+    // showStats = false;
+    // unpouseGame();
+    document.location.reload();
   }
 }

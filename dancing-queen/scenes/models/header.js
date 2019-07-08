@@ -100,7 +100,7 @@ function Header() {
       textSize(32);
       textFont(fonts.LGVBold);
       textAlign(RIGHT, TOP);
-      text('umaRlesi qula: 1', width - 50, self.height / 2);
+      text('umaRlesi qula: 789', width - 50, self.height / 2);
 
       textAlign(RIGHT, TOP);
       text('qula: ' + score, width - 50, self.height / 2 + 32);
@@ -109,7 +109,7 @@ function Header() {
       textSize(38);
       textFont(fonts.LGVBold);
       textAlign(LEFT, CENTER);
-      text('umaRlesi qula: 1', width / 2, 85);
+      text('umaRlsei qula: 914', width / 2, 85);
 
       textAlign(RIGHT, CENTER);
       text('qula: ' + score, width - drawStart + 25, 85);

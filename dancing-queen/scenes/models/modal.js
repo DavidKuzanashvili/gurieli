@@ -7,14 +7,14 @@ function Modal(options) {
   this.height = options.height || 480;
   this.fontSize = options.fontSize || 40;
   this.font = options.font || fonts.LGVBold;
+  this.score = 0;
   var shadowColor = darken(color(colors.boogerTwo));
   var marginLeft = 50;
   var marginTop = 100;
-  var lines = 'umaRlesi qula: 3224\nqula: 244\nTavidan\ngamorTva'
-  var controlButtonsOffsetX = textWidth('gamorTva') * this.fontSize / 12;
+  var controlButtonsOffsetX = textWidth('Close') * this.fontSize / 12;
   var lineHeight = 90;
   var overlayColor = hexToRgb(colors.lightTan);
-  var resumeText = 'TamaSis gagrZeleba';
+  var resumeText = 'gagrZele TamaSi';
   var resumeTextWidth;
   this.statResetButton = new ControlButton(icons.reset.img, width / 2, height / 2, icons.reset.w, icons.reset.h);
   this.statResetButton.textType = 'reset';
@@ -98,9 +98,9 @@ function Modal(options) {
     textSize(this.fontSize);
     textLeading(lineHeight);
     textFont(this.font);
-    text(lines, width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);
+    text('umaRlesi qula: 914\nqula: ' + this.score +'\nTavidan\ngamortva', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);
     fill(colors.frenchBlue);
-    text('gaaziare', width / 2 - this.width / 2 + 370, height / 2 - this.height / 2 + marginTop + 3 * lineHeight);
+    text('gaziareba', width / 2 - this.width / 2 + 370, height / 2 - this.height / 2 + marginTop + 3 * lineHeight);
 
     //Buttons
     this.statButtons.forEach(function(btn) {
@@ -165,4 +165,8 @@ function Modal(options) {
 
     pop();
   }
+
+  this.setScore = function(value) {
+    this.score = value;
+  } 
 }

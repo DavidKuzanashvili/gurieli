@@ -1,5 +1,5 @@
 function Statistics(higestScore, startingPoint) {
-  this.higestScore = higestScore;
+  this.higestScore = 547;
   this.startingPoint = startingPoint;
   this.score = 0;
   this.round = 1;
