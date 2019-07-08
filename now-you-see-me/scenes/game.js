@@ -197,7 +197,16 @@ function Game() {
   this.update = function() {
   }
 
+  this.touchStarted = function(){
+    var target = touches.length ? touches[touches.length - 1] : {x: -1000, y: -1000};
+    clickCallback(target.x, target.y);
+  }
+
   this.mousePressed = function() {
+    clickCallback(mouseX, mouseY);
+  }
+
+  function clickCallback(mouseX, mouseY){
     headerButtons.forEach(function(btn) {
       if(btn.contains(mouseX, mouseY)) {
         if(btn.typeText === 'close') {

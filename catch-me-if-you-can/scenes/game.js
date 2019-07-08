@@ -438,7 +438,7 @@ function Game() {
         showQuitModal = false;
     }
 
-    this.touchStart = function(){
+    this.touchStarted = function(){
         var target = touches.length ? touches[touches.length - 1] : {x: -1000, y: -1000};
         clickCallback(target.x, target.y);
     }
