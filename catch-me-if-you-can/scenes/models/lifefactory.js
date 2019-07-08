@@ -29,6 +29,8 @@ function LifeFactory(startDrawFrom, lifeNumber) {
   }
 
   this.drawSingleHeart = function(){
+    resHeart.x = this.startDrawFrom * sizes.headerMarginCoefficient + resHeart.width / 2;
+
     push();
     imageMode(CENTER);
 
@@ -44,7 +46,7 @@ function LifeFactory(startDrawFrom, lifeNumber) {
     pop();
   }
 
-  this.drawMultipleHearts = function(){
+  this.drawMultipleHearts = function() {
     push();
     imageMode(CENTER);
     this.inactiveLifes.forEach(function(inactiveLife) {

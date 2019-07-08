@@ -17,10 +17,12 @@ function Game() {
   
   var togglePause = false;
   var toggleClose = false;
+  var toggleSound = false;
 
   var isPaused = false;
   var showQuitModal = false;
   var showStats = false;
+  var showPauseModal = false;
   
   //Game
   var score = 0;
@@ -113,7 +115,9 @@ function Game() {
     });
     
     cups.forEach(function(cup) {
-      cup.update();
+      if(!isPaused) {
+        cup.update();
+      }
     });
     
     if(!isPaused && swapStep) {
@@ -127,7 +131,12 @@ function Game() {
     hearts.draw();
 
     drawHigestScore();
-    scoreCircle.draw();
+
+    if(windowWidth >= 1000) {
+      scoreCircle.draw();
+    } else {
+      drawPoint();
+    }
     headerButtons.forEach(function(btn) {
       btn.draw();
     });
@@ -136,7 +145,7 @@ function Game() {
       quitGameModal.drawQuit();
     }
 
-    if(isPaused) {
+    if(showPauseModal) {
       pauseGameModal.drawPause();
     }
 
@@ -189,15 +198,45 @@ function Game() {
   }
 
   this.mousePressed = function() {
-    if(!isPaused) {
-      headerButtons.forEach(function(btn) {
-        if(btn.contains(mouseX, mouseY)) {
-          if(btn.typeText === 'reset') {
-            resetGame();
+    headerButtons.forEach(function(btn) {
+      if(btn.contains(mouseX, mouseY)) {
+        if(btn.typeText === 'close') {
+          showQuitModal = true;
+          sounds.popUp.play();
+        }
+
+        if(btn.typeText === 'reset') {
+          sounds.click.play();
+          showQuitModal = showPauseModal = showStats = false;
+          unpouseGame();
+          resetGame();
+        }
+
+        if(btn.typeText === 'sound') {
+          sounds.click.play();
+          toggleSound = !toggleSound;
+
+          if(toggleSound) {
+            for(key in sounds) {
+              sounds[key].setVolume(0);
+            }
+          } else {
+            for(key in sounds) {
+              if(key === 'background') {
+                sounds[key].setVolume(0.2);
+              } else {
+                sounds[key].setVolume(1);
+              }
+            }
           }
         }
-      });
-    }
+
+        if(btn.typeText === 'pause') {
+          sounds.popUp.play();
+          showPauseModal = true;
+        }
+      } 
+    })
 
     if(pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
       showPauseModal = false;
@@ -244,6 +283,11 @@ function Game() {
                 }
               }, 500);
             } else {
+              sounds.giggle.play();
+              if(score > 0) {
+                score--;
+                scoreCircle.setScore(score);
+              }
               if(hearts.lifes.length > 0) {
                 hearts.lifes.pop();
               }
@@ -299,24 +343,47 @@ function Game() {
     switch(keyCode) {
       case SPACE: {
         togglePause = !togglePause;
-        
+
         if(togglePause) {
-          pauseButton.animate('down');
+          sounds.popUp.play();
+          showPauseModal = true;
+        } else {
+          showPauseModal = false;
+          unpouseGame();
         }
       }
       break;
       case (M || m): {
-        muteButton.animate('down');
+        sounds.click.play();
+          togglePause = !togglePause;
+
+          if(togglePause) {
+            for(key in sounds) {
+              sounds[key].setVolume(0);
+            }
+          } else {
+            for(key in sounds) {
+              if(key === 'background') {
+                sounds[key].setVolume(0.2);
+              } else {
+                sounds[key].setVolume(1);
+              }
+            }
+          }
       }
       break;
       case (R || r): {
-        resetButton.animate('down');
       }
       break;
       case ESCAPE: {
         toggleClose = !toggleClose;
         if(toggleClose) {
-          closeButton.animate('down');
+          showQuitModal = true;
+          sounds.popUp.play();
+        } else {
+          showStats = true;
+          showQuitModal = false;
+          sounds.popUp.play();
         }
       }
       break;
@@ -381,31 +448,35 @@ function Game() {
     cups[1].xushturi = xushturi;
     winningCup = cups[1];
 
-    closeBtn = new ControlButton(pngIcons.close.img, width - 100 - pngIcons.close.w / 2, 70, pngIcons.close.w, pngIcons.close.h);
-    closeBtn.typeText = 'close';
+    closeBtn = new ControlButton(pngIcons.close.img, width - 100 - pngIcons.close.w / 2, 70, pngIcons.close.w, pngIcons.close.h, 'close');
     closeBtn.onUpdate = function() {
-        this.x = width - 100 - pngIcons.close.w / 2;
+        this.x = width - 100 * sizes.headerMarginCoefficient - pngIcons.close.w / 2;
+        this.w = pngIcons.close.w * sizes.iconSizes;
+        this.h = pngIcons.close.h * sizes.iconSizes
     }
 
-    pauseBtn = new ControlButton(pngIcons.pause.img, width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2), 70, pngIcons.pause.w, pngIcons.pause.h);
-    pauseBtn.typeText = 'pause';
+    pauseBtn = new ControlButton(pngIcons.pause.img, width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2), 70, pngIcons.pause.w, pngIcons.pause.h, 'pause');
     pauseBtn.onUpdate = function() {
-        this.x = width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2);
+        this.x = width - (headerMargin * sizes.headerMarginCoefficient + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2);
+        this.w = pngIcons.pause.w * sizes.iconSizes;
+        this.h = pngIcons.pause.h * sizes.iconSizes
     }
 
-    muteBtn = new ControlButton(pngIcons.sound.img, width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2), 70, pngIcons.sound.w, pngIcons.sound.h);
-    muteBtn.typeText = 'mute';
+    muteBtn = new ControlButton(pngIcons.sound.img, width - (headerMargin * sizes.headerMarginCoefficient + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2), 70, pngIcons.sound.w, pngIcons.sound.h, 'sound');
     muteBtn.onUpdate = function() {
-        this.x = width - (headerMargin + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2);
+        this.x = width - (headerMargin * sizes.headerMarginCoefficient + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2);
+        this.w = pngIcons.sound.w * sizes.iconSizes;
+        this.h = pngIcons.sound.h * sizes.iconSizes
     }
 
-    resetBtn = new ControlButton(pngIcons.reset.img, width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2), 70, pngIcons.reset.w, pngIcons.reset.h);
-    resetBtn.typeText = 'reset';
+    resetBtn = new ControlButton(pngIcons.reset.img, width - (headerMargin * sizes.headerMarginCoefficient + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2), 70, pngIcons.reset.w, pngIcons.reset.h, 'reset');
     resetBtn.onUpdate = function() {
-        this.x = width - (headerMargin + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2);
+        this.x = width - (headerMargin * sizes.headerMarginCoefficient + 3*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w + pngIcons.reset.w / 2);
+        this.w = pngIcons.reset.w * sizes.iconSizes;
+        this.h = pngIcons.reset.h * sizes.iconSizes
     }
 
-    headerButtons = [ closeBtn, pauseBtn, muteBtn, resetBtn ];
+    headerButtons = [ closeBtn, pauseBtn, muteBtn ];
 
     scoreCircle = new Score();
     scoreCircle.setScore(score);
@@ -419,10 +490,12 @@ function Game() {
     quitGameModal.quitButtons[0].events.down.end = function () {
       showStats = true;
       showQuitModal = false;
+      sounds.click.play();
     }
 
     quitGameModal.quitButtons[1].events.down.end = function () {
       showQuitModal = false;
+      sounds.click.play();
     }
 
     pauseGameModal = new Modal({
@@ -438,10 +511,22 @@ function Game() {
     push();
 
     fill(255);
-    textSize(40);
+    textSize(40 * sizes.fontCoefficient);
     textFont(fonts.LGVBold);
     textAlign(LEFT, CENTER);
     text('umaRlesi qula: 3224', 100 * sizes.headerMarginCoefficient, marginTop);
+
+    pop();
+  }
+
+  function drawPoint() {
+    push();
+
+    fill(255);
+    textSize(40 * sizes.fontCoefficient);
+    textFont(fonts.LGVBold);
+    textAlign(LEFT, CENTER);
+    text('qula: ' + scoreCircle.getScore(), 100 * sizes.headerMarginCoefficient, marginTop + 45);
 
     pop();
   }

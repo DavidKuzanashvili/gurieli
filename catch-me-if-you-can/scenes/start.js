@@ -49,6 +49,7 @@ var sizes = {
     iconsCoefficients: 0,
     headerMarginCoefficient: 0,
     modalCoefficient: 0,
+    statisticsFontCoefficient: 0,
     showHigestScore: true,
     showSettings: false,
     showHeart: false,
@@ -268,6 +269,7 @@ function changeSizes() {
       sizes.iconsCoefficients = 1;
       sizes.headerMarginCoefficient = 1;
       sizes.modalCoefficient = 1;
+      sizes.statisticsFontCoefficient =  1;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
       sizes.showHeart = false;
@@ -285,6 +287,7 @@ function changeSizes() {
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
       sizes.modalCoefficient = 0.8;
+      sizes.statisticsFontCoefficient = 0.8;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
       sizes.showHeart = false;
@@ -302,6 +305,7 @@ function changeSizes() {
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
       sizes.modalCoefficient = 0.8;
+      sizes.statisticsFontCoefficient = 0.8;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
       sizes.showHeart = false;
@@ -319,6 +323,7 @@ function changeSizes() {
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
       sizes.modalCoefficient = 0.7;
+      sizes.statisticsFontCoefficient = 0.8;      
       sizes.showHigestScore = false;
       sizes.showSettings = false;
       sizes.showHeart = true;
@@ -336,11 +341,12 @@ function changeSizes() {
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
       sizes.modalCoefficient = 0.7;
+      sizes.statisticsFontCoefficient = 0.7;
       sizes.showHigestScore = false;
       sizes.showSettings = true;
       sizes.showHeart = true;
       sizes.modalMobile = false;
-    } else if(windowWidth < 700) {
+    } else if(windowWidth >= 500 && windowWidth < 700) {
       sizes.roundStartCoefficient = 0.7;
       sizes.bottleSizesCoefficient = 0.6
       sizes.fruitsCoefficient = 0.5;
@@ -353,6 +359,25 @@ function changeSizes() {
       sizes.iconsCoefficients = 0.7;
       sizes.headerMarginCoefficient = 0.7;
       sizes.modalCoefficient = 0.6;
+      sizes.statisticsFontCoefficient = 0.7;
+      sizes.showHigestScore = false;
+      sizes.showSettings = true;
+      sizes.showHeart = true;
+      sizes.modalMobile = true;
+    } else if(windowWidth < 500) {
+      sizes.roundStartCoefficient = 0.7;
+      sizes.bottleSizesCoefficient = 0.6
+      sizes.fruitsCoefficient = 0.5;
+      sizes.fontCoefficient = 0.5;
+      sizes.scoreOffsetCoefficientRight = 0.2;
+      sizes.scoreOffsetCoefficientBottom = 0.5;
+      sizes.tooltipCoefficient = 0.7;
+      sizes.timerCoefficient = 0.5;
+      sizes.timerTextCoefficient = 0.8;
+      sizes.iconsCoefficients = 0.5;
+      sizes.headerMarginCoefficient = 0.2;
+      sizes.modalCoefficient = 0.6;
+      sizes.statisticsFontCoefficient = 0.7;
       sizes.showHigestScore = false;
       sizes.showSettings = true;
       sizes.showHeart = true;

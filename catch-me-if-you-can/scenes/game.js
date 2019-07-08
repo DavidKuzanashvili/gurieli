@@ -54,7 +54,6 @@ function Game() {
         settingsBtn.onUpdate = function() {
             this.w = pngIcons.settings.w * sizes.iconsCoefficients;
             this.h = pngIcons.settings.h * sizes.iconsCoefficients;
-            this.x = width - (headerMargin * sizes.headerMarginCoefficient);
         }
 
         settingsBg = new SettingsBackground({
@@ -65,7 +64,7 @@ function Game() {
             pedding: 20,
             endHeight: 4 * verticalMargin + (pngIcons.close.h + pngIcons.pause.h + pngIcons.reset.h + pngIcons.sound.h) * sizes.iconsCoefficients,
             onUpdate: function() {
-                this.x = width - (headerMargin * sizes.headerMarginCoefficient);
+                this.x = width - this.w / 2 - (headerMargin * sizes.headerMarginCoefficient);
                 this.endHeight = 4 * verticalMargin + (pngIcons.close.h + pngIcons.pause.h + pngIcons.reset.h + pngIcons.sound.h) * sizes.iconsCoefficients - 10;
             }
         })
@@ -244,7 +243,8 @@ function Game() {
 
         if(windowWidth < 1000) {
             headerButtons.forEach(function(btn) {
-                btn.x = width - headerMargin * sizes.headerMarginCoefficient;
+                settingsBtn.x = width - 45 * sizes.iconsCoefficients - headerMargin * sizes.headerMarginCoefficient;
+                btn.x = width - 45 * sizes.iconsCoefficients - headerMargin * sizes.headerMarginCoefficient;
 
                 if(btn.typeText === 'close') {
                     btn.y = 70 + btn.h / 2 + verticalMargin;
@@ -285,11 +285,12 @@ function Game() {
         gameStart = millis();
         startTheGame = false;
         maxFruitCount = LEVEL[CURRENT_LEVEL].maxFruitsToGather;
-        stats = new Statistics(3224, 100);
+        stats = new Statistics(3224, headerMargin);
         stats.score = score;
         
         timer = new Timer(millis(), 35);
-        hearts = new LifeFactory(100, 5);
+        hearts = new LifeFactory(headerMargin, 5);
+        
         hearts.generateLifes();
         for(var i = 0; i < deadHearts; i++) {
             hearts.lifes.pop();

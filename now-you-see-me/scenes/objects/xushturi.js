@@ -39,8 +39,8 @@ function Xushturi(x, y) {
     switch(type) {
       case 'start': {
         frameCount = 30;
-        spriteWidth = 250;
-        spriteHeight = 250;
+        spriteWidth = 200;
+        spriteHeight = 200;
         speed = 15;
         sequence = sequences.start;
         cutSequence(frameCount, spriteWidth, spriteHeight, sequence, speed);
@@ -48,8 +48,8 @@ function Xushturi(x, y) {
       break;
       case 'win': {
         frameCount = 15;
-        spriteWidth = 250;
-        spriteHeight = 327;
+        spriteWidth = 200;
+        spriteHeight = 279;
         speed = 15;
         sequence = sequences.found;
         cutSequence(frameCount, spriteWidth, spriteHeight, sequence, speed);
@@ -57,8 +57,8 @@ function Xushturi(x, y) {
       break;
       case 'lose': {
         frameCount = 32;
-        spriteWidth = 250;
-        spriteHeight = 218;
+        spriteWidth = 200;
+        spriteHeight = 184;
         speed = 15;
         sequence = sequences.notFound;
         cutSequence(frameCount, spriteWidth, spriteHeight, sequence, speed);

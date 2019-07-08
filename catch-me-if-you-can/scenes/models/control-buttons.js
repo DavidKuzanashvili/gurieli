@@ -30,6 +30,7 @@ function ControlButton(type, x, y, w, h, typeText) {
     fadeOut: {
       setup: function() {
         self.alpha = 1;
+        alphaSpeed = 0.3;
       },
       update: function() {
         self.alpha = Math.max(self.alpha - alphaSpeed, 0);

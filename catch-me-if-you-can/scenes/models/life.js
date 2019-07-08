@@ -26,6 +26,12 @@ function Life(x, x1, movmentSpeed, isActive) {
 
   this.update = function() {
     this.onUpdate();
+
+    if(windowWidth < 500) {
+      this.y = height - 50;
+      this.width = 37 * 0.7;
+      this.height = 32 * 0.7;
+    }
     if(this.x >= this.x1) {
       return;
     } else {
