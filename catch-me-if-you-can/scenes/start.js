@@ -89,7 +89,7 @@ function setup() {
 
     var mgr = new SceneManager();
     mgr.wire();
-    mgr.showScene(RoundStart);
+    mgr.showScene(Intro);
 }
 
 function windowResized() {
