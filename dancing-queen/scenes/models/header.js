@@ -26,7 +26,6 @@ function Header() {
     this.y = self.height / 2;
   }
   this.btns = [ this.soundBtn, this.pauseBtn, this.closeBtn ];
-  this.timer = new Timer(millis(), 60);
 
 
   this.draw = function() {
@@ -37,20 +36,10 @@ function Header() {
     noStroke();
     rect(0, 0, width, this.height);
 
-    /*
-      Header components - 1.Buttons, 2.Timer, 3.Statistics
-    */
-
     //Buttons
     this.btns.forEach(function(btn) {
       btn.update() & btn.draw();
     });
-
-    //Timer
-    if(!this.isPaused) {
-      this.timer.update();
-    }
-    this.timer.draw();
 
     //Statistics
     drawStats();
@@ -64,14 +53,12 @@ function Header() {
 
   function drawStats() {
     fill(255);
-    textSize(32);
+    textSize(38);
     textFont(fonts.LGVBold);
-    textAlign(RIGHT, CENTER);
-    text('qula: ' + score, width / 2 - 200, 85);
     textAlign(LEFT, CENTER);
-    text('raundi: 1', width / 2 + 200, 85);
+    text('umaRlesi qula: 1', width / 2, 85);
 
     textAlign(RIGHT, CENTER);
-    text('umaRlesi qula: 1', width  - drawStart, 85);
+    text('qula: ' + score, width - drawStart + 25, 85);
   }
 }

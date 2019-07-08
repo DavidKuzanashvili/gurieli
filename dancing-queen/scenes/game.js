@@ -59,11 +59,6 @@ function Game() {
     if(isPaused) {
       pauseGameModal.drawPause();
     }
-
-    if(header.timer.ended() || showStats) {
-      statsModal.drawStats();
-      pauseGame();
-    }
     
     pop();
   }
@@ -174,7 +169,6 @@ function Game() {
   }
 
   function unpouseGame() {
-    header.timer.fixTime(millis() - pauseStart);
     isPaused = false;
     header.isPaused = isPaused;
     delete pauseStart;
@@ -296,7 +290,6 @@ function Game() {
   this.reset = function() {
     score = 0;
     header.setScore(score);
-    header.timer = new Timer(millis(), 60);
     showStats = false;
     unpouseGame();
   }
