@@ -24,8 +24,10 @@ function Game() {
     var muteBtn = null;
     var resetBtn = null;
     var settingsBtn = null;
+    var settingsBg = null;
     var acceptQuit = null;
     var refuseQuit = null;
+    var verticalMargin = 60;
     var gapBetweenBtns = 30;
     var headerMargin = 100;
 
@@ -36,6 +38,7 @@ function Game() {
     var togglePause = false;
     var toggleClose = false;
     var toggleMusic = false;
+    var toggleSettings = false;
     var isPaused = false;
     var pauseStart;
 
@@ -51,8 +54,21 @@ function Game() {
         settingsBtn.onUpdate = function() {
             this.w = pngIcons.settings.w * sizes.iconsCoefficients;
             this.h = pngIcons.settings.h * sizes.iconsCoefficients;
-            this.x = width - (headerMargin * sizes.headerMarginCoefficient + pngIcons.settings.w * sizes.iconsCoefficients / 2);
+            this.x = width - (headerMargin * sizes.headerMarginCoefficient);
         }
+
+        settingsBg = new SettingsBackground({
+            x: width - (headerMargin * sizes.headerMarginCoefficient),
+            y: 70,
+            w: pngIcons.settings.w,
+            h: pngIcons.settings.h,
+            pedding: 20,
+            endHeight: 4 * verticalMargin + (pngIcons.close.h + pngIcons.pause.h + pngIcons.reset.h + pngIcons.sound.h) * sizes.iconsCoefficients,
+            onUpdate: function() {
+                this.x = width - (headerMargin * sizes.headerMarginCoefficient);
+                this.endHeight = 4 * verticalMargin + (pngIcons.close.h + pngIcons.pause.h + pngIcons.reset.h + pngIcons.sound.h) * sizes.iconsCoefficients - 10;
+            }
+        })
 
         closeBtn = new ControlButton(pngIcons.close.img, width - 100 - pngIcons.close.w / 2, 70, pngIcons.close.w, pngIcons.close.h, 'close');
         closeBtn.typeText = 'close';
@@ -138,8 +154,10 @@ function Game() {
         leaves.draw();
         // drawMotion();
 
-        updateIntroFruit();
-        drawIntroFruit();
+        if(!sizes.showSettings) {
+            updateIntroFruit();
+            drawIntroFruit();
+        }
 
         bottle.draw();
 
@@ -179,11 +197,14 @@ function Game() {
 
         timer.draw();
         
-        headerButtons.forEach(function(x) { x.draw() });
-
         if(sizes.showSettings) {
+            settingsBg.update();
+            settingsBg.draw();
+            settingsBtn.update();
             settingsBtn.draw();
         }
+
+        headerButtons.forEach(function(x) { x.draw() });
 
         if (showQuitModal) {
             drawQuitGameModal();
@@ -195,40 +216,66 @@ function Game() {
     }
 
     this.update = function() {
-        if(windowWidth <= 1000) {
+        if(sizes.updateHeaderButtons){
+            delete sizes.updateHeaderButtons;
+            
+            headerButtons.forEach(function(btn) {
+                btn.alpha = 0;
+            });
+        }
+
+        if(sizes.showSettings) {
+            headerButtons.forEach(function(btn) {
+                if(settingsBg.getBgBottom() >= (btn.y + btn.h)) {
+                    if(btn.alpha < 1 && !btn.isAnimating()) {
+                       btn.animate('fadeIn');
+                    }
+                } else {
+                    if(btn.alpha > 0 && !btn.isAnimating()) {
+                        btn.animate('fadeOut');
+                    }
+                }
+            })
+        } else {
+            headerButtons.forEach(function(btn) {
+                btn.alpha = 1;
+            });
+        }
+
+        if(windowWidth < 1000) {
             headerButtons.forEach(function(btn) {
                 btn.x = width - headerMargin * sizes.headerMarginCoefficient;
 
                 if(btn.typeText === 'close') {
-                    btn.y = 70 + btn.h / 2;
+                    btn.y = 70 + btn.h / 2 + verticalMargin;
                 }
                 if(btn.typeText === 'pause') {
-                    btn.y = 70 + closeBtn.h + btn.h / 2;
+                    btn.y = 70 + closeBtn.h + btn.h / 2 + 2*verticalMargin;
                 }
                 if(btn.typeText === 'sound') {
-                    btn.y = 70 + (closeBtn.h + pauseBtn.h) + btn.h / 2;
+                    btn.y = 70 + (closeBtn.h + pauseBtn.h) + btn.h / 2 + 3*verticalMargin;
                 }
                 if(btn.typeText === 'reset') {
-                    btn.y = 70 + (closeBtn.h + pauseBtn.h + muteBtn.h) +  btn.h / 2;
+                    btn.y = 70 + (closeBtn.h + pauseBtn.h + muteBtn.h) +  btn.h / 2 + 4*verticalMargin;
                 }
             })
         } else {
             headerButtons.forEach(function(btn) {
                 if(btn.typeText === 'close') {
                     btn.x = width - (headerMargin * sizes.headerMarginCoefficient + pngIcons.close.w * sizes.iconsCoefficients / 2);
-                    btn.y = 70 + btn.h / 2;
+                    btn.y = 70;
                 }
                 if(btn.typeText === 'pause') {
                     btn.x = width - (headerMargin * sizes.headerMarginCoefficient + gapBetweenBtns + pngIcons.close.w * sizes.iconsCoefficients + pngIcons.pause.w * sizes.iconsCoefficients / 2);
-                    btn.y = 70 + closeBtn.h + btn.h / 2;
+                    btn.y = 70;
                 }
                 if(btn.typeText === 'sound') {
                     btn.x = width - (headerMargin * sizes.headerMarginCoefficient + 2*gapBetweenBtns + pngIcons.close.w * sizes.iconsCoefficients + pngIcons.pause.w * sizes.iconsCoefficients + pngIcons.sound.w / 2);
-                    btn.y = 70 + (closeBtn.h + pauseBtn.h) + btn.h / 2;
+                    btn.y = 70;
                 }
                 if(btn.typeText === 'reset') {
                     btn.x = width - (headerMargin * sizes.headerMarginCoefficient + 3*gapBetweenBtns + pngIcons.close.w * sizes.iconsCoefficients + pngIcons.pause.w * sizes.iconsCoefficients + pngIcons.sound.w * sizes.iconsCoefficients + pngIcons.reset.w * sizes.iconsCoefficients / 2);
-                    btn.y = 70 + (closeBtn.h + pauseBtn.h + muteBtn.h) +  btn.h / 2;
+                    btn.y = 70;
                 }
             });
         }
@@ -391,8 +438,23 @@ function Game() {
     }
 
     this.mousePressed = function () {
+        if(sizes.showSettings) {
+            if(settingsBtn.contains(mouseX, mouseY)) {
+                toggleSettings = !toggleSettings;
+                if(toggleSettings) {
+                    settingsBg.animate('down');
+                } else {
+                    settingsBg.animate('up');
+                }
+            }
+        }
+
         headerButtons.forEach(function (btn) {
             if (btn.contains(mouseX, mouseY)) {
+                if(btn.typeText === 'settings') {
+                    sounds.popUp.play;
+                }
+
                 if(btn.typeText === 'close') {
                     showQuitModal = true;
                     muteSounds();

@@ -37,6 +37,7 @@ var score = 0;
 var CURRENT_LEVEL = 0;
 
 var sizes = {
+    roundStartCoefficient: 0,
     bottleSizesCoefficient: 0,
     fruitsCoefficient: 0,
     fontCoefficient: 0,
@@ -48,7 +49,8 @@ var sizes = {
     iconsCoefficients: 0,
     headerMarginCoefficient: 0,
     showHigestScore: true,
-    showSettings: false
+    showSettings: false,
+    showHeart: false
 };
 
 function preload() {
@@ -68,6 +70,10 @@ function preload() {
 
 function setup() {
     changeSizes();
+    if(sizes.showSettings) {
+      sizes.updateHeaderButtons = true;
+    }
+
     if(!sounds.background.isLoaded()) {
         setTimeout(setup, 50);
         return;
@@ -88,6 +94,10 @@ function setup() {
 
 function windowResized() {
     changeSizes();
+    if(sizes.showSettings) {
+      sizes.updateHeaderButtons = true;
+    }
+    
     resizeCanvas(windowWidth, windowHeight);
 }
 
@@ -196,7 +206,7 @@ function loadIcons() {
     pngIcons.settings = {
       img: loadImage(iconsPath + 'settings.png'),
       w: 45,
-      h: 38
+      h: 45
     };
 
     pngIcons.yellowSound = {
@@ -219,6 +229,11 @@ function loadIcons() {
       w: 38,
       h: 38
     };
+    pngIcons.yellowSettings = {
+      img: loadImage(iconsPath + 'yellowsettings.png'),
+      w: 45,
+      h: 45
+    };
 }
 
 function loadSprite() {
@@ -239,6 +254,7 @@ function loadSoundEffects() {
 
 function changeSizes() {
     if(windowWidth >= 1600) {
+      sizes.roundStartCoefficient = 1;
       sizes.bottleSizesCoefficient = 1;
       sizes.fruitsCoefficient = 1;
       sizes.fontCoefficient = 1;
@@ -251,7 +267,9 @@ function changeSizes() {
       sizes.headerMarginCoefficient = 1;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
+      sizes.showHeart = false;
     } else if(windowWidth >= 1440 && windowWidth < 1600) {
+      sizes.roundStartCoefficient = 0.85;
       sizes.bottleSizesCoefficient = 0.85;
       sizes.fruitsCoefficient = 0.8;
       sizes.fontCoefficient = 0.9;
@@ -264,57 +282,66 @@ function changeSizes() {
       sizes.headerMarginCoefficient = 0.8;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
+      sizes.showHeart = false;
     } else if(windowWidth >= 1200 && windowWidth < 1440) {
+      sizes.roundStartCoefficient = 0.8;
       sizes.bottleSizesCoefficient = 0.85;
       sizes.fruitsCoefficient = 0.8;
       sizes.fontCoefficient = 0.9;
       sizes.scoreOffsetCoefficientRight = 0.7;
       sizes.scoreOffsetCoefficientBottom = 1;
-      sizes.tooltipCoefficient = 0.95;
+      sizes.tooltipCoefficient = 0.8;
       sizes.timerCoefficient = 0.8;
       sizes.timerTextCoefficient = 0.9;
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
+      sizes.showHeart = false;
     } else if(windowWidth >= 1000 && windowWidth < 1200) {
+      sizes.roundStartCoefficient = 0.8;
       sizes.bottleSizesCoefficient = 0.85;
       sizes.fruitsCoefficient = 0.8;
       sizes.fontCoefficient = 0.9;
       sizes.scoreOffsetCoefficientRight = 0.7;
       sizes.scoreOffsetCoefficientBottom = 0.9;
-      sizes.tooltipCoefficient = 0.95;
+      sizes.tooltipCoefficient = 0.8;
       sizes.timerCoefficient = 0.8;
       sizes.timerTextCoefficient = 0.9;
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
       sizes.showHigestScore = false;
-      sizes.showSettings = true;
+      sizes.showSettings = false;
+      sizes.showHeart = true;
     } else if(windowWidth >= 700 && windowWidth < 1000) {
+      sizes.roundStartCoefficient = 0.8;
       sizes.bottleSizesCoefficient = 0.8;
       sizes.fruitsCoefficient = 0.8;
       sizes.fontCoefficient = 0.6;
       sizes.scoreOffsetCoefficientRight = 0.5;
       sizes.scoreOffsetCoefficientBottom = 0.6;
-      sizes.tooltipCoefficient = 0.95;
+      sizes.tooltipCoefficient = 0.7;
       sizes.timerCoefficient = 0.8;
       sizes.timerTextCoefficient = 0.9;
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
       sizes.showHigestScore = false;
       sizes.showSettings = true;
+      sizes.showHeart = true;
     } else if(windowWidth < 700) {
+      sizes.roundStartCoefficient = 0.7;
       sizes.bottleSizesCoefficient = 0.6
       sizes.fruitsCoefficient = 0.5;
       sizes.fontCoefficient = 0.5;
       sizes.scoreOffsetCoefficientRight = 0.2;
       sizes.scoreOffsetCoefficientBottom = 0.5;
-      sizes.tooltipCoefficient = 0.95;
+      sizes.tooltipCoefficient = 0.7;
       sizes.timerCoefficient = 0.7;
       sizes.timerTextCoefficient = 0.8;
       sizes.iconsCoefficients = 0.7;
       sizes.headerMarginCoefficient = 0.7;
       sizes.showHigestScore = false;
       sizes.showSettings = true;
+      sizes.showHeart = true;
     }
   }

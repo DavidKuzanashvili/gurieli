@@ -95,7 +95,7 @@ function Bottle(x, type, speed, tooltip) {
     }
 
     if(this.tooltip) {
-      this.tooltip.y = height - 20 * sizes.bottleSizesCoefficient - this.tooltip.height / 2;
+      this.tooltip.y = height - 20 * sizes.tooltipCoefficient - this.tooltip.height / 2;
       this.tooltip.x = this.x + 75 + 30;
       this.tooltip.update();
     }

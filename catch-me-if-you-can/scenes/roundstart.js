@@ -15,6 +15,10 @@ function RoundStart() {
   }
 
   this.draw = function () {
+    title.fontSize = 60 * sizes.roundStartCoefficient;
+    subTitle.fontSize = 40 * sizes.roundStartCoefficient;
+    
+
     leaves.update();
     counter.update();
     title.update();
@@ -122,7 +126,7 @@ function RoundStart() {
     introFruitOffset = Math.min(introFruitOffset + introFruitOffsetSpeed, targetIntroFruitOffset);
 
     imageMode(CENTER);
-    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width, LEVEL[CURRENT_LEVEL].fruitName.height);
+    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width * sizes.roundStartCoefficient, LEVEL[CURRENT_LEVEL].fruitName.height * sizes.roundStartCoefficient);
 
     pop();
   }
@@ -163,7 +167,7 @@ function RoundStart() {
 
     imageMode(CENTER);
     tint(255, 255 * changeAlpha);
-    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width, LEVEL[CURRENT_LEVEL].fruitName.height);
+    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width * sizes.roundStartCoefficient, LEVEL[CURRENT_LEVEL].fruitName.height * sizes.roundStartCoefficient);
 
     if(changeAlpha === 0) {
       endingAnimationFinished = true;
