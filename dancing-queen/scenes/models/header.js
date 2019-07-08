@@ -19,20 +19,13 @@ function Header() {
     this.y = self.height / 2;
   }
 
-  this.resetBtn = new ControlButton(icons.reset.img, drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns), this.height / 2, icons.reset.w, icons.reset.h);
-  this.resetBtn.typeText = 'reset';
-  this.resetBtn.onUpdate = function() {
+  this.closeBtn = new ControlButton(icons.close.img, drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns), this.height / 2, icons.reset.w, icons.reset.h);
+  this.closeBtn.typeText = 'close';
+  this.closeBtn.onUpdate = function() {
     this.x = drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
     this.y = self.height / 2;
   }
-
-  this.closeBtn = new ControlButton(icons.close.img, drawStart + (icons.reset.w + icons.pause.w + icons.sound.w + 3*marginBetweenBtns), this.height / 2, icons.close.w, icons.close.h);
-  this.closeBtn.typeText = 'close';
-  this.closeBtn.onUpdate = function() {
-    this.x = drawStart + (icons.reset.w + icons.pause.w + icons.sound.w + 3*marginBetweenBtns);
-    this.y = self.height / 2;
-  }
-  this.btns = [ this.soundBtn, this.pauseBtn, this.resetBtn, this.closeBtn ];
+  this.btns = [ this.soundBtn, this.pauseBtn, this.closeBtn ];
   this.timer = new Timer(millis(), 60);
 
 
