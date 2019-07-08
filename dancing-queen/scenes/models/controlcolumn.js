@@ -10,7 +10,7 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
   var backgroundColor = hexToRgb(colors.boogerTwo);
   var alpha = 0.3;
   var btnSize = 50;
-  var activeAreaStart = height - 300;
+  var activeAreaStart = height - this.offsetTop;
   this.arrows = [];
   this.arrowRotation = 0;
   this.btn = new ControlButton(arrow.img, 0, 0, arrow.w, arrow.h);
@@ -40,12 +40,14 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
   this.update = function() {
     this.onUpdate();
     
+    activeAreaStart = height - 300;
     w = width / 8;
     h = height - this.offsetTop;
 
     if(windowWidth < 768) {
       w = width / 4;
       this.x = (this.x - width / 2) * 2;
+      activeAreaStart = height - parseInt(h / 5) - parseInt(this.offsetTop * (2/3));
     }
 
     for(var i = 0; i < this.arrows.length; i++) {
