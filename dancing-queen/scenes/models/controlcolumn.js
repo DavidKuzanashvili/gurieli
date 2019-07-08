@@ -64,8 +64,15 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
     return h;
   }
 
-  this.isInActiveArea = function(y){
-    return y > activeAreaStart && y < (activeAreaStart + h / 5);
+  this.isInActiveArea = function(x, y){
+    if(!y) {
+      y = x;
+      return y > activeAreaStart && y < (activeAreaStart + h / 5);
+    }
+
+    return x > this.x
+      && x < this.x + w
+      && this.isInActiveArea(y);
   }
 
   this.isSomeArrowsInActiveArea = function(){

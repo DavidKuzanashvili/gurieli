@@ -51,7 +51,7 @@ function Game() {
     drawControlColumns();
     
     drawLifes();
-    
+
     if(showQuit) {
       quitGameModal.drawQuit();
     }
@@ -174,7 +174,23 @@ function Game() {
     delete pauseStart;
   }
 
-  this.mousePressed = function() {
+  this.touchStarted = function(){
+    clickCallback();
+    var target = touches.length ? touches[touches.length - 1] : {x: -9999, y: -9999};
+
+    for(var i = 0; i < controlColumns.length; i++) {
+      if(controlColumns[i].isInActiveArea(target.x, target.y)) {
+        gameAction(controlColumns[i].btnTypeCode);
+      }
+    }
+  }
+  this.mousePressed = clickCallback;
+
+  this.keyPressed = function() {
+    gameAction(keyCode);
+  }
+
+  function clickCallback(){
     if(header.soundBtn.contains(mouseX, mouseY)) {
       if(isSound) {
         for(key in sounds) {
@@ -217,10 +233,6 @@ function Game() {
         }
       }
     })
-  }
-
-  this.keyPressed = function() {
-    gameAction(keyCode);
   }
 
   function gameAction(keyCode){
