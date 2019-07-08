@@ -9,5 +9,6 @@ const colors = {
   seafoamBlue: '#6bc8a7',
   seafoamBlueTwo: '#5bc7cf',
   frenchBlue: '#4367b2',
-  sand: '#ddd254'
+  sand: '#ddd254',
+  red: '#f63c3c'
 };

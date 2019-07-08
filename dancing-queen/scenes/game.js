@@ -12,12 +12,12 @@ function Game() {
   var quitGameModal;
   var statsModal;
   var pauseStart;
-  var startTime = 0;
   var arrowSize = 72;
   var score = 0;
   var dance = null;
   var activeAreaStart = height - 300;
   var inCorrectArrowsLimit = 3;
+  var lastDrop = 0;
 
   //Toggles
   var isSound = true;
@@ -71,12 +71,22 @@ function Game() {
   this.update = function() {
     var randomColumn = controlColumns[round(random(0, 3))];
     if(!isPaused) {
-      if(millis() > startTime + 1000) {
-        startTime = millis();
+      if(millis() > lastDrop + 1000) {
+        lastDrop = millis();
         var speed = 3;
         randomColumn.arrows.push(new Arrow(randomColumn.x + (width / 8) / 2, randomColumn.offsetTop, arrowSize, arrowSize, randomColumn.btnTypeCode, speed));
       }
     }
+    updateActiveKeyCodes();
+  }
+
+  function updateActiveKeyCodes(){
+    ACTIVE_KEY_CODES.clear();
+    controlColumns.forEach(function(col){
+      if(col.isSomeArrowsInActiveArea()){
+        ACTIVE_KEY_CODES.add(col.btnTypeCode);
+      }
+    });
   }
 
   function initGame() {
@@ -216,14 +226,20 @@ function Game() {
   }
 
   this.keyPressed = function() {
+    gameAction(keyCode);
+  }
+
+  function gameAction(keyCode){
     if(ACTIVE_KEY_CODES.has(keyCode)) {
       score++;
       for(var i = 0; i < controlColumns.length; i++) {
         if(controlColumns[i].btnTypeCode === keyCode) {
           for(var j = 0; j < controlColumns[i].arrows.length; j++) {
-            if(controlColumns[i].arrows[j].isInActiveArea(activeAreaStart)) {
-              controlColumns[i].arrows[j].bgColor = hexToRgb(colors.boogerTwo);
-              controlColumns[i].arrows[j].animate('fadeIn');
+            if(controlColumns[i].arrows[j].isTriggered()){
+              continue;
+            }
+            if(controlColumns[i].isInActiveArea(controlColumns[i].arrows[j].y)) {
+              controlColumns[i].arrows[j].correct();
             }
           }
         }
@@ -235,16 +251,19 @@ function Game() {
 
       wrongKeyCodes.forEach(function(k) {
         if(keyCode === k) {
-          score--;
           
           for(var i = 0; i < controlColumns.length; i++) {
             if(controlColumns[i].btnTypeCode !== k) {
               for(var j = 0; j < controlColumns[i].arrows.length; j++) {
-                if(controlColumns[i].arrows[j].isInActiveArea(activeAreaStart)) {
-                  controlColumns[i].arrows[j].bgColor = hexToRgb(colors.lipstick);
-                  controlColumns[i].arrows[j].animate('fadeIn');
-                  oDancer.animate('shake');
+                if(controlColumns[i].arrows[j].isTriggered()){
+                  continue;
+                }
                 
+                if(controlColumns[i].isInActiveArea(controlColumns[i].arrows[j].y)) {
+                  score--;
+                  controlColumns[i].arrows[j].incorrect();
+                  oDancer.animate('shake');
+
                   if(inCorrectArrowsLimit === 0) {
                     inCorrectArrowsLimit = 3;
                     hearts.lifes.pop();

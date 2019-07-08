@@ -1,6 +1,6 @@
 function Arrow(x, y, w, h, content, speed) {
   this.x = x;
-  this.y = y  ;
+  this.y = y;
   this.w = w;
   this.h = h;
   this.speed = speed || 3;
@@ -17,6 +17,9 @@ function Arrow(x, y, w, h, content, speed) {
   var circleChangeSpeed = 0.5;
   var maxDelta = 20;
   var deltaSize = 0;
+  var triggered = false;
+  var asset = whiteDownArrow;
+  var circleAlphaCoef = 1;
   var animations = {
     fadeIn: {
       setup: function() {
@@ -72,20 +75,26 @@ function Arrow(x, y, w, h, content, speed) {
     break;
   }
 
+  this.events = {};
+
+  for(var key in animations) {
+    this.events[key] = {};
+  }
+
   this.draw = function() {
     push();
 
     rectMode(CENTER);
     noStroke();
-    fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * circleAlpha);
+    fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * circleAlpha * circleAlphaCoef);
     rect(this.x, this.y, this.w + deltaSize, this.h + deltaSize, 50);
-    fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * (2 * circleAlpha));
+    fill(this.bgColor.r, this.bgColor.g, this.bgColor.b, 255 * (2 * circleAlpha) * circleAlphaCoef);
     rect(this.x, this.y, this.w, this.h, 50);
     translate(this.x, this.y);
     rotate(this.arrowRotatation);
     imageMode(CENTER);
     tint(255, 255 * (2*alpha));
-    image(whiteDownArrow.img, 0, 0, whiteDownArrow.w, whiteDownArrow.h);
+    image(asset.img, 0, 0, whiteDownArrow.w, whiteDownArrow.h);
     
     pop();
   }
@@ -96,8 +105,8 @@ function Arrow(x, y, w, h, content, speed) {
     this.y += this.speed;
   }
 
-  this.isInActiveArea = function(y) {
-    return this.y >= y;
+  this.isInActiveArea = function(y1, y2) {
+    return this.y >= y1 && this.y <= y2;
   }
 
   this.passedActiveArea = function(y, h) {
@@ -107,14 +116,51 @@ function Arrow(x, y, w, h, content, speed) {
   this.reset = function() {
   }
 
-  this.animate = function(type) {
-    // console.log(animations.hasOwnProperty(type));
+  this.animate = function(type){
+    if(activeAnimation) {
+      triggerAnimationEvent(activeAnimation, 'end');
+    }
     if(animations.hasOwnProperty(type)) {
       activeAnimation = type;
       animations[activeAnimation].setup();
+      triggerAnimationEvent(activeAnimation, 'start');
     } else {
       activeAnimation = null;
     }
+  }
+
+  var triggerAnimationEvent = function(animation, event) {
+    if(this.events.hasOwnProperty(animation) && this.events[animation].hasOwnProperty(event)) {
+      return this.events[animation][event]();
+    }
+
+    return false;
+  }.bind(this);
+
+  this.isTriggered = function(){
+    return triggered;
+  }
+
+  this.correct = function(){
+    if(this.isTriggered()) {
+      return;
+    }
+    triggered = true;
+
+    this.bgColor = hexToRgb("#ffffff");
+    circleAlphaCoef = 0.4;
+    this.animate('fadeIn');
+  }
+
+  this.incorrect = function(){
+    if(this.isTriggered()) {
+      return;
+    }
+    triggered = true;
+
+    this.bgColor = hexToRgb(colors.red);
+    asset = redDownArrow;
+    this.animate('fadeIn');
   }
 
   function updateAnimation() {

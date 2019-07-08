@@ -47,16 +47,22 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
     return activeAreaStart;
   }
 
+  this.getActiveAreaHeight = function(){
+    return h;
+  }
+
+  this.isInActiveArea = function(y){
+    return y > activeAreaStart && y < (activeAreaStart + h / 5);
+  }
+
+  this.isSomeArrowsInActiveArea = function(){
+    return oControl.arrows.some(function(arrow){
+      return oControl.isInActiveArea(arrow.y);
+    });
+  }
+
   function dropArrows() {
     for(var i = 0; i < oControl.arrows.length; i++) {
-      if(oControl.arrows[i].isInActiveArea(activeAreaStart)) {
-        ACTIVE_KEY_CODES.add(oControl.arrows[i].keycode);
-      }
-
-      if(oControl.arrows[i].passedActiveArea(activeAreaStart, h / 5)) {
-        ACTIVE_KEY_CODES.delete(oControl.arrows[i].keycode);
-      }
-
       if(!oControl.isPaused) {
         oControl.arrows[i].update();
       }

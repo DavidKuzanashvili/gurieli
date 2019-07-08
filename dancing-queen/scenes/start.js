@@ -79,6 +79,11 @@ function loadIcons() {
     w: 38,
     h: 46
   };
+  redDownArrow = {
+    img: loadImage(iconsPath + 'red-down-arrow.png'),
+    w: 38,
+    h: 46
+  };
 }
 
 function loadDancer() {
