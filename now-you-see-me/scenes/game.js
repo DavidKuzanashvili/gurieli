@@ -189,15 +189,20 @@ function Game() {
   }
 
   this.mousePressed = function() {
-    if(!isPaused) {
-      headerButtons.forEach(function(btn) {
+    headerButtons.forEach(function(btn) {
+      if(!isPaused) {
         if(btn.contains(mouseX, mouseY)) {
           if(btn.typeText === 'reset') {
             resetGame();
           }
+
+          if(btn.typeText === 'close') {
+            showQuitModal = true;
+            pauseGame();
+          }
         }
-      });
-    }
+      }
+    });
 
     if(pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
       showPauseModal = false;

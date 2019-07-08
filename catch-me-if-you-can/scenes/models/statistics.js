@@ -58,7 +58,7 @@ function Statistics(higestScore, startingPoint) {
 
     translate(0, offsetTop);
     fill(higestScoreColor.r, higestScoreColor.g, higestScoreColor.b, 255 * a);
-    textSize(32);
+    textSize(32 * sizes.statisticsFontCoefficient);
     textFont(this.font);
     textAlign(LEFT, CENTER);
     if(sizes.showHigestScore) {

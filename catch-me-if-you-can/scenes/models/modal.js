@@ -56,10 +56,6 @@ function Modal(options) {
 
   this.resumeBtn = new ControlButton(pngIcons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, pngIcons.resume.w, pngIcons.resume.h, 'resume');
   this.resumeBtn.typeText = 'resume';
-  this.resumeBtn.onUpdate = function() {
-    this.x = width / 2 + resumeTextWidth / 2 + 20;
-    this.y = height / 2;
-  }
   
   this.drawStats = function() {
     var w = this.width;
@@ -143,15 +139,34 @@ function Modal(options) {
   }
 
   this.drawQuit = function() {
+    var coef = 1;
+    var fs = this.fontSize;
+    var w = this.width;
+    var h = this.height;
     
     this.quitButtons[0].onUpdate = function() {
-      this.x = width / 2 - oModal.width / 2 + 100;
-      this.y = height / 2 + 70;
+      this.x = width / 2 - oModal.width / 2 + 100 * coef;
+      this.y = height / 2 + 70 * coef;
     };
     this.quitButtons[1].onUpdate = function() {
-      this.x = width / 2 + oModal.width / 2 - 100;
-      this.y = height / 2 + 70;
+      this.x = width / 2 + oModal.width / 2 - 100 * coef;
+      this.y = height / 2 + 70 * coef;
     };
+
+    if(sizes.modalMobile) {
+      coef = 0.8;
+      fs = parseInt(fs * coef);
+      w = parseInt(w * 0.75);
+
+      this.quitButtons[0].onUpdate = function() {
+        this.x = width / 2;
+        this.y = height / 2 + oModal.height / 2 - this.height * 2 - 20;
+      };
+      this.quitButtons[1].onUpdate = function() {
+        this.x = width / 2;
+        this.y = height / 2 + oModal.height / 2 - this.height;
+      };
+    }
 
     push();
 
@@ -160,17 +175,17 @@ function Modal(options) {
     fill(shadowColor);
     rectMode(CENTER);
     noStroke();
-    rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 40);
+    rect(width / 2, height / 2 + this.shadowOffsetTop, w, h, 40);
     fill(colors.boogerTwo);
-    rect(width / 2, height / 2, this.width, this.height, 40);
+    rect(width / 2, height / 2, w, h, 40);
 
     //Modal Text
     fill(255);
     textAlign(CENTER, CENTER);
-    textSize(this.fontSize);
+    textSize(fs);
     textLeading(35);
     textFont(this.font);
-    text('namdvilad ginda\nTamaSis gamorTva?', width / 2, height / 2 - this.height / 2 + 70);
+    text('namdvilad ginda\nTamaSis gamorTva?', width / 2, height / 2 - h / 2 + 70);
 
     //Buttons
     this.quitButtons.forEach(function(btn) {
@@ -184,18 +199,39 @@ function Modal(options) {
   this.drawPause = function() {
     push();
 
+    var coef = 1;
+    var w = this.width;
+    var h = this.height;
+    var fs = this.fontSize;
+    var iconSize = 1;
+
+    if(sizes.modalMobile) {
+      coef = 0.7;
+      w = parseInt(w * 0.5);
+      fs = parseInt(fs * 0.5);
+      h = parseInt(h * 0.5);
+      iconSize = 0.5
+    }
+
+    this.resumeBtn.onUpdate = function() {
+      this.x = width / 2 + resumeTextWidth / 2 + 20;
+      this.y = height / 2;
+      this.w = pngIcons.resume.w * iconSize;
+      this.w = pngIcons.resume.h * iconSize;
+    }
+
     background(overlayColor.r, overlayColor.g, overlayColor.b, 255 * 0.6);
     fill(shadowColor);
     rectMode(CENTER);
     noStroke();
-    rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 40);
+    rect(width / 2, height / 2 + this.shadowOffsetTop, w, h, 40);
     fill(colors.boogerTwo);
-    rect(width / 2, height / 2, this.width, this.height, 40);
+    rect(width / 2, height / 2, w, h, 40);
 
     //Modal Text
     fill(255);
     textAlign(CENTER, CENTER);
-    textSize(this.fontSize);
+    textSize(fs);
     textLeading(35);
     textFont(this.font);
     text(resumeText, width / 2 - 20, height / 2);
