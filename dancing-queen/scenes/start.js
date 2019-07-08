@@ -9,6 +9,7 @@ var arrow = {};
 var whiteDownArrow = {};
 var sounds = {};
 var ACTIVE_KEY_CODES = new Set();
+var veryFirstLoadState = true;
 
 function preload() {
   loadSounds();
@@ -25,7 +26,7 @@ function setup() {
 
   var manager = new SceneManager();
   manager.wire();
-  manager.showScene( Game );
+  manager.showScene(Game);
 }
 
 function windowResized() {

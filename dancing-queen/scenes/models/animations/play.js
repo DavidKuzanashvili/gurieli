@@ -13,8 +13,8 @@ function Frame(sequence = [], animations = {}) {
   this.sequence = sequence;
   this.animations = animations;
 
-  this.addAnimation = function(name, start, end) {
-    this.animations[name] = {start, end};
+  this.addAnimation = function (name, start, end) {
+    this.animations[name] = { start, end };
   }
 }
 
@@ -27,30 +27,40 @@ function Model(frame, texture) {
   this.currentStep = 0;
   this.translateX = 0;
   this.translateY = 0;
+  this.noLoop = false;
 
-  this.animate = function(name, step) {
+  this.animate = function (name, step) {
     this.currentAnimation = name;
     this.animationStep = step;
+    this.currentIndex = 0;
   }
 
-  this.update = function(){
+  this.update = function () {
+    if (this.currentAnimation == null) {
+      return;
+    }
+
     var calculatedStep = parseInt(millis() / this.animationStep);
-    if(calculatedStep <= this.currentStep) {
+    if (calculatedStep <= this.currentStep) {
       return;
     }
 
     this.currentStep = calculatedStep;
-    
+
     var animation = this.frame.animations[this.currentAnimation];
-    
+
     this.currentIndex++;
-    
-    if(this.currentIndex > animation.end) {
-      this.currentIndex = animation.start;
+
+    if (this.currentIndex > animation.end) {
+      if (this.noLoop) {
+        this.currentAnimation = null;
+      } else {
+        this.currentIndex = animation.start;
+      }
     }
   }
 
-  this.draw = function(w, h) {
+  this.draw = function (w, h) {
     push();
     var sprite = this.frame.sequence[this.currentIndex];
     translate(this.translateX, this.translateY);
