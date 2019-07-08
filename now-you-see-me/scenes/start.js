@@ -15,6 +15,7 @@ var sizes = {
   iconSizes: 0,
   fontCoefficient: 0
 };
+var veryFirstLoadState = true;
 
 function preload() {
   loadFonts();
@@ -26,7 +27,7 @@ function preload() {
 }
 
 function setup() {
-  if(!sounds.background.isLoaded()) {
+  if (!sounds.background.isLoaded()) {
     setTimeout(this.setup, 50);
     return;
   }
@@ -132,19 +133,19 @@ function loadCup() {
 }
 
 function changeSizes() {
-  if(windowWidth >= 1440) {
+  if (windowWidth >= 1440) {
     sizes.cupSizeCoefficient = 1;
     sizes.cupsGapCoefficeint = 1;
     sizes.headerMarginCoefficient = 1;
     sizes.iconSizes = 1;
     sizes.fontCoefficient = 1;
-  } else if(windowWidth >= 1200 && windowWidth < 1440) {
+  } else if (windowWidth >= 1200 && windowWidth < 1440) {
     sizes.cupSizeCoefficient = 0.8;
     sizes.cupsGapCoefficeint = 0.7;
     sizes.headerMarginCoefficient = 0.5;
     sizes.iconSizes = 0.8;
     sizes.fontCoefficient = 0.8;
-  } else if(windowWidth >= 700 && windowWidth < 1200) {
+  } else if (windowWidth >= 700 && windowWidth < 1200) {
     sizes.cupSizeCoefficient = 0.7;
     sizes.cupsGapCoefficeint = 0.1;
     sizes.headerMarginCoefficient = 0.4;
