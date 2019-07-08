@@ -1,11 +1,14 @@
-function ControlButton(type, x, y, w, h) {
+function ControlButton(type, x, y, w, h, typeText) {
   this.type = type;
   this.x = x;
   this.y = y;
   this.w = w;
   this.h = h;
-  this.typeText = '';
+  this.typeText = typeText || '';
   this.onUpdate = function() {};
+
+  var defaultType = this.type;
+  var hoverType = 'yellow' + capitalize(this.typeText);
 
   this.draw = function() {
     push();
@@ -22,6 +25,13 @@ function ControlButton(type, x, y, w, h) {
 
   this.update = function() {
     this.onUpdate();
+    if(this.typeText !== 'share' && this.typeText !== 'resume') {
+      if(this.contains(mouseX, mouseY)) {
+        this.type = pngIcons[hoverType].img;
+      } else {
+        this.type = defaultType;
+      }
+    }
   }
 
   this.contains = function(x, y) {
@@ -32,5 +42,16 @@ function ControlButton(type, x, y, w, h) {
         && x < this.x + w
         && y > this.y - h
         && y < this.y + h;
+  }
+
+  function capitalize(str) 
+  {
+    str = str.split(" ");
+
+    for (var i = 0, x = str.length; i < x; i++) {
+        str[i] = str[i][0].toUpperCase() + str[i].substr(1);
+    }
+
+    return str.join(" ");
   }
 }

@@ -21,25 +21,29 @@ function Modal(options) {
   var statButtonOffsetX = 40;
   var overlayColor = hexToRgb(colors.seafoamBlueTwo);
 
-  this.resetBtn = new ControlButton(pngIcons.reset.img, width / 2 + statButtonOffsetX, height / 2 - this.height / 2 + marginTop + 2 * lineHeight, pngIcons.reset.w, pngIcons.reset.h);
-  this.resetBtn.typeText = 'reset';
+  this.resetBtn = new ControlButton(pngIcons.reset.img, width / 2 + statButtonOffsetX, height / 2 - this.height / 2 + marginTop + 2 * lineHeight, pngIcons.reset.w, pngIcons.reset.h, 'reset');
   this.resetBtn.onUpdate = function() {
     this.x = width / 2 + statButtonOffsetX;
     this.y = height / 2 - oModal.height / 2 + marginTop + 2 * lineHeight;
+    this.w = pngIcons.reset.w * sizes.iconSizes;
+    this.h = pngIcons.reset.h * sizes.iconSizes;
   }
 
-  this.closeBtn = new ControlButton(pngIcons.close.img, width / 2 + statButtonOffsetX, height / 2 - this.height / 2 + marginTop + 3 * lineHeight, pngIcons.close.w, pngIcons.close.h);
-  this.closeBtn.typeText = 'close';
+  this.closeBtn = new ControlButton(pngIcons.close.img, width / 2 + statButtonOffsetX, height / 2 - this.height / 2 + marginTop + 3 * lineHeight, pngIcons.close.w, pngIcons.close.h, 'close');
   this.closeBtn.onUpdate = function() {
     this.x = width / 2 + statButtonOffsetX;
     this.y = height / 2 - oModal.height / 2 + marginTop + 3 * lineHeight;
+    this.w = pngIcons.close.w * sizes.iconSizes;
+    this.h = pngIcons.close.h * sizes.iconSizes;
   }
 
-  this.shareBtn = new ControlButton(pngIcons.share.img, width / 2 + statButtonOffsetX, height / 2 - oModal.height / 2 + marginTop + 4 * lineHeight, pngIcons.share.w, pngIcons.share.h);
-  this.shareBtn.typeText = 'share';
+  this.shareBtn = new ControlButton(pngIcons.share.img, width / 2 + statButtonOffsetX, height / 2 - oModal.height / 2 + marginTop + 4 * lineHeight, pngIcons.share.w, pngIcons.share.h, 'share');
   this.shareBtn.onUpdate = function() {
     this.x = width / 2 + statButtonOffsetX;
     this.y = height / 2 - oModal.height / 2 + marginTop + 4 * lineHeight;
+    this.w = pngIcons.share.w * sizes.iconSizes;
+    this.h = pngIcons.share.h * sizes.iconSizes;
+
   }
 
   this.statButtons = [
@@ -78,11 +82,12 @@ function Modal(options) {
     })
   ];
 
-  this.resumeBtn = new ControlButton(pngIcons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, pngIcons.resume.w, pngIcons.resume.h);
-  this.resumeBtn.typeText = 'resume';
+  this.resumeBtn = new ControlButton(pngIcons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, pngIcons.resume.w, pngIcons.resume.h, 'resume');
   this.resumeBtn.onUpdate = function() {
     this.x = width / 2 + resumeTextWidth / 2 + 20;
     this.y = height / 2;
+    this.w = pngIcons.resume.w * sizes.iconSizes;
+    this.h = pngIcons.resume.h * sizes.iconSizes;
   }
   
   this.drawStats = function() {

@@ -39,6 +39,7 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
         this.yDirection = -1;
         this.xDirection = 1;
         self.followShadow = true;
+        sounds.slide.play();
       },
       update: function() {
         this.current = Math.min(this.current + this.speed, this.to);
@@ -63,6 +64,7 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
         animations.right.setup();
         animations.right.yDirection = 1;
         animations.right.xDirection = -1;
+        sounds.slide.play();
       },
       update: function(){
         animations.right.update();
@@ -83,6 +85,7 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
         self.offsetY = 0;
         self.rotation = 0;
         self.xushturiOn = true;
+        sounds.open.play();
       },
       update: function() {
         this.current = Math.min(Math.max(this.current - this.speed, this.to), this.from);
@@ -119,6 +122,7 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
         self.offsetY = self.height;
         self.rotation = -1;
         self.xushturiOn = true;
+        sounds.close.play();
       },
       update: function(){
         this.current = Math.max(Math.min(this.current + this.speed, this.to), this.from);
@@ -241,8 +245,8 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
   }
 
   var drawShadow = function () {
-    var h = 65 * this.enlargeShadow;
-    var wc = (20 / 235) * this.width;
+    var h = 65 * this.enlargeShadow * sizes.iconSizes;
+    var wc = (20 / 235) * this.width * sizes.iconSizes;
 
     push();
 
