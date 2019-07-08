@@ -8,9 +8,18 @@ function LifeFactory(type,lifeNumber, w, h, gap) {
   this.inactiveLifes = [];
 
   var drawStart = (width / 4) - (this.lifeNumber * (this.w + this.gap) / 2);
+  var getFactoryWidth = function(){
+    return (this.lifeNumber * this.w + this.lifeNumber * this.gap);
+  }.bind(this);
 
   this.draw = function() {
     push();
+
+    if(windowWidth < 768) {
+      translate(width / 2 - getFactoryWidth() / 2, 0);
+    } else {
+      translate(drawStart, 0);
+    }
 
     drawLifes();
 
@@ -19,11 +28,11 @@ function LifeFactory(type,lifeNumber, w, h, gap) {
 
   this.generetaLifes = function() {
     while(this.lifes.length < this.lifeNumber) {
-      this.lifes.push(new Life(lifeImages.active, drawStart + this.lifes.length*(this.w + this.gap) + this.gap, this.w, this.h));
+      this.lifes.push(new Life(lifeImages.active, this.lifes.length * (this.w + this.gap) + this.gap, this.w, this.h));
     }
 
     while(this.inactiveLifes.length < this.lifeNumber) {
-      this.inactiveLifes.push(new Life(lifeImages.inactive, drawStart + this.inactiveLifes.length*(this.w + this.gap) + this.gap, this.w, this.h));
+      this.inactiveLifes.push(new Life(lifeImages.inactive, this.inactiveLifes.length*(this.w + this.gap) + this.gap, this.w, this.h));
     }
   }
 

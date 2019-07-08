@@ -28,7 +28,7 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
     strokeWeight(2);
     line(this.x + w, this.offsetTop, this.x + w, height);
     dropArrows();
-    
+
     translate(this.x + (w / 2), this.offsetTop);
     rotate(this.arrowRotation);
     this.btn.update();
@@ -39,8 +39,19 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
 
   this.update = function() {
     this.onUpdate();
+    
     w = width / 8;
-    h = height - this.offsetTop; 
+    h = height - this.offsetTop;
+
+    if(windowWidth < 768) {
+      w = width / 4;
+      this.x = (this.x - width / 2) * 2;
+    }
+
+    for(var i = 0; i < this.arrows.length; i++) {
+      this.arrows[i].x = this.x + w / 2;
+    }
+
   }
 
   this.getActiveAreaStart = function() {

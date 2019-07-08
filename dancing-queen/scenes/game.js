@@ -48,9 +48,9 @@ function Game() {
     this.update();
     drawHeader();
     drawDancer();
-    drawLifes();
     drawControlColumns();
-
+    
+    drawLifes();
     
     if(showQuit) {
       quitGameModal.drawQuit();

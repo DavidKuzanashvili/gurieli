@@ -8,7 +8,12 @@ function Life(type, x, w, h) {
     push();
 
     imageMode(CENTER);
-    image(this.type, this.x, height - 100, this.w, this.h);
+    
+    if(windowWidth <= 768) {
+      image(this.type, this.x, height - 70, this.w, this.h);
+    } else {
+      image(this.type, this.x, height - 100, this.w, this.h);
+    }
 
     pop();
   }

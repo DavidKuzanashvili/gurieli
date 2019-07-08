@@ -29,14 +29,33 @@ function Dancer(img, offsetTop) {
 
     imageMode(CENTER);
     // image(this.img, width / 4, (height + this.offsetTop) / 2, this.width, this.height);
-    translate(round(random(-shake, shake)), 0);
+    translate(this.getX() + round(random(-shake, shake)), this.getY());
     if(this.xushturi) {
-      this.xushturi.translateX = width / 4;
-      this.xushturi.translateY = (height + this.offsetTop) / 2;
-      this.xushturi.draw();
+      if(windowWidth <= 768) {
+        var coef = 0.3;
+        this.xushturi.draw(400 * coef, 400 * coef);
+      } else {
+        this.xushturi.draw();
+      }
     }
 
     pop();
+  }
+
+  this.getX = function(){
+    if(windowWidth <= 768) {
+      return 170 / 2;
+    } else {
+      return width / 4;
+    }
+  }
+
+  this.getY = function(){
+    if(windowWidth <= 768) {
+      return 170 / 2 - 10;
+    } else {
+      return (height + this.offsetTop) / 2;
+    }
   }
 
   this.update = function() { 
