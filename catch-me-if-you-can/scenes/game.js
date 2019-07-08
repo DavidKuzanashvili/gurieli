@@ -438,7 +438,16 @@ function Game() {
         showQuitModal = false;
     }
 
+    this.touchStart = function(){
+        var target = touches.length ? touches[touches.length - 1] : {x: -1000, y: -1000};
+        clickCallback(target.x, target.y);
+    }
+
     this.mousePressed = function () {
+        clickCallback(mouseX, mouseY);
+    }
+
+    function clickCallback(mouseX, mouseY){
         if(sizes.showSettings) {
             if(settingsBtn.contains(mouseX, mouseY)) {
                 toggleSettings = !toggleSettings;
