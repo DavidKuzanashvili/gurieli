@@ -21,26 +21,13 @@ function Modal(options) {
   var lineHeight = 90;
   this.statResetButton = new ControlButton(pngIcons.reset.img, width / 2, height / 2, pngIcons.reset.w, pngIcons.reset.h, 'reset');
   this.statResetButton.typeText = 'reset';
-  this.statResetButton.onUpdate = function() {
-    this.x = width / 2 - self.width / 2 + controlButtonsOffsetX + this.w + 20;
-    this.y = height / 2 - self.height / 2 + this.w / 2 - this.h / 2 + (marginTop + 2 * lineHeight) - 15;
-  }
-
+  
   this.statCloseButton = new ControlButton(pngIcons.close.img, width / 2, height / 2, pngIcons.close.w, pngIcons.close.h, 'close');
   this.statCloseButton.typeText = 'close';
-  this.statCloseButton.onUpdate = function() {
-    this.x = width / 2 - self.width / 2 + controlButtonsOffsetX + this.w + 20;
-    this.y = height / 2 - self.height / 2 + this.w / 2 - this.h / 2 + (marginTop + 3 * lineHeight) - 15;
-  }
-
   
   this.statShareButton = new ControlButton(pngIcons.share.img, width / 2, height / 2, pngIcons.share.w, pngIcons.share.h, 'share');
   this.statShareButton.typeText = 'share';
-  this.statShareButton.onUpdate = function() {
-    this.x = width / 2 + controlButtonsOffsetX + 50;
-    this.y = height / 2 - self.height / 2 + this.w / 2 - this.h / 2 + (marginTop + 3 * lineHeight) - 15;
-  }
-
+  
   this.statButtons = [
     this.statResetButton,
     this.statCloseButton,
@@ -55,11 +42,7 @@ function Modal(options) {
       width: 150,
       height: 60,
       shadowOffset: 7,
-      fontSize: 30,
-      onUpdate: function() {
-        this.x = width / 2 - oModal.width / 2 + 100;
-        this.y = height / 2 + 70;
-      }
+      fontSize: 30
     }),
     new Button({
       backgroundColor: color(colors.sand),
@@ -67,11 +50,7 @@ function Modal(options) {
       width: 150,
       height: 60,
       shadowOffset: 7,
-      fontSize: 30,
-      onUpdate: function() {
-        this.x = width / 2 + oModal.width / 2 - 100;
-        this.y = height / 2 + 70;
-      }
+      fontSize: 30
     })
   ];
 
@@ -83,6 +62,48 @@ function Modal(options) {
   }
   
   this.drawStats = function() {
+    var w = this.width;
+    var h = this.height;
+    var fs = this.fontSize;
+    var mt = marginTop;
+    var lh = lineHeight;
+    var ml = marginLeft;
+    var coef = 1;
+    this.statResetButton.onUpdate = function() {
+      this.x = width / 2 - w / 2 + controlButtonsOffsetX + this.w + 20;
+      this.y = height / 2 - h / 2 + this.w / 2 - this.h / 2 + (mt + 2 * lh) - 15 * coef;
+      this.w = pngIcons.reset.w * coef;
+      this.h = pngIcons.reset.h * coef;
+    }
+    this.statCloseButton.onUpdate = function() {
+      this.x = width / 2 - w / 2 + controlButtonsOffsetX + this.w + 20;
+      this.y = height / 2 - h / 2 + this.w / 2 - this.h / 2 + (mt + 3 * lh) - 15 * coef;
+      this.w = pngIcons.close.w * coef;
+      this.h = pngIcons.close.h * coef;
+    }
+    this.statShareButton.onUpdate = function() {
+      this.x = width / 2 + controlButtonsOffsetX + 50;
+      this.y = height / 2 - h / 2 + this.w / 2 - this.h / 2 + (mt + 3 * lh) - 15;
+      this.w = pngIcons.share.w * coef;
+      this.h = pngIcons.share.h * coef;
+    }
+
+    if(sizes.modalMobile){
+      coef = 0.7;
+      w = parseInt(w * 0.45);
+      h = parseInt(h * coef);
+      fs = parseInt(fs * coef);
+      mt = parseInt(mt * 0.55);
+      lh = parseInt(lh * coef);
+      ml = parseInt(ml * coef);
+      this.statShareButton.onUpdate = function() {
+        this.x = width / 2 - w / 2 + controlButtonsOffsetX + this.w + 20;
+        this.y = height / 2 - h / 2 + this.w / 2 - this.h / 2 + (mt + 4 * lh) - 15 * coef;
+        this.w = pngIcons.share.w * coef;
+        this.h = pngIcons.share.h * coef;
+      }
+    }
+    
     push();
 
     background(overlayColor.r, overlayColor.g, overlayColor.b, 255 * 0.6);
@@ -90,23 +111,26 @@ function Modal(options) {
     fill(shadowColor);
     rectMode(CENTER);
     noStroke();
-    rect(width / 2, height / 2 + this.shadowOffsetTop, this.width, this.height, 60);
+    rect(width / 2, height / 2 + this.shadowOffsetTop, w, h, 60);
     fill(colors.boogerTwo);
-    rect(width / 2, height / 2, this.width, this.height, 60);
-    if(this.xushturi) {
-      this.xushturi.translateX = width / 2 - this.width / 2 + 350;
-      this.xushturi.translateY = height / 2 - this.height / 2 + marginTop;
+    rect(width / 2, height / 2, w, h, 60);
+    if(!sizes.modalMobile && this.xushturi) {
+      this.xushturi.translateX = width / 2 - w / 2 + 350;
+      this.xushturi.translateY = height / 2 - h / 2 + marginTop;
       this.xushturi.update();
       this.xushturi.draw();
     }
-    // image(xushturi, width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop);
     fill(255);
-    textSize(this.fontSize);
+    textSize(fs);
 
-    textLeading(lineHeight);
+    textLeading(lh);
     textFont(this.font);
-    text('umaRlesi qula: 3224\nqula: ' + this.score +'\nTavidan\ngamorTva', width / 2 - this.width / 2 + marginLeft, height / 2 - this.height / 2 + marginTop);
-    text('gaaziare', width / 2 - this.width / 2 + 350, height / 2 - this.height / 2 + marginTop + 3 * lineHeight);
+    if(!sizes.modalMobile) {
+      text('umaRlesi qula: 3224\nqula: ' + this.score +'\nTavidan\ngamorTva', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
+      text('gaaziare', width / 2 - w / 2 + 350, height / 2 - h / 2 + mt + 3 * lh);
+    } else {
+      text('umaRlesi qula: 3224\nqula: ' + this.score +'\nTavidan\ngamorTva\ngaaziare', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
+    }
 
     //Buttons
     this.statButtons.forEach(function(btn) {
@@ -115,9 +139,20 @@ function Modal(options) {
     });
 
     pop();
+
   }
 
   this.drawQuit = function() {
+    
+    this.quitButtons[0].onUpdate = function() {
+      this.x = width / 2 - oModal.width / 2 + 100;
+      this.y = height / 2 + 70;
+    };
+    this.quitButtons[1].onUpdate = function() {
+      this.x = width / 2 + oModal.width / 2 - 100;
+      this.y = height / 2 + 70;
+    };
+
     push();
 
     background(overlayColor.r, overlayColor.g, overlayColor.b, 255 * 0.6);

@@ -48,9 +48,11 @@ var sizes = {
     timerTextCoefficient: 0,
     iconsCoefficients: 0,
     headerMarginCoefficient: 0,
+    modalCoefficient: 0,
     showHigestScore: true,
     showSettings: false,
-    showHeart: false
+    showHeart: false,
+    modalMobile: false
 };
 
 function preload() {
@@ -265,9 +267,11 @@ function changeSizes() {
       sizes.timerTextCoefficient = 1;
       sizes.iconsCoefficients = 1;
       sizes.headerMarginCoefficient = 1;
+      sizes.modalCoefficient = 1;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
       sizes.showHeart = false;
+      sizes.modalMobile = false;
     } else if(windowWidth >= 1440 && windowWidth < 1600) {
       sizes.roundStartCoefficient = 0.85;
       sizes.bottleSizesCoefficient = 0.85;
@@ -280,9 +284,11 @@ function changeSizes() {
       sizes.timerTextCoefficient = 0.9;
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
+      sizes.modalCoefficient = 0.8;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
       sizes.showHeart = false;
+      sizes.modalMobile = false;
     } else if(windowWidth >= 1200 && windowWidth < 1440) {
       sizes.roundStartCoefficient = 0.8;
       sizes.bottleSizesCoefficient = 0.85;
@@ -295,9 +301,11 @@ function changeSizes() {
       sizes.timerTextCoefficient = 0.9;
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
+      sizes.modalCoefficient = 0.8;
       sizes.showHigestScore = true;
       sizes.showSettings = false;
       sizes.showHeart = false;
+      sizes.modalMobile = false;
     } else if(windowWidth >= 1000 && windowWidth < 1200) {
       sizes.roundStartCoefficient = 0.8;
       sizes.bottleSizesCoefficient = 0.85;
@@ -310,9 +318,11 @@ function changeSizes() {
       sizes.timerTextCoefficient = 0.9;
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
+      sizes.modalCoefficient = 0.7;
       sizes.showHigestScore = false;
       sizes.showSettings = false;
       sizes.showHeart = true;
+      sizes.modalMobile = false;
     } else if(windowWidth >= 700 && windowWidth < 1000) {
       sizes.roundStartCoefficient = 0.8;
       sizes.bottleSizesCoefficient = 0.8;
@@ -325,9 +335,11 @@ function changeSizes() {
       sizes.timerTextCoefficient = 0.9;
       sizes.iconsCoefficients = 0.8;
       sizes.headerMarginCoefficient = 0.8;
+      sizes.modalCoefficient = 0.7;
       sizes.showHigestScore = false;
       sizes.showSettings = true;
       sizes.showHeart = true;
+      sizes.modalMobile = false;
     } else if(windowWidth < 700) {
       sizes.roundStartCoefficient = 0.7;
       sizes.bottleSizesCoefficient = 0.6
@@ -340,8 +352,10 @@ function changeSizes() {
       sizes.timerTextCoefficient = 0.8;
       sizes.iconsCoefficients = 0.7;
       sizes.headerMarginCoefficient = 0.7;
+      sizes.modalCoefficient = 0.6;
       sizes.showHigestScore = false;
       sizes.showSettings = true;
       sizes.showHeart = true;
+      sizes.modalMobile = true;
     }
   }
