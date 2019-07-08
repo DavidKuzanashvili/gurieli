@@ -35,9 +35,9 @@ function LifeFactory(type, lifeNumber, drawStart, w, h, gap) {
     this.drawStart = width / 2 - (this.lifeNumber - 1) * (this.w + this.gap) / 2;
     for(var i = 0; i < this.lifes.length; i++) {
       this.lifes[i].x = this.drawStart + i * (this.w + this.gap);
-      this.lifes[i].y = height - 100;
+      this.lifes[i].y = height - 100 * sizes.headerMarginCoefficient * 2;
       deadHearts[i].x = this.drawStart + i * (this.w + this.gap);
-      deadHearts[i].y = height - 100;
+      deadHearts[i].y = height - 100 * sizes.headerMarginCoefficient * 2;
     }
   };
 

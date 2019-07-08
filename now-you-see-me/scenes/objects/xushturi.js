@@ -31,7 +31,10 @@ function Xushturi(x, y) {
     pop();
   }
 
+
+
   this.update = function() {
+   
   }
   
 

@@ -329,7 +329,7 @@ function changeSizes() {
       sizes.showHeart = true;
       sizes.modalMobile = false;
     } else if(windowWidth >= 700 && windowWidth < 1000) {
-      sizes.roundStartCoefficient = 0.8;
+      sizes.roundStartCoefficient = 0.7;
       sizes.bottleSizesCoefficient = 0.8;
       sizes.fruitsCoefficient = 0.8;
       sizes.fontCoefficient = 0.6;
@@ -365,7 +365,7 @@ function changeSizes() {
       sizes.showHeart = true;
       sizes.modalMobile = true;
     } else if(windowWidth < 500) {
-      sizes.roundStartCoefficient = 0.7;
+      sizes.roundStartCoefficient = 0.2;
       sizes.bottleSizesCoefficient = 0.6
       sizes.fruitsCoefficient = 0.5;
       sizes.fontCoefficient = 0.5;

@@ -127,6 +127,7 @@ function RoundStart() {
 
     imageMode(CENTER);
     image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width * sizes.roundStartCoefficient, LEVEL[CURRENT_LEVEL].fruitName.height * sizes.roundStartCoefficient);
+    console.log(sizes.roundStartCoefficient);
 
     pop();
   }

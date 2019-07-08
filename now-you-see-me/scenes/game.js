@@ -106,6 +106,7 @@ function Game() {
 
   this.draw = function() {
     push();
+    this.update();
 
     background(colors.seafoamBlueTwo);
     cursor('default');
@@ -195,6 +196,33 @@ function Game() {
   }
 
   this.update = function() {
+    if(windowWidth <= 550) {
+      headerButtons.forEach(function(btn) {
+        btn.x = width - 100 * sizes.headerMarginCoefficient - pngIcons.close.w / 2;
+        if(btn.typeText === 'close') {
+          btn.y = 70;
+        }
+        if(btn.typeText === 'pause') {
+          btn.y = 70 + closeBtn.h + 30;
+        }
+        if(btn.typeText === 'sound') {
+          btn.y = 70 + closeBtn.h + pauseBtn.h + 60;
+        }
+      });
+    } else {
+      headerButtons.forEach(function(btn) {
+        btn.y = 70;
+        if(btn.typeText === 'close') {
+          btn.x = width - 100 * sizes.headerMarginCoefficient - pngIcons.close.w / 2;
+        }
+        if(btn.typeText === 'pause') {
+          btn.x = width - (headerMargin * sizes.headerMarginCoefficient + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2);
+        }
+        if(btn.typeText === 'sound') {
+          btn.x = width - (headerMargin * sizes.headerMarginCoefficient + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2);          
+        }
+      });
+    }
   }
 
   this.touchStarted = function(){
@@ -459,21 +487,18 @@ function Game() {
 
     closeBtn = new ControlButton(pngIcons.close.img, width - 100 - pngIcons.close.w / 2, 70, pngIcons.close.w, pngIcons.close.h, 'close');
     closeBtn.onUpdate = function() {
-        this.x = width - 100 * sizes.headerMarginCoefficient - pngIcons.close.w / 2;
         this.w = pngIcons.close.w * sizes.iconSizes;
         this.h = pngIcons.close.h * sizes.iconSizes
     }
 
     pauseBtn = new ControlButton(pngIcons.pause.img, width - (headerMargin + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2), 70, pngIcons.pause.w, pngIcons.pause.h, 'pause');
     pauseBtn.onUpdate = function() {
-        this.x = width - (headerMargin * sizes.headerMarginCoefficient + gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w / 2);
         this.w = pngIcons.pause.w * sizes.iconSizes;
         this.h = pngIcons.pause.h * sizes.iconSizes
     }
 
     muteBtn = new ControlButton(pngIcons.sound.img, width - (headerMargin * sizes.headerMarginCoefficient + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2), 70, pngIcons.sound.w, pngIcons.sound.h, 'sound');
     muteBtn.onUpdate = function() {
-        this.x = width - (headerMargin * sizes.headerMarginCoefficient + 2*gapBetweenBtns + pngIcons.close.w + pngIcons.pause.w + pngIcons.sound.w / 2);
         this.w = pngIcons.sound.w * sizes.iconSizes;
         this.h = pngIcons.sound.h * sizes.iconSizes
     }
