@@ -18,10 +18,10 @@ function Intro() {
         //     bottles.push(new Bottle(bottlesOffsetLeft, bottleImages[key], 0));
         //     bottlesOffsetLeft += 150 + 60;
         // }
-        
+
         var fruitImagesList = Object.values(fruitImages);
 
-        for(var i = 0; i < 50; i++) {
+        for (var i = 0; i < 50; i++) {
             var fruit = random(random(fruitImagesList));
             fruit.x = parseInt(randomGaussian(width / 2, width / 7));
             fruit.y = parseInt(randomGaussian(height / 2, height / 7));
@@ -32,13 +32,13 @@ function Intro() {
 
         btn = new Button({
             x: width / 2,
-            y: height  / 2,
+            y: height / 2,
             backgroundColor: color('#86b23d'),
             font: fonts.LGVBold,
             content: 'daiwye',
-            onUpdate: function() {
+            onUpdate: function () {
                 this.x = width / 2;
-                this.y = height / 2; 
+                this.y = height / 2;
             }
         });
 
@@ -115,7 +115,7 @@ function Intro() {
     function drawIntroScreen() {
         // title.draw();
 
-        fruits.forEach(function(f){
+        fruits.forEach(function (f) {
             image(f.img, f.x, f.y, f.w, f.h, 0, 0, f.img.width, f.img.height);
         });
 
