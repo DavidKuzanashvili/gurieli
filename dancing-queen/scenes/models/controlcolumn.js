@@ -81,6 +81,12 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
     });
   }
 
+  this.getPassedActiveAreaArrows = function () {
+    return oControl.arrows.filter(function (arrow) {
+      return !arrow.isTriggered() && arrow.y > (activeAreaStart + (h / 5));
+    });
+  }
+
   function dropArrows() {
     for (var i = 0; i < oControl.arrows.length; i++) {
       if (!oControl.isPaused) {

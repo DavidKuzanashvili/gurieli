@@ -141,6 +141,10 @@ function Arrow(x, y, w, h, content, speed) {
     return triggered;
   }
 
+  this.forceTrigger = function() {
+    triggered = true;
+  }
+
   this.correct = function(){
     if(this.isTriggered()) {
       return;

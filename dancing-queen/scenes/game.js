@@ -11,7 +11,6 @@ function Game() {
   var pauseGameModal;
   var quitGameModal;
   var statsModal;
-  var pauseStart;
   var arrowSize = 72;
   var score = 0;
   var dance = null;
@@ -100,6 +99,11 @@ function Game() {
   }
 
   this.update = function () {
+    if(!hearts.lifes.length) {
+      showStats = true;
+      pauseGame();
+    }
+
     var randomColumn = controlColumns[round(random(0, 3))];
     if (!isPaused) {
       if (millis() > lastDrop + 1000) {
@@ -109,6 +113,19 @@ function Game() {
       }
     }
     updateActiveKeyCodes();
+
+    controlColumns.forEach(function(col) {
+      col.getPassedActiveAreaArrows().forEach(function(arrow) {
+        if(arrow.isTriggered()) {
+          return;
+        }
+        arrow.forceTrigger();
+        // score--;
+        hearts.lifes.length && hearts.lifes.pop();
+      })
+    })
+
+    score = Math.max(score, 0);
   }
 
   function updateActiveKeyCodes() {
@@ -178,8 +195,8 @@ function Game() {
   }
 
   function drawHeader() {
-    header.draw();
     header.setScore(score);
+    header.draw();
   }
 
   function drawDancer() {
@@ -199,15 +216,11 @@ function Game() {
   }
 
   function pauseGame() {
-    pauseStart = millis();
     isPaused = true;
-    header.isPaused = isPaused;
   }
 
   function unpouseGame() {
     isPaused = false;
-    header.isPaused = isPaused;
-    delete pauseStart;
   }
 
   this.touchStarted = function () {
@@ -311,16 +324,11 @@ function Game() {
                 }
 
                 if (controlColumns[i].isInActiveArea(controlColumns[i].arrows[j].y)) {
-                  score--;
+                  // score--;
+                  hearts.lifes.length && hearts.lifes.pop();
                   sounds.wrong.play();
                   controlColumns[i].arrows[j].incorrect();
                   oDancer.animate('shake');
-
-                  if (inCorrectArrowsLimit === 0) {
-                    inCorrectArrowsLimit = 3;
-                    hearts.lifes.pop();
-                  }
-                  --inCorrectArrowsLimit;
                 }
               }
             }
@@ -346,10 +354,12 @@ function Game() {
   }
 
   this.reset = function () {
-    // score = 0;
-    // header.setScore(score);
-    // showStats = false;
-    // unpouseGame();
-    document.location.reload();
+    score = 0;
+    showStats = false;
+    hearts.generetaLifes();
+    controlColumns.forEach(function(col){
+      col.arrows.length = 0;
+    });
+    unpouseGame();
   }
 }

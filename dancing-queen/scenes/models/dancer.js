@@ -8,6 +8,7 @@ function Dancer(img, offsetTop) {
   var shake= 0;
   var calmShakeSpeed = 0.5;
   var activeAnimation = null;
+  var currentShake = 0;
 
   var animations ={
     shake: {
@@ -18,9 +19,9 @@ function Dancer(img, offsetTop) {
         shake = Math.max(shake - calmShakeSpeed, 0);
 
         if(shake <= 0) {
-          activeAnimation = null;
+          this.animate();
         }
-      }
+      }.bind(this)
     }
   }
 
@@ -29,7 +30,7 @@ function Dancer(img, offsetTop) {
 
     imageMode(CENTER);
     // image(this.img, width / 4, (height + this.offsetTop) / 2, this.width, this.height);
-    translate(this.getX() + round(random(-shake, shake)), this.getY());
+    translate(this.getX() + currentShake, this.getY());
     if(this.xushturi) {
       if(windowWidth <= 768) {
         var coef = 0.3;
@@ -60,6 +61,7 @@ function Dancer(img, offsetTop) {
 
   this.update = function() { 
     updateAnimation();
+    currentShake = round(random(-shake, shake));
     if(this.xushturi) {
       this.xushturi.update();
     }
