@@ -55,7 +55,7 @@ function Game() {
     function () {
       this.width = cupImgObj.width * sizes.cupSizeCoefficient;
       this.height = cupImgObj.height * sizes.cupSizeCoefficient;
-      this.x = width / 2 - (gap * sizes.cupsGapCoefficeint) - cupImgObj.width;
+      this.x = width / 2 - (gap * sizes.cupsGapCoefficeint) - cupImgObj.width * sizes.cupSizeCoefficient;
       this.y = height / 2;
     },
     function () {
@@ -67,7 +67,7 @@ function Game() {
     function () {
       this.width = cupImgObj.width * sizes.cupSizeCoefficient;
       this.height = cupImgObj.height * sizes.cupSizeCoefficient;
-      this.x = width / 2 + (gap * sizes.cupsGapCoefficeint) + cupImgObj.width;
+      this.x = width / 2 + (gap * sizes.cupsGapCoefficeint) + cupImgObj.width * sizes.cupSizeCoefficient;
       this.y = height / 2;
     }
   ];

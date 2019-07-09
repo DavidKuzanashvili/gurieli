@@ -187,7 +187,15 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
     pop();
   }
 
+  var resOffsetY = 0;
+
   this.update = function () {
+    if(windowWidth <= 500) {
+      resOffsetY = 6;
+    } else {
+      resOffsetY = 0;
+    }
+
     this.onUpdate();
 
     if (this.xushturi && this.xushturiOn) {
@@ -253,7 +261,7 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
     fill(100, 100, 100, 255 * 0.5);
     noStroke();
     rotate(-this.rotation);
-    ellipse(this.shadowOffsetX - wc, this.height / 2 - (this.followShadow ? 0 : this.offsetY) - h / 2 + wc / 2, (this.width + wc) * this.enlargeShadow, h);
+    ellipse(this.shadowOffsetX - wc, this.height / 2 + resOffsetY - (this.followShadow ? 0 : this.offsetY) - h / 2 + wc / 2, (this.width + wc) * this.enlargeShadow, h);
     
     pop();
   }.bind(this);

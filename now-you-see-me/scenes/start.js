@@ -27,7 +27,8 @@ var sizes = {
   cupsGapCoefficeint: 0,
   headerMarginCoefficient: 0,
   iconSizes: 0,
-  fontCoefficient: 0
+  fontCoefficient: 0,
+  heartsMarginBottom: 0
 };
 var veryFirstLoadState = true;
 
@@ -165,24 +166,35 @@ function changeSizes() {
     sizes.headerMarginCoefficient = 1;
     sizes.iconSizes = 1;
     sizes.fontCoefficient = 1;
+    sizes.heartsMarginBottom = 1;
   } else if (windowWidth >= 1200 && windowWidth < 1440) {
     sizes.cupSizeCoefficient = 0.8;
     sizes.cupsGapCoefficeint = 0.7;
     sizes.headerMarginCoefficient = 0.5;
     sizes.iconSizes = 0.8;
     sizes.fontCoefficient = 0.8;
+    sizes.heartsMarginBottom = 0.8;
   } else if (windowWidth >= 700 && windowWidth < 1200) {
     sizes.cupSizeCoefficient = 0.7;
-    sizes.cupsGapCoefficeint = 0.1;
+    sizes.cupsGapCoefficeint = 0.6;
     sizes.headerMarginCoefficient = 0.4;
     sizes.iconSizes = 0.75;
     sizes.fontCoefficient = 0.7;
-  } else {
+    sizes.heartsMarginBottom = 0.8;
+  } else if(windowWidth >= 500 && windowWidth < 700) {
     sizes.cupSizeCoefficient = 0.6;
-    sizes.cupsGapCoefficeint = 0.1;
+    sizes.cupsGapCoefficeint = 0.5;
     sizes.headerMarginCoefficient = 0.3;
     sizes.iconSizes = 0.6;
     sizes.fontCoefficient = 0.7;
+    sizes.heartsMarginBottom = 0.8;
+  } else {
+    sizes.cupSizeCoefficient = 0.4;
+    sizes.cupsGapCoefficeint = 0.15;
+    sizes.headerMarginCoefficient = 0.3;
+    sizes.iconSizes = 0.6;
+    sizes.fontCoefficient = 0.7;
+    sizes.heartsMarginBottom = 0.8;
   }
 }
 

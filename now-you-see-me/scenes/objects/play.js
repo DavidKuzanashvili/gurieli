@@ -50,11 +50,13 @@ function Model(frame, texture) {
     }
   }
 
-  this.draw = function() {
+  this.draw = function(w, h) {
     push();
     var sprite = this.frame.sequence[this.currentIndex];
     translate(this.translateX, this.translateY);
-    image(this.texture, 0, 0, sprite.width, sprite.height, sprite.x, sprite.y, sprite.width, sprite.height);
+    w = w || sprite.width;
+    h = h || sprite.height;
+    image(this.texture, 0, 0, w, h, sprite.x, sprite.y, sprite.width, sprite.height);
     pop();
   }
 }
