@@ -17,15 +17,12 @@ function Modal(options) {
   var overlayColor = hexToRgb(colors.lightTan);
   var resumeText = 'gagrZele TamaSi';
   var resumeTextWidth;
-  this.statResetButton = new ControlButton(icons.reset.img, width / 2, height / 2, icons.reset.w, icons.reset.h);
-  this.statResetButton.textType = 'reset';
+  this.statResetButton = new ControlButton(icons.reset.img, width / 2, height / 2, icons.reset.w, icons.reset.h, 'reset');
+  this.statResetButton.typeText = 'reset';
 
-  this.statCloseButton = new ControlButton(icons.close.img, width / 2, height / 2, icons.close.w, icons.close.h);
-  this.statCloseButton.textType = 'close';
-
+  this.statCloseButton = new ControlButton(icons.close.img, width / 2, height / 2, icons.close.w, icons.close.h, 'close');
   
-  this.statShareButton = new ControlButton(icons.share.img, width / 2, height / 2, icons.share.w, icons.share.h);
-  this.statShareButton.textType = 'share';
+  this.statShareButton = new ControlButton(icons.share.img, width / 2, height / 2, icons.share.w, icons.share.h, 'share');
   
   this.statButtons = [
     this.statResetButton,
@@ -57,12 +54,7 @@ function Modal(options) {
     })
   ];
 
-  this.resumeBtn = new ControlButton(icons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, icons.resume.w, icons.resume.h);
-  this.resumeBtn.typeText = 'resume';
-  // this.resumeBtn.onUpdate = function() {
-  //   this.x = width / 2 + resumeTextWidth / 2 + 20;
-  //   this.y = height / 2;
-  // }
+  this.resumeBtn = new ControlButton(icons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, icons.resume.w, icons.resume.h, 'resume');
   
   this.drawStats = function() {
     var w = this.width;

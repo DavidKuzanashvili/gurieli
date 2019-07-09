@@ -250,10 +250,12 @@ function Game() {
     }
     if (header.soundBtn.contains(mouseX, mouseY)) {
       if (isSound) {
+        header.soundBtn.isSound = false;
         for (key in sounds) {
           sounds[key].setVolume(0);
         }
       } else {
+        header.soundBtn.isSound = true;
         for (key in sounds) {
           if (key === 'background') {
             sounds[key].setVolume(0.2);
@@ -285,8 +287,16 @@ function Game() {
 
     statsModal.statButtons.forEach(function (btn) {
       if (btn.contains(mouseX, mouseY)) {
-        if (btn.textType === 'reset') {
+        if (btn.typeText === 'reset') {
           self.reset();
+        }
+
+        if(btn.typeText === 'share') {
+          var params = window.requestQueryParams;
+          var url = params.url;
+          if(url !== undefined) {
+              window.open('https://www.facebook.com/sharer/sharer.php?url=' + encodeURIComponent(url), '_blacnk');                        
+          }
         }
       }
     })

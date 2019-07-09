@@ -6,6 +6,7 @@ function ControlButton(type, x, y, w, h, typeText) {
   this.w = w;
   this.h = h;
   this.typeText = typeText || '';
+  this.isSound = true;
   this.onUpdate = function() {};
   var defaultType = this.type;
   var hoverType = 'yellow' + capitalize(this.typeText);
@@ -60,10 +61,26 @@ function ControlButton(type, x, y, w, h, typeText) {
     this.onUpdate();
     updateAnimation();
     if(this.typeText !== 'share' && this.typeText !== 'resume') {
-      if(this.contains(mouseX, mouseY)) {
-        this.type = pngIcons[hoverType].img;
+      if(this.typeText === 'sound') {
+        if(this.isSound) {
+          if(this.contains(mouseX, mouseY)) {
+            this.type = pngIcons[hoverType].img;
+          } else {
+            this.type = defaultType;
+          }
+        } else {
+          if(this.contains(mouseX, mouseY)) {
+            this.type = pngIcons['yellowMute'].img;
+          } else {
+            this.type = pngIcons['mute'].img;
+          }
+        }
       } else {
-        this.type = defaultType;
+        if(this.contains(mouseX, mouseY)) {
+          this.type = pngIcons[hoverType].img;
+        } else {
+          this.type = defaultType;
+        }
       }
     }
   }

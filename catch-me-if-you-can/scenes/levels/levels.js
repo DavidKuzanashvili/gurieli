@@ -141,11 +141,11 @@ const LEVEL = [
         width: 85,
         height: 85
       },
-      {
-        fruit: 'cherry',
-        width: 45,
-        height: 110
-      }
+      // {
+      //   fruit: 'cherry',
+      //   width: 45,
+      //   height: 110
+      // }
     ],
     fruitSpeedRange: {
       start: 6,

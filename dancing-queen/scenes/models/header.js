@@ -5,14 +5,11 @@ function Header() {
   var score = 0;
   this.isPaused = false;
   this.height = 170;
-  this.soundBtn = new ControlButton(icons.sound.img, drawStart, this.height / 2, icons.sound.w, icons.sound.h);
-  this.soundBtn.typeText = 'sound';
+  this.soundBtn = new ControlButton(icons.sound.img, drawStart, this.height / 2, icons.sound.w, icons.sound.h, 'sound');
 
-  this.pauseBtn = new ControlButton(icons.pause.img, drawStart + icons.pause.w + marginBetweenBtns, this.height / 2, icons.pause.w, icons.pause.h);
-  this.pauseBtn.typeText = 'pause';
+  this.pauseBtn = new ControlButton(icons.pause.img, drawStart + icons.pause.w + marginBetweenBtns, this.height / 2, icons.pause.w, icons.pause.h, 'pause');
 
-  this.closeBtn = new ControlButton(icons.close.img, drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns), this.height / 2, icons.reset.w, icons.reset.h);
-  this.closeBtn.typeText = 'close';
+  this.closeBtn = new ControlButton(icons.close.img, drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns), this.height / 2, icons.reset.w, icons.reset.h, 'close');
 
   this.soundBtn.onUpdate = function() {
     this.x = drawStart;

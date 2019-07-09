@@ -168,12 +168,16 @@ function RoundStart() {
   var drawIntroFruit = drawIntroFruitIn;
 
   function drawIntroFruitIn() {
+    if(windowWidth < 700) {
+      introFruitOffset = 150;
+    }
+
     push();
 
     introFruitOffset = Math.min(introFruitOffset + introFruitOffsetSpeed, targetIntroFruitOffset);
 
     imageMode(CENTER);
-    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width * sizes.roundStartCoefficient, LEVEL[CURRENT_LEVEL].fruitName.height * sizes.roundStartCoefficient);
+    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width * sizes.roundStartIntroFruitCoefficient, LEVEL[CURRENT_LEVEL].introFruit.height * sizes.roundStartIntroFruitCoefficient);
 
     pop();
   }
@@ -214,7 +218,7 @@ function RoundStart() {
 
     imageMode(CENTER);
     tint(255, 255 * changeAlpha);
-    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width * sizes.roundStartCoefficient, LEVEL[CURRENT_LEVEL].fruitName.height * sizes.roundStartCoefficient);
+    image(introFruits[LEVEL[CURRENT_LEVEL].introFruit.name], width / 2, height - introFruitOffset, LEVEL[CURRENT_LEVEL].introFruit.width * sizes.roundStartIntroFruitCoefficient, LEVEL[CURRENT_LEVEL].introFruit.height * sizes.roundStartIntroFruitCoefficient);
 
     if (changeAlpha === 0) {
       endingAnimationFinished = true;

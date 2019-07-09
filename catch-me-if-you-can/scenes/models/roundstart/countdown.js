@@ -3,7 +3,7 @@ function CountDown(x, y, countNumber, numberColor) {
   this.y = y;
   this.countNumber = countNumber;
   this.color = hexToRgb(numberColor);
-  this.fontSize = 150;
+  this.fontSize = 150 * sizes.countDownCoefficient;
   this.translate = 450;
   this.startTime = millis();
   this.isNextScene = false;
@@ -12,7 +12,7 @@ function CountDown(x, y, countNumber, numberColor) {
   this.events = {};
   this.onUpdate = function() {};
 
-  var minFontSize = this.fontSize * 0.2;
+  var minFontSize = this.fontSize * sizes.countDownCoefficient * 0.2;
   var duration = 3000;
   var offset = 0;
   var offsetSpeed = 5;
@@ -53,7 +53,7 @@ function CountDown(x, y, countNumber, numberColor) {
   var getFontSizeFor = function (diff) {
     diff = Math.abs(diff);
 
-    return map(diff, 0, this.translate, this.fontSize, minFontSize);
+    return map(diff, 0, this.translate, this.fontSize * sizes.countDownCoefficient, minFontSize);
   }.bind(this);
 
   this.draw = function () {
@@ -75,28 +75,36 @@ function CountDown(x, y, countNumber, numberColor) {
 
       var currentFontSize = getFontSizeFor(offset);
       textSize(currentFontSize);
-      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.1, 1) * currentAlpha);
-      text('3', this.x + offset, this.y + (this.fontSize - currentFontSize / 2) / 2);
+      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize * sizes.countDownCoefficient, 0.1, 1) * currentAlpha);
+      text('3', this.x + offset, this.y + (this.fontSize * sizes.countDownCoefficient - currentFontSize / 2) / 2  - responsiveOffsetY);
 
       currentFontSize = getFontSizeFor(offset + (this.translate / 3));
       textSize(currentFontSize);
-      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.1, 1) * currentAlpha);
-      text('2', this.x + offset + (this.translate / 3), this.y + (this.fontSize - currentFontSize / 2) / 2);
+      fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize * sizes.countDownCoefficient, 0.1, 1) * currentAlpha);
+      text('2', this.x + offset + (this.translate / 3), this.y + (this.fontSize * sizes.countDownCoefficient - currentFontSize / 2) / 2  - responsiveOffsetY);
 
       currentFontSize = getFontSizeFor(offset + (this.translate * 2 / 3));
       textSize(currentFontSize);
       fill(this.color.r, this.color.g, this.color.b, 255 * map(currentFontSize, minFontSize, this.fontSize, 0.1, 1) * currentAlpha);
-      text('1', this.x + offset + (this.translate * 2 / 3), this.y + (this.fontSize - currentFontSize / 2) / 2);
+      text('1', this.x + offset + (this.translate * 2 / 3), this.y + (this.fontSize * sizes.countDownCoefficient - currentFontSize / 2) / 2 - responsiveOffsetY);
     }
 
     pop();
   }
 
+  var responsiveOffsetY = 0;
+
   this.update = function () {
+    this.translate = 400 * sizes.countDownCoefficient;
+
+    if(windowWidth <= 500) {
+      responsiveOffsetY = 50;
+    }
+
     this.onUpdate();
     UpdateAnimation();
 
-    if (this.fontSize <= this.fontSize - 50) {
+    if (this.fontSize * sizes.countDownCoefficient <= this.fontSize * sizes.countDownCoefficient - 50) {
       return;
     }
 

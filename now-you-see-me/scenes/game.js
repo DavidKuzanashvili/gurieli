@@ -273,22 +273,24 @@ function Game() {
           sounds.popUp.play();
         }
 
-        if (btn.typeText === 'reset') {
-          sounds.click.play();
-          showQuitModal = showPauseModal = showStats = false;
-          unpouseGame();
-          resetGame();
-        }
+        // if (btn.typeText === 'reset') {
+        //   sounds.click.play();
+        //   showQuitModal = showPauseModal = showStats = false;
+        //   unpouseGame();
+        //   resetGame();
+        // }
 
         if (btn.typeText === 'sound') {
           sounds.click.play();
           toggleSound = !toggleSound;
 
           if (toggleSound) {
+            btn.isSound = false;
             for (key in sounds) {
               sounds[key].setVolume(0);
             }
           } else {
+            btn.isSound = true;
             for (key in sounds) {
               if (key === 'background') {
                 sounds[key].setVolume(0.2);
@@ -322,6 +324,14 @@ function Game() {
         if (btn.typeText === 'reset') {
           showStats = false;
           resetGame();
+        }
+
+        if(btn.typeText === 'share') {
+          var params = window.requestQueryParams;
+          var url = params.url;
+          if(url !== undefined) {
+              window.open('https://www.facebook.com/sharer/sharer.php?url=' + encodeURIComponent(url), '_blacnk');                        
+          }
         }
       }
     });

@@ -1,3 +1,17 @@
+window.requestQueryParams = window.location.href
+  .split('?')
+  .slice(1)
+  .join('?')
+  .split('&')
+  .reduce(function (o, c) {
+    c = c.split('=');
+    c.length = 2;
+
+    o[c[0] || 'undefined'] = c[1] || null;
+
+    return o;
+  }, {});
+
 var fontsPath = 'assets/fonts/';
 var imgsPath = 'assets/imgs/';
 var iconsPath = imgsPath + 'icons/';
@@ -92,6 +106,12 @@ function loadIcons() {
     h: 38
   };
 
+  pngIcons.mute = {
+    img: loadImage(iconsPath + 'mute.png'),
+    w: 43,
+    h: 31
+  };
+
   pngIcons.yellowSound = {
     img: loadImage(iconsPath + 'yellowsound.png'),
     w: 52,
@@ -116,6 +136,12 @@ function loadIcons() {
     img: loadImage(iconsPath + 'yellowsettings.png'),
     w: 45,
     h: 45
+  };
+
+  pngIcons.yellowMute = {
+    img: loadImage(iconsPath + 'yellowmute.png'),
+    w: 43,
+    h: 31
   };
 }
 

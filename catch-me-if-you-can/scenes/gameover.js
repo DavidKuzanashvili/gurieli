@@ -64,6 +64,14 @@ function GameOver()
                     score = 0;
                     bindGameOverObject.sceneManager.showScene( RoundStart );
                 }
+
+                if(btn.typeText === 'share') {
+                    var params = window.requestQueryParams;
+                    var url = params.url;
+                    if(url !== undefined) {
+                        window.open('https://www.facebook.com/sharer/sharer.php?url=' + encodeURIComponent(url), '_blacnk');                        
+                    }
+                }
             }
         });
     }

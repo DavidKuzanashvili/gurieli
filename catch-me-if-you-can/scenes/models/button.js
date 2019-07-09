@@ -58,10 +58,10 @@ function Button(options) {
 
     fill(usingAlpha(this.shadowColor, 255 * currentAlpha));
     rect(this.x, this.y + this.shadowOffset, this.width, this.height, 43);
-    fill(usingAlpha(this.backgroundColor, 255 * currentAlpha));
+    fill(usingAlpha(color(this.backgroundColor), 255 * currentAlpha));
     rect(this.x, this.y + this.currentOffset, this.width, this.height, 43);
     textAlign(CENTER, CENTER);
-    fill(usingAlpha(this.textColor, 255 * currentAlpha));
+    fill(usingAlpha(color(this.textColor), 255 * currentAlpha));
     textFont(this.font);
     drawContent();
 

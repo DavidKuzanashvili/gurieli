@@ -109,12 +109,14 @@ function Game() {
         refuseQuit = quitGameModal.quitButtons[1];
 
         acceptQuit.events.down.end = function () {
+            sounds.popUp.play();
             unpouseGame();
             turnOnSounds();
             bindGameObject.sceneManager.showScene(GameOver);
         }
 
         refuseQuit.events.down.end = function () {
+            sounds.popUp.play();
             showQuitModal = false;
             turnOnSounds();
             unpouseGame();
@@ -131,7 +133,7 @@ function Game() {
     }
 
     this.draw = function () {
-
+        updateTouchTracker();
         this.update();
         if (!isPaused) {
             generateFruits();
@@ -412,7 +414,6 @@ function Game() {
         if(currentLevelFruitCount < maxFruitCount) {
             score -= currentLevelFruitCount;
             stats.setScore(score);
-            console.log(score, username);
             // axios.post("https://gurieli-api.leavingstone.club/api/game", {
             //     type: 1,
             //     point: score,
@@ -438,12 +439,24 @@ function Game() {
         showQuitModal = false;
     }
 
+    var touchEndedTime = 0;
+
+    function updateTouchTracker(){
+        if(touches.length) {
+            touchEndedTime = millis();
+        }
+    }
+
     this.touchStarted = function(){
         var target = touches.length ? touches[touches.length - 1] : {x: -1000, y: -1000};
         clickCallback(target.x, target.y);
     }
 
     this.mousePressed = function () {
+        if(millis() - touchEndedTime < 25) {
+            return;
+        }
+
         clickCallback(mouseX, mouseY);
     }
 
@@ -466,10 +479,10 @@ function Game() {
                 }
 
                 if(btn.typeText === 'close') {
+                    sounds.popUp.play();
                     showQuitModal = true;
                     muteSounds();
                     pauseGame();
-                    sounds.popUp.play();
                 }
 
                 if(btn.typeText === 'pause') {
@@ -480,6 +493,12 @@ function Game() {
 
                 if(btn.typeText === 'sound') {
                     soundsVolume = soundsVolume ? 0 : 1;
+                    if(soundsVolume) {
+                        btn.isSound = true;
+                    } else {
+                        btn.isSound = false;
+                    }
+
                     for(key in sounds) {
 
                         if(key === 'background') {

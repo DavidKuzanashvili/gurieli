@@ -1,3 +1,18 @@
+//window.open('https://www.facebook.com/sharer/sharer.php?url= + encodeURIComponent(url)', '_blacnk');
+window.requestQueryParams = window.location.href
+  .split('?')
+  .slice(1)
+  .join('?')
+  .split('&')
+  .reduce(function (o, c) {
+    c = c.split('=');
+    c.length = 2;
+
+    o[c[0] || 'undefined'] = c[1] || null;
+
+    return o;
+  }, {});
+
 var fontsPath = 'assets/fonts/';
 var iconsPath = 'assets/imgs/icons/';
 var fonts = {};
@@ -70,6 +85,11 @@ function loadIcons() {
     w: 45,
     h: 38
   };
+  icons.mute = {
+    img: loadImage(iconsPath + 'mute.png'),
+    w: 43,
+    h: 31
+  };
   arrow = {
     img: loadImage(iconsPath + 'arrow-down.png'),
     w: 38,
@@ -84,6 +104,38 @@ function loadIcons() {
     img: loadImage(iconsPath + 'red-down-arrow.png'),
     w: 38,
     h: 46
+  };
+
+  icons.yellowSound = {
+    img: loadImage(iconsPath + 'yellowsound.png'),
+    w: 52,
+    h: 38
+  };
+  icons.yellowPause = {
+    img: loadImage(iconsPath + 'yellowpause.png'),
+    w: 43,
+    h: 38
+  };
+  icons.yellowReset = {
+    img: loadImage(iconsPath + 'yellowreset.png'),
+    w: 36,
+    h: 38
+  };
+  icons.yellowClose = {
+    img: loadImage(iconsPath + 'yellowclose.png'),
+    w: 38,
+    h: 38
+  };
+  icons.yellowSettings = {
+    img: loadImage(iconsPath + 'yellowsettings.png'),
+    w: 45,
+    h: 45
+  };
+
+  icons.yellowMute = {
+    img: loadImage(iconsPath + 'yellowmute.png'),
+    w: 43,
+    h: 31
   };
 }
 

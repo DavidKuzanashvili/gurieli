@@ -4,6 +4,7 @@ function ControlButton(type, x, y, w, h, typeText) {
   this.y = y;
   this.w = w;
   this.h = h;
+  this.isSound = true;
   this.typeText = typeText || '';
   this.onUpdate = function() {};
 
@@ -26,10 +27,26 @@ function ControlButton(type, x, y, w, h, typeText) {
   this.update = function() {
     this.onUpdate();
     if(this.typeText !== 'share' && this.typeText !== 'resume') {
-      if(this.contains(mouseX, mouseY)) {
-        this.type = pngIcons[hoverType].img;
+      if(this.typeText === 'sound') {
+        if(this.isSound) {
+          if(this.contains(mouseX, mouseY)) {
+            this.type = pngIcons[hoverType].img;
+          } else {
+            this.type = defaultType;
+          }
+        } else {
+          if(this.contains(mouseX, mouseY)) {
+            this.type = pngIcons['yellowMute'].img;
+          } else {
+            this.type = pngIcons['mute'].img;
+          }
+        }
       } else {
-        this.type = defaultType;
+        if(this.contains(mouseX, mouseY)) {
+          this.type = pngIcons[hoverType].img;
+        } else {
+          this.type = defaultType;
+        }
       }
     }
   }

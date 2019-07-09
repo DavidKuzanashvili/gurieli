@@ -39,6 +39,8 @@ var CURRENT_LEVEL = 0;
 
 var sizes = {
   roundStartCoefficient: 0,
+  roundStartIntroFruitCoefficient: 0,
+  countDownCoefficient: 0,
   bottleSizesCoefficient: 0,
   fruitsCoefficient: 0,
   fontCoefficient: 0,
@@ -214,6 +216,11 @@ function loadIcons() {
     w: 45,
     h: 45
   };
+  pngIcons.mute = {
+    img: loadImage(iconsPath + 'mute.png'),
+    w: 43,
+    h: 31
+  };
 
   pngIcons.yellowSound = {
     img: loadImage(iconsPath + 'yellowsound.png'),
@@ -240,6 +247,12 @@ function loadIcons() {
     w: 45,
     h: 45
   };
+
+  pngIcons.yellowMute = {
+    img: loadImage(iconsPath + 'yellowmute.png'),
+    w: 43,
+    h: 31
+  };
 }
 
 function loadSprite() {
@@ -261,6 +274,8 @@ function loadSoundEffects() {
 function changeSizes() {
   if (windowWidth >= 1600) {
     sizes.roundStartCoefficient = 1;
+    sizes.roundStartIntroFruitCoefficient = 1;
+    sizes.countDownCoefficient = 1;
     sizes.bottleSizesCoefficient = 1;
     sizes.fruitsCoefficient = 1;
     sizes.fontCoefficient = 1;
@@ -279,6 +294,8 @@ function changeSizes() {
     sizes.modalMobile = false;
   } else if (windowWidth >= 1440 && windowWidth < 1600) {
     sizes.roundStartCoefficient = 0.85;
+    sizes.roundStartIntroFruitCoefficient = 0.8;
+    sizes.countDownCoefficient = 0.95;
     sizes.bottleSizesCoefficient = 0.85;
     sizes.fruitsCoefficient = 0.8;
     sizes.fontCoefficient = 0.9;
@@ -297,6 +314,8 @@ function changeSizes() {
     sizes.modalMobile = false;
   } else if (windowWidth >= 1200 && windowWidth < 1440) {
     sizes.roundStartCoefficient = 0.8;
+    sizes.roundStartIntroFruitCoefficient = 0.7;
+    sizes.countDownCoefficient = 0.95;
     sizes.bottleSizesCoefficient = 0.85;
     sizes.fruitsCoefficient = 0.8;
     sizes.fontCoefficient = 0.9;
@@ -315,6 +334,8 @@ function changeSizes() {
     sizes.modalMobile = false;
   } else if (windowWidth >= 1000 && windowWidth < 1200) {
     sizes.roundStartCoefficient = 0.8;
+    sizes.roundStartIntroFruitCoefficient = 0.7;
+    sizes.countDownCoefficient = 0.95;
     sizes.bottleSizesCoefficient = 0.85;
     sizes.fruitsCoefficient = 0.8;
     sizes.fontCoefficient = 0.9;
@@ -333,6 +354,8 @@ function changeSizes() {
     sizes.modalMobile = false;
   } else if (windowWidth >= 700 && windowWidth < 1000) {
     sizes.roundStartCoefficient = 0.7;
+    sizes.roundStartIntroFruitCoefficient = 0.6;
+    sizes.countDownCoefficient = 0.95;
     sizes.bottleSizesCoefficient = 0.8;
     sizes.fruitsCoefficient = 0.8;
     sizes.fontCoefficient = 0.6;
@@ -351,6 +374,8 @@ function changeSizes() {
     sizes.modalMobile = false;
   } else if (windowWidth >= 500 && windowWidth < 700) {
     sizes.roundStartCoefficient = 0.7;
+    sizes.roundStartIntroFruitCoefficient = 0.6;
+    sizes.countDownCoefficient = 0.95;
     sizes.bottleSizesCoefficient = 0.6
     sizes.fruitsCoefficient = 0.5;
     sizes.fontCoefficient = 0.5;
@@ -368,7 +393,9 @@ function changeSizes() {
     sizes.showHeart = true;
     sizes.modalMobile = true;
   } else if (windowWidth < 500) {
-    sizes.roundStartCoefficient = 0.2;
+    sizes.roundStartCoefficient = 0.5;
+    sizes.roundStartIntroFruitCoefficient = 0.5;
+    sizes.countDownCoefficient = 0.7;
     sizes.bottleSizesCoefficient = 0.6
     sizes.fruitsCoefficient = 0.5;
     sizes.fontCoefficient = 0.5;
