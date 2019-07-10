@@ -88,21 +88,16 @@ function Game() {
 
   var startButton = null;
 
-  this.ender = function () {
-  }
-
   this.setup = function () {
     initGame();
     startButton = new Button({
       x: width / 2,
       y: height / 2,
+      width: 237,
+      hegth: 74,
       backgroundColor: color(colors.dullYellow),
       font: fonts.LGVBold,
-      content: 'daiwye',
-      onUpdate: function () {
-        this.x = width / 2;
-        this.y = height / 2;
-      }
+      content: 'daiwye'
     });
 
     startButton.events.up.end = function () {
@@ -125,6 +120,7 @@ function Game() {
   }
 
   this.draw = function () {
+    updateTouchTracker();
     push();
     this.update();
 
@@ -221,22 +217,48 @@ function Game() {
   }
 
   this.update = function () {
+    var stw = 237;
+    var sth = 74;
+    var fs = 30;
+    var coef = 1;
+
+    if(windowWidth <= 768) {
+      coef = 0.8;
+      stw = parseInt(237 * coef);
+      sth = parseInt(74 * coef);
+      fs = parseInt(30 * coef);
+    }
+
+    if(startButton) {
+      startButton.onUpdate = function () {
+        this.x = width / 2;
+        this.y = height / 2;
+        this.width = stw;
+        this.height = sth;
+        this.fontSize = fs;
+      }
+    }
+
+    if(showStats) {
+      statsGameModal.score = score;
+    }
+
     if (windowWidth <= 550) {
       headerButtons.forEach(function (btn) {
         btn.x = width - 100 * sizes.headerMarginCoefficient - pngIcons.close.w / 2;
         if (btn.typeText === 'close') {
-          btn.y = 70;
+          btn.y = 70 * sizes.headerMarginTopCoefficient;
         }
         if (btn.typeText === 'pause') {
-          btn.y = 70 + closeBtn.h + 30;
+          btn.y = 70 * sizes.headerMarginTopCoefficient + closeBtn.h + 30;
         }
         if (btn.typeText === 'sound') {
-          btn.y = 70 + closeBtn.h + pauseBtn.h + 60;
+          btn.y = 70 * sizes.headerMarginTopCoefficient + closeBtn.h + pauseBtn.h + 60;
         }
       });
     } else {
       headerButtons.forEach(function (btn) {
-        btn.y = 70;
+        btn.y = 70 * sizes.headerMarginTopCoefficient;
         if (btn.typeText === 'close') {
           btn.x = width - 100 * sizes.headerMarginCoefficient - pngIcons.close.w / 2;
         }
@@ -250,12 +272,24 @@ function Game() {
     }
   }
 
+  var touchEndedTime = 0;
+
+  function updateTouchTracker() {
+    if(touches.length) {
+      touchEndedTime = millis();
+    }
+  }
+
   this.touchStarted = function () {
     var target = touches.length ? touches[touches.length - 1] : { x: -1000, y: -1000 };
     clickCallback(target.x, target.y);
   }
 
   this.mousePressed = function () {
+    if(millis() - touchEndedTime < 25) {
+      return;
+    }
+
     clickCallback(mouseX, mouseY);
   }
 
@@ -326,12 +360,22 @@ function Game() {
           resetGame();
         }
 
+        if(btn.typeText === 'close') {
+          emit('close');
+          // if(window.parent && window.parent !== window) {
+          //   window.parent.history.back();
+          // } else {
+          //   window.close() | window.location.reload();
+          // }
+        }
+
         if(btn.typeText === 'share') {
-          var params = window.requestQueryParams;
-          var url = params.url;
-          if(url !== undefined) {
-              window.open('https://www.facebook.com/sharer/sharer.php?url=' + encodeURIComponent(url), '_blacnk');                        
-          }
+          emit('share');
+          // var params = window.requestQueryParams;
+          // var url = params.url;
+          // if(url !== undefined) {
+          //     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blacnk');                        
+          // }
         }
       }
     });
@@ -589,7 +633,7 @@ function Game() {
     textSize(40 * sizes.fontCoefficient);
     textFont(fonts.LGVBold);
     textAlign(LEFT, CENTER);
-    text('umaRlesi qula: 57', 100 * sizes.headerMarginCoefficient, marginTop);
+    text('umaRlesi qula: 57', 100 * sizes.headerMarginCoefficient, marginTop * sizes.headerMarginTopCoefficient);
 
     pop();
   }
@@ -601,7 +645,7 @@ function Game() {
     textSize(40 * sizes.fontCoefficient);
     textFont(fonts.LGVBold);
     textAlign(LEFT, CENTER);
-    text('qula: ' + scoreCircle.getScore(), 100 * sizes.headerMarginCoefficient, marginTop + 45);
+    text('qula: ' + scoreCircle.getScore(), 100 * sizes.headerMarginCoefficient, marginTop * sizes.headerMarginTopCoefficient + 45);
 
     pop();
   }

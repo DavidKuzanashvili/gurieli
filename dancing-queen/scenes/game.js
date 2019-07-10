@@ -57,6 +57,8 @@ function Game() {
   }
 
   this.draw = function () {
+    updateTouchTracker();
+
     push();
 
     if (!isPaused) {
@@ -223,6 +225,14 @@ function Game() {
     isPaused = false;
   }
 
+  var touchEndedTime = 0;
+
+  function updateTouchTracker() {
+    if(touches.length) {
+      touchEndedTime = millis();
+    }
+  }
+
   this.touchStarted = function () {
     var target = touches.length ? touches[touches.length - 1] : { x: -9999, y: -9999 };
     clickCallback(target.x, target.y);
@@ -234,6 +244,10 @@ function Game() {
     }
   }
   this.mousePressed = function () {
+    if(millis() - touchEndedTime < 25) {
+      return;
+    }
+
     clickCallback(mouseX, mouseY);
   };
 
@@ -291,12 +305,22 @@ function Game() {
           self.reset();
         }
 
+        if(btn.typeText === 'close') {
+          emit('close');          
+          // if(window.parent && window.parent !== window) {
+          //   window.parent.history.back();
+          // } else {
+          //   window.close() | window.location.reload();
+          // }
+        }
+
         if(btn.typeText === 'share') {
-          var params = window.requestQueryParams;
-          var url = params.url;
-          if(url !== undefined) {
-              window.open('https://www.facebook.com/sharer/sharer.php?url=' + encodeURIComponent(url), '_blacnk');                        
-          }
+          emit('share');
+          // var params = window.requestQueryParams;
+          // var url = params.url;
+          // if(url !== undefined) {
+          //     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blacnk');                        
+          // }
         }
       }
     })

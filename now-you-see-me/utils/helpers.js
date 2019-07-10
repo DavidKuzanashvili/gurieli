@@ -18,3 +18,7 @@ function hexToRgb(hex) {
 var easeInOut = function(x){
   return x * x / (x * x + Math.pow(1 - x * x, 2));
 }
+
+function emit(message) {
+  window.parent.postMessage(message);
+}

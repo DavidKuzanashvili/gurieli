@@ -26,6 +26,7 @@ var sizes = {
   cupSizeCoefficient: 0,
   cupsGapCoefficeint: 0,
   headerMarginCoefficient: 0,
+  headerMarginTopCoefficient: 0,
   iconSizes: 0,
   fontCoefficient: 0,
   heartsMarginBottom: 0
@@ -164,6 +165,7 @@ function changeSizes() {
     sizes.cupSizeCoefficient = 1;
     sizes.cupsGapCoefficeint = 1;
     sizes.headerMarginCoefficient = 1;
+    sizes.headerMarginTopCoefficient = 1;
     sizes.iconSizes = 1;
     sizes.fontCoefficient = 1;
     sizes.heartsMarginBottom = 1;
@@ -171,6 +173,7 @@ function changeSizes() {
     sizes.cupSizeCoefficient = 0.8;
     sizes.cupsGapCoefficeint = 0.7;
     sizes.headerMarginCoefficient = 0.5;
+    sizes.headerMarginTopCoefficient = 1;
     sizes.iconSizes = 0.8;
     sizes.fontCoefficient = 0.8;
     sizes.heartsMarginBottom = 0.8;
@@ -181,20 +184,30 @@ function changeSizes() {
     sizes.iconSizes = 0.75;
     sizes.fontCoefficient = 0.7;
     sizes.heartsMarginBottom = 0.8;
-  } else if(windowWidth >= 500 && windowWidth < 700) {
+  } else if(windowWidth >= 555 && windowWidth < 700) {
     sizes.cupSizeCoefficient = 0.6;
     sizes.cupsGapCoefficeint = 0.5;
     sizes.headerMarginCoefficient = 0.3;
+    sizes.headerMarginTopCoefficient = 1;
     sizes.iconSizes = 0.6;
     sizes.fontCoefficient = 0.7;
     sizes.heartsMarginBottom = 0.8;
+  } else if(windowWidth >= 350 && windowWidth < 555) {
+    sizes.cupSizeCoefficient = 0.4;
+    sizes.cupsGapCoefficeint = 0.5;
+    sizes.headerMarginCoefficient = 0.3;
+    sizes.headerMarginTopCoefficient = 0.6;
+    sizes.iconSizes = 0.6;
+    sizes.fontCoefficient = 0.5;
+    sizes.heartsMarginBottom = 0.3;
   } else {
     sizes.cupSizeCoefficient = 0.4;
     sizes.cupsGapCoefficeint = 0.15;
     sizes.headerMarginCoefficient = 0.3;
+    sizes.headerMarginTopCoefficient = 0.6;
     sizes.iconSizes = 0.6;
-    sizes.fontCoefficient = 0.7;
-    sizes.heartsMarginBottom = 0.8;
+    sizes.fontCoefficient = 0.5;
+    sizes.heartsMarginBottom = 0.3;
   }
 }
 

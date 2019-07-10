@@ -57,12 +57,7 @@ function Modal(options) {
   ];
 
   this.resumeBtn = new ControlButton(pngIcons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, pngIcons.resume.w, pngIcons.resume.h, 'resume');
-  // this.resumeBtn.onUpdate = function() {
-  //   this.x = width / 2 + resumeTextWidth / 2 + 20;
-  //   this.y = height / 2;
-  //   this.w = pngIcons.resume.w * sizes.iconSizes;
-  //   this.h = pngIcons.resume.h * sizes.iconSizes;
-  // }
+
   
   this.drawStats = function() {
     var w = this.width;
@@ -143,25 +138,48 @@ function Modal(options) {
     var h = this.height;
     
     this.quitButtons[0].onUpdate = function() {
+      this.fontSize = fs;
       this.x = width / 2 - oModal.width / 2 + 100 * coef;
       this.y = height / 2 + 70 * coef;
     };
     this.quitButtons[1].onUpdate = function() {
+      this.fontSize = fs;
       this.x = width / 2 + oModal.width / 2 - 100 * coef;
       this.y = height / 2 + 70 * coef;
     };
 
-    if(windowWidth <= 800) {
+    if(windowWidth > 500 && windowWidth <= 800) {
       coef = 0.8;
       fs = parseInt(fs * coef);
       w = parseInt(w * 0.75);
 
       this.quitButtons[0].onUpdate = function() {
+        this.fontSize = fs;
         this.height = 60;
         this.x = width / 2;
         this.y = height / 2 + oModal.height / 2 - this.height * 2 - 20;
       };
       this.quitButtons[1].onUpdate = function() {
+        this.fontSize = fs;
+        this.height = 60;
+        this.x = width / 2;
+        this.y = height / 2 + oModal.height / 2 - this.height;
+      };
+    }
+
+    if(windowWidth <= 500) {
+      coef = 0.6;
+      fs = parseInt(fs * coef);
+      w = parseInt(w * 0.6);
+
+      this.quitButtons[0].onUpdate = function() {
+        this.fontSize = fs;
+        this.height = 60;
+        this.x = width / 2;
+        this.y = height / 2 + oModal.height / 2 - this.height * 2 - 20;
+      };
+      this.quitButtons[1].onUpdate = function() {
+        this.fontSize = fs;
         this.height = 60;
         this.x = width / 2;
         this.y = height / 2 + oModal.height / 2 - this.height;
@@ -204,12 +222,20 @@ function Modal(options) {
     var fs = this.fontSize;
     var iconSize = 1;
 
-    if(windowWidth <= 800) {
-      coef = 0.7;
-      w = parseInt(w * 0.65);
-      fs = parseInt(fs * 0.65);
-      h = parseInt(h * 0.65);
-      iconSize = 0.65
+    if(windowWidth > 500 && windowWidth <= 800) {
+      coef = 0.65;
+      w = parseInt(w * coef);
+      fs = parseInt(fs * coef);
+      h = parseInt(h * coef);
+      iconSize = coef
+    }
+
+    if(windowWidth <= 500) {
+      coef = 0.5;
+      w = parseInt(w * coef);
+      fs = parseInt(fs * coef);
+      h = parseInt(h * coef);
+      iconSize = coef
     }
 
     this.resumeBtn.onUpdate = function() {

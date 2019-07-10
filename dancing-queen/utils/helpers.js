@@ -14,3 +14,7 @@ function hexToRgb(hex) {
     b: parseInt(result[3], 16)
   } : null;
 }
+
+function emit(message) {
+  window.parent.postMessage(message);
+}
