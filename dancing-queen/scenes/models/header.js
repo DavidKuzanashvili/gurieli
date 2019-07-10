@@ -15,8 +15,10 @@ function Header() {
     this.x = drawStart;
     this.y = self.height / 2;
     if(windowWidth <= 768) {
-      var mx = drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
-      this.x += width - mx - drawStart * (2/3);
+      var marginBB = 10;
+      var mx = (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
+      mx = 20 + 20 + icons.close.w / coef + icons.pause.w / coef + icons.sound.w / coef / 2 + 20 * 2;
+      this.x = width - mx;
       this.y -= self.height / 4;
     }
   }
@@ -25,8 +27,9 @@ function Header() {
     this.x = drawStart + icons.sound.w + marginBetweenBtns;
     this.y = self.height / 2;
     if(windowWidth <= 768) {
-      var mx = drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
-      this.x += width - mx - drawStart * (2/3);
+      var mx = (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
+      mx = 20 + 20 + icons.close.w / coef + icons.pause.w / coef / 2 + 20;
+      this.x = width - mx;
       this.y -= self.height / 4;
     }
   }
@@ -35,15 +38,16 @@ function Header() {
     this.x = drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
     this.y = self.height / 2;
     if(windowWidth <= 768) {
-      var mx = drawStart + (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
-      this.x += width - mx - drawStart * (2/3);
+      var mx = (icons.pause.w + icons.sound.w + 2 * marginBetweenBtns);
+      mx = 20 + 20 + icons.close.w / coef / 2;
+      this.x = width - mx;
       this.y -= self.height / 4;
     }
   }
 
   this.btns = [ this.soundBtn, this.pauseBtn, this.closeBtn ];
 
-
+  var coef = 0;
   this.draw = function() {
     push();
 
@@ -64,8 +68,9 @@ function Header() {
     if(windowWidth <= 768) {
       rectMode(CORNER);
       fill(134, 178, 61, 102);
-      rect(width - 50 + 20 - 245, self.height / 4 - 30, 245, 60, 60);
-      var coef = 1.5;
+      var rw = (icons.pause.w + icons.close.w + icons.sound.w) / coef + 20 * 2 + 2 * 20;
+      rect(width - rw - 20, 12, rw, 60, 60);
+      coef = 1.5;
 
       this.btns.forEach(function(btn) {
         btn.update();
@@ -94,13 +99,13 @@ function Header() {
   function drawStats() {
     if(windowWidth < 768) {
       fill(134, 178, 61);
-      textSize(32);
+      textSize(26);
       textFont(fonts.LGVBold);
       textAlign(RIGHT, TOP);
-      text('umaRlesi qula: 789', width - 50, self.height / 2);
+      text('umaRlesi qula: 789', width - 20, self.height / 2);
 
       textAlign(RIGHT, TOP);
-      text('qula: ' + score, width - 50, self.height / 2 + 32);
+      text('qula: ' + score, width - 20, self.height / 2 + 32);
     } else {
       fill(255);
       textSize(38);

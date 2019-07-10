@@ -285,7 +285,7 @@ function Game() {
       pauseGame();
     }
 
-    if (pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
+    if (isPaused && pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
       unpouseGame();
     }
 
@@ -293,37 +293,41 @@ function Game() {
       showQuit = true;
     }
 
-    quitGameModal.quitButtons.forEach(function (btn) {
-      if (btn.contains(mouseX, mouseY)) {
-        btn.animate('down');
-      }
-    });
-
-    statsModal.statButtons.forEach(function (btn) {
-      if (btn.contains(mouseX, mouseY)) {
-        if (btn.typeText === 'reset') {
-          self.reset();
+    if(showQuit) {
+      quitGameModal.quitButtons.forEach(function (btn) {
+        if (btn.contains(mouseX, mouseY)) {
+          btn.animate('down');
         }
+      });
+    }
 
-        if(btn.typeText === 'close') {
-          emit('close');          
-          // if(window.parent && window.parent !== window) {
-          //   window.parent.history.back();
-          // } else {
-          //   window.close() | window.location.reload();
-          // }
-        }
+    if(statsModal) {
+      statsModal.statButtons.forEach(function (btn) {
+        if (btn.contains(mouseX, mouseY)) {
+          if (btn.typeText === 'reset') {
+            self.reset();
+          }
 
-        if(btn.typeText === 'share') {
-          emit('share');
-          // var params = window.requestQueryParams;
-          // var url = params.url;
-          // if(url !== undefined) {
-          //     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blacnk');                        
-          // }
+          if(btn.typeText === 'close') {
+            emit('close');          
+            // if(window.parent && window.parent !== window) {
+            //   window.parent.history.back();
+            // } else {
+            //   window.close() | window.location.reload();
+            // }
+          }
+
+          if(btn.typeText === 'share') {
+            emit('share');
+            // var params = window.requestQueryParams;
+            // var url = params.url;
+            // if(url !== undefined) {
+            //     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blacnk');                        
+            // }
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   function gameAction(keyCode) {

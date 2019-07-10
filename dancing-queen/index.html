@@ -53,12 +53,36 @@
         margin: 0;
         font-size: 0;
       }
+
+      #restrict {
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0,0,0,0.8);
+        font-family: sans-serif;
+      }
+
+      @media only screen and (max-width: 768px) and (orientation: landscape) {
+        #restrict {
+          display: flex;
+          font-size: 10vh;
+          color: #fff;
+        }
+      }
     </style>
   </head>
 
   <body>
     <main id="dancer-sketch" role="main">
-      <section id="canvas"></section>
+      <section id="canvas">
+        
+        <div id="restrict">
+          Rotate device
+        </div>
+      </section>
     </main>
   </body>
 </html>
