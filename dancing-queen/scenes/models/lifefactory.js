@@ -7,7 +7,6 @@ function LifeFactory(type,lifeNumber, w, h, gap) {
   this.lifes = [];
   this.inactiveLifes = [];
 
-  var drawStart = (width / 4) - (this.lifeNumber * (this.w + this.gap) / 2);
   var getFactoryWidth = function(){
     return (this.lifeNumber * this.w + this.lifeNumber * this.gap);
   }.bind(this);
@@ -18,7 +17,7 @@ function LifeFactory(type,lifeNumber, w, h, gap) {
     if(windowWidth < 768) {
       translate(width / 2 - getFactoryWidth() / 2, 0);
     } else {
-      translate(drawStart, 0);
+      translate(width / 4 - getFactoryWidth() / 2, 0);
     }
 
     drawLifes();

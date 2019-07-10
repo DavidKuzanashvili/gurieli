@@ -23,7 +23,7 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
     noStroke();
     rect(this.x, this.offsetTop, w, h);
     fill(colors.boogerTwo);
-    rect(this.x, activeAreaStart, w, h / 5);
+    rect(this.x, activeAreaStart, w, oControl.getActiveAreaHeight());
     stroke(colors.lightTan);
     strokeWeight(2);
     line(this.x + w, this.offsetTop, this.x + w, height);
@@ -47,7 +47,7 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
     if (windowWidth < 768) {
       w = width / 4;
       this.x = (this.x - width / 2) * 2;
-      activeAreaStart = height - parseInt(h / 5) - parseInt(this.offsetTop * (2 / 3));
+      activeAreaStart = height - oControl.getActiveAreaHeight() - parseInt(this.offsetTop * (2 / 3));
     }
 
     for (var i = 0; i < this.arrows.length; i++) {
@@ -61,13 +61,13 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
   }
 
   this.getActiveAreaHeight = function () {
-    return h;
+    return parseInt(h / 5);
   }
 
   this.isInActiveArea = function (x, y) {
     if (!y) {
       y = x;
-      return y > activeAreaStart && y < (activeAreaStart + h / 5);
+      return y > activeAreaStart && y < (activeAreaStart + oControl.getActiveAreaHeight());
     }
 
     return x > this.x
@@ -83,7 +83,7 @@ function ControlColumn(btnTypeCode, x, buttonColor) {
 
   this.getPassedActiveAreaArrows = function () {
     return oControl.arrows.filter(function (arrow) {
-      return !arrow.isTriggered() && arrow.y > (activeAreaStart + (h / 5));
+      return !arrow.isTriggered() && arrow.y > (activeAreaStart + (oControl.getActiveAreaHeight()));
     });
   }
 

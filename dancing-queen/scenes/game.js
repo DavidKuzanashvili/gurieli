@@ -106,10 +106,12 @@ function Game() {
       pauseGame();
     }
 
-    var randomColumn = controlColumns[round(random(0, 3))];
     if (!isPaused) {
-      if (millis() > lastDrop + 1000) {
-        lastDrop = millis();
+      var timeToDrop = !controlColumns.some(function(col){
+        return col.arrows.length && col.arrows[col.arrows.length - 1].y < 170 + Math.max(col.getActiveAreaHeight(), arrow.h * 2);
+      });
+      var randomColumn = controlColumns[round(random(0, 3))];
+      if (timeToDrop) {
         var speed = 3;
         randomColumn.arrows.push(new Arrow(randomColumn.x + (width / 8) / 2, randomColumn.offsetTop, arrowSize, arrowSize, randomColumn.btnTypeCode, speed));
       }
