@@ -355,7 +355,7 @@ function Game() {
 
     statsGameModal.statButtons.forEach(function (btn) {
       if (btn.contains(mouseX, mouseY)) {
-        if (btn.typeText === 'reset') {
+        if (btn.typeText === 'reset' && showStats) {
           showStats = false;
           resetGame();
         }

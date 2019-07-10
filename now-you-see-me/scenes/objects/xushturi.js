@@ -40,7 +40,7 @@ function Xushturi(x, y) {
 
   this.update = function() {
     if(model) {
-      coef = 0.7;
+      coef = 0.4;
       sprite = model.frame.sequence[model.currentIndex];
     }
   }

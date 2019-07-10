@@ -19,6 +19,11 @@ function Game() {
   var lastDrop = 0;
   var startButton = null;
   var startButtonBackground = color(colors.lightTan);
+  var minSpeed = 3;
+  var currentSpeed = minSpeed;
+  var maxSpeed = 6;
+  var increaseSpeed = 0.25;
+  var startTime = 0;
   startButtonBackground.levels[3] = 255 * 0.5;
 
   //Toggles
@@ -53,6 +58,7 @@ function Game() {
       veryFirstLoadState = false;
       startButton = null;
       oDancer.xushturi.animate('moving', floor(1000 / 15));
+      startTime = millis();
     }
   }
 
@@ -101,6 +107,8 @@ function Game() {
   }
 
   this.update = function () {
+
+
     if(!hearts.lifes.length) {
       showStats = true;
       pauseGame();
@@ -112,8 +120,12 @@ function Game() {
       });
       var randomColumn = controlColumns[round(random(0, 3))];
       if (timeToDrop) {
-        var speed = 3;
-        randomColumn.arrows.push(new Arrow(randomColumn.x + (width / 8) / 2, randomColumn.offsetTop, arrowSize, arrowSize, randomColumn.btnTypeCode, speed));
+        // if(millis() >= startTime + 15 * 1000 && currentSpeed !== maxSpeed) {
+        //   startTime = millis();
+        //   currentSpeed += increaseSpeed;
+        // }
+        currentSpeed = minSpeed + parseInt(score / 5) * increaseSpeed;
+        randomColumn.arrows.push(new Arrow(randomColumn.x + (width / 8) / 2, randomColumn.offsetTop, arrowSize, arrowSize, randomColumn.btnTypeCode, currentSpeed));
       }
     }
     updateActiveKeyCodes();
@@ -394,8 +406,10 @@ function Game() {
   }
 
   this.reset = function () {
+    startTime = millis();
     score = 0;
     showStats = false;
+    currentSpeed = minSpeed;
     hearts.generetaLifes();
     controlColumns.forEach(function(col){
       col.arrows.length = 0;
