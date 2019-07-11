@@ -63,6 +63,10 @@ function Game() {
   }
 
   this.draw = function () {
+    if(pauseOnTabChange) {
+      isPaused = true;
+      pauseGame();
+    }
     updateTouchTracker();
 
     push();
@@ -107,8 +111,6 @@ function Game() {
   }
 
   this.update = function () {
-
-
     if(!hearts.lifes.length) {
       showStats = true;
       pauseGame();
@@ -232,11 +234,22 @@ function Game() {
   }
 
   function pauseGame() {
+    for(var key in sounds) {
+      sounds[key].setVolume(0);
+    }
     isPaused = true;
   }
 
   function unpouseGame() {
+    for(var key in sounds) {
+      if(key === 'background') {
+        sounds[key].setVolume(0.2);
+      } else {
+        sounds[key].setVolume(0.5);
+      }
+    }
     isPaused = false;
+    pauseOnTabChange = false;
   }
 
   var touchEndedTime = 0;

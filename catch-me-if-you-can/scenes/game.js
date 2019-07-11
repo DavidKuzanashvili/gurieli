@@ -171,7 +171,8 @@ function Game() {
                     if(isStoryLineFinished) {
                         CURRENT_LEVEL = round(random(0, LEVEL.length - 1));
                     } else {
-                        CURRENT_LEVEL++;                        
+                        CURRENT_LEVEL++;
+                                                
                     }
                     this.reset();
                     oRoundStart.reset();

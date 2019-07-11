@@ -25,6 +25,7 @@ var whiteDownArrow = {};
 var sounds = {};
 var ACTIVE_KEY_CODES = new Set();
 var veryFirstLoadState = true;
+var pauseOnTabChange = false;
 
 function preload() {
   loadSounds();
@@ -158,3 +159,13 @@ function loadSounds() {
   sounds.before = loadSound('assets/sound-effects/before.wav');
   sounds.correct = loadSound('assets/sound-effects/correct.wav');
 }
+
+window.addEventListener('blur', function() {
+  if(veryFirstLoadState) {
+    return;
+  }
+  pauseOnTabChange = true;
+  for(var key in sounds) {
+    sounds[key].setVolume(0);
+  }
+});
