@@ -408,6 +408,7 @@ function Game() {
     }
 
     this.reset = function () {
+        timer.startSound = 0;
         if(deadHearts >= 5) {
             deadHearts = 0;
         }

@@ -6,7 +6,7 @@ function Timer(timerStart, maxTime = 60) {
   var textOffsetX = 0;
   var timerShadow = colors.sixD;
   var seconds = 0;
-  var startSound = 0;
+  this.startSound = 0;
 
   var offsetTop = -250;
   var animationSpeed = 5;
@@ -54,10 +54,11 @@ function Timer(timerStart, maxTime = 60) {
     seconds = Math.min(round(millis() / 1000) - round(this.timerStart / 1000), maxTime);
 
     if(this.getSecondsLeft() === 10) {
-      startSound++;
-      if(startSound >= 60) {
+      this.startSound++;
+      if(this.startSound >= 50) {
         textColor = colors.cherry;
         sounds.timeLeft.play();
+        this.startSound = 0;
       } 
     }
 
