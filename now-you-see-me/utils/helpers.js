@@ -20,5 +20,5 @@ var easeInOut = function(x){
 }
 
 function emit(message) {
-  window.parent.postMessage(message);
+  window.parent.postMessage(message, 'https://gurieli.leavingstone.club');
 }

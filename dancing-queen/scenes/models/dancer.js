@@ -4,8 +4,9 @@ function Dancer(img, offsetTop) {
   this.height = 350;
   this.offsetTop = offsetTop || 170;
   this.xushturi = null;
+  this.isMainDancer = true;
 
-  var shake= 0;
+  var shake = 0;
   var calmShakeSpeed = 0.5;
   var activeAnimation = null;
   var currentShake = 0;

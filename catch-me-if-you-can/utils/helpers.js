@@ -16,5 +16,5 @@ function hexToRgb(hex) {
 }
 
 function emit(message) {
-  window.parent.postMessage(message);
+  window.parent.postMessage(message, 'https://gurieli.leavingstone.club');
 }

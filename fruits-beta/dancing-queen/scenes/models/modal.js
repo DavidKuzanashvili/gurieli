@@ -10,11 +10,11 @@ function Modal(options) {
   var shadowColor = darken(color(colors.boogerTwo));
   var marginLeft = 50;
   var marginTop = 100;
-  var lines = 'umaRlesi qula: 3224\nqula: 244\nTavidan\ngamorTva'
-  var controlButtonsOffsetX = textWidth('gamorTva') * this.fontSize / 12;
+  var lines = 'High Score: 3224\nScore: 244\nRestart\nClose'
+  var controlButtonsOffsetX = textWidth('Restart') * this.fontSize / 12;
   var lineHeight = 90;
   var overlayColor = hexToRgb(colors.lightTan);
-  var resumeText = 'TamaSis gagrZeleba';
+  var resumeText = 'Resume';
   var resumeTextWidth;
   this.statResetButton = new ControlButton(icons.reset.img, width / 2, height / 2, icons.reset.w, icons.reset.h);
   this.statResetButton.textType = 'reset';

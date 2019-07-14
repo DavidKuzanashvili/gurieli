@@ -1,7 +1,7 @@
 const LEVEL = [
   {
     leaves: 'mint',
-    leavesHeight: 314,
+    leavesHeight: 330,
     introFruit: {
       name: 'mint',
       width: 355,
@@ -27,7 +27,7 @@ const LEVEL = [
   },
   {
     leaves: 'feijoa',
-    leavesHeight: 315,
+    leavesHeight: 387,
     introFruit: {
       name: 'feijoa',
       width: 300,
@@ -88,7 +88,7 @@ const LEVEL = [
   // },
   {
     leaves: 'peach',
-    leavesHeight: 345,
+    leavesHeight: 428,
     introFruit: {
       name: 'peach',
       width: 310,
@@ -119,7 +119,7 @@ const LEVEL = [
   },
   {
     leaves: 'raspberry',
-    leavesHeight: 276,
+    leavesHeight: 346,
     introFruit: {
       name: 'raspberry',
       width: 340,

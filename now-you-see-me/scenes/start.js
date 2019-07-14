@@ -22,6 +22,7 @@ var lifes = {};
 var sequences = {};
 var sounds = {};
 var cupImgObj = null;
+var pauseOnTabChange = false;
 var sizes = {
   cupSizeCoefficient: 0,
   cupsGapCoefficeint: 0,
@@ -226,3 +227,13 @@ function loadSounds() {
   sounds.slide = loadSound('assets/sounds/Sriali.wav');
   sounds.popUp = loadSound('assets/sounds/PopUpAppear.wav');
 }
+
+window.addEventListener('blur', (e) => {
+  if(veryFirstLoadState) {
+    return;
+  }
+  pauseOnTabChange = true;
+  for(var key in sounds) {
+    sounds[key].setVolume(0);
+  }
+});

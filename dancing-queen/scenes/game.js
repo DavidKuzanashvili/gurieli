@@ -47,7 +47,7 @@ function Game() {
       y: height / 2,
       backgroundColor: color('#86b23d'),
       font: fonts.LGVBold,
-      content: 'daiwye',
+      content: 'dawyeba',
       onUpdate: function () {
         this.x = width / 2;
         this.y = height / 2;
@@ -139,6 +139,7 @@ function Game() {
         }
         arrow.forceTrigger();
         // score--;
+        sounds.wrong.play();
         hearts.lifes.length && hearts.lifes.pop();
       })
     })
@@ -312,7 +313,7 @@ function Game() {
       pauseGame();
     }
 
-    if (isPaused && pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
+    if (isPaused && pauseGameModal.pauseContains(mouseX, mouseY)) {
       unpouseGame();
     }
 

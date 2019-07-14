@@ -12,7 +12,7 @@ window.requestQueryParams = window.location.href
 
     return o;
   }, {});
-
+var pauseOnTabChange = false;
 var fontsPath = 'assets/fonts/';
 var iconsPath = 'assets/imgs/icons/';
 var fonts = {};
@@ -161,6 +161,16 @@ function loadSounds() {
 }
 
 window.addEventListener('blur', function() {
+  if(veryFirstLoadState) {
+    return;
+  }
+  pauseOnTabChange = true;
+  for(var key in sounds) {
+    sounds[key].setVolume(0);
+  }
+});
+
+window.addEventListener('blur', (e) => {
   if(veryFirstLoadState) {
     return;
   }

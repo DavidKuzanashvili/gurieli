@@ -11,7 +11,7 @@ function Cup(x, y, w = cupImgObj.width, h = cupImgObj.height) {
   this.offsetY = 0;
   this.shadowOffsetX = 0;
   this.enlargeShadow = 1;
-  this.enlargeShadowSpeed = 0.01;
+  this.enlargeShadowSpeed = 0.03;
   this.followShadow = false;
   
   this.rotation = 0;

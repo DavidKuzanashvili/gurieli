@@ -15,7 +15,7 @@ function Modal(options) {
   var controlButtonsOffsetX = textWidth('gamorTva') * this.fontSize / 12;
   var lineHeight = 90;
   var overlayColor = hexToRgb(colors.lightTan);
-  var resumeText = 'gagrZele TamaSi';
+  var resumeText = 'TamaSis gagrZeleba';
   var resumeTextWidth;
   this.statResetButton = new ControlButton(icons.reset.img, width / 2, height / 2, icons.reset.w, icons.reset.h, 'reset');
   this.statResetButton.typeText = 'reset';
@@ -55,7 +55,24 @@ function Modal(options) {
   ];
 
   this.resumeBtn = new ControlButton(icons.resume.img, width / 2 + resumeTextWidth / 2 + 20, height / 2, icons.resume.w, icons.resume.h, 'resume');
-  
+
+  var dance = null;
+
+  function cutSequence() {
+    dance = new Model(new Frame(), sequences.dance);
+
+    for (var i = 0; i < 96; i++) {
+      var x = (i % 96) * 400;
+      var y = parseInt(i / 96) * 400;
+      dance.frame.sequence.push(new Sprite(x, y, 400, 400));
+    }
+
+    dance.frame.addAnimation('moving', 0, 95);
+    dance.animate('moving', round(1000 / 15));
+  }
+
+  cutSequence();
+
   this.drawStats = function() {
     var w = this.width;
     var h = this.height;
@@ -113,7 +130,12 @@ function Modal(options) {
     rect(width / 2, height / 2, w, h, 60);
     
     if(windowWidth > 800) {
-      image(dancer, width / 2 - w / 2 + 370, height / 2 - h / 2 + marginTop, 150, 200);
+      push();
+      translate(width / 2 - w / 2 + 340, height / 2 - h / 2 + marginTop);
+      dance.update();
+      dance.draw(400 * 0.5, 400 * 0.5);
+      // image(dancer, width / 2 - w / 2 + 370, height / 2 - h / 2 + marginTop, 150, 200);
+      pop();
     }
 
 
@@ -123,10 +145,10 @@ function Modal(options) {
     textLeading(lh);
     textFont(this.font);
     if(!(windowWidth <= 800)) {
-      text('umaRlesi qula: 547\nqula: ' + this.score +'\nTavidan\ngamorTva', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
+      text('umaRlesi qula: 462\nqula: ' + this.score +'\nTavidan\ngamorTva', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
       text('gaaziare', width / 2 - w / 2 + 350, height / 2 - h / 2 + mt + 3 * lh);
     } else {
-      text('umaRlesi qula: 547\nqula: ' + this.score +'\nTavidan\ngamorTva\ngaaziare', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
+      text('umaRlesi qula: 462\nqula: ' + this.score +'\nTavidan\ngamortva\ngaaziare', width / 2 - w / 2 + ml, height / 2 - h / 2 + mt);
     }
 
     //Buttons
@@ -196,10 +218,11 @@ function Modal(options) {
     pop();
   }
 
+  var w = this.width;
+  var h = this.height;
+
   this.drawPause = function() {
     var coef = 1;
-    var w = this.width;
-    var h = this.height;
     var fs = this.fontSize;
     var iconSize = 1;
 
@@ -219,6 +242,10 @@ function Modal(options) {
     }
 
     push();
+
+    if(this.pauseContains(mouseX, mouseY)) {
+      cursor('pointer');
+    }
 
     background(overlayColor.r, overlayColor.g, overlayColor.b, 255 * 0.5);
     fill(shadowColor);
@@ -241,6 +268,18 @@ function Modal(options) {
     this.resumeBtn.draw();
 
     pop();
+  }
+
+  this.pauseContains = function(x, y) {
+    var pw = w / 2;
+    var ph = h / 2;
+    var px = width / 2;
+    var py = height / 2;
+
+    return x > px - pw
+      && x < px + pw
+      && y > py - ph
+      && y < py + ph;
   }
 
   this.setScore = function(value) {

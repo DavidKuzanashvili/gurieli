@@ -218,6 +218,12 @@ function Game() {
     }
 
     this.update = function() {
+        if(pauseOnTabChange) {
+            showPauseModal = true;
+            pauseGame();
+            pauseOnTabChange = false;
+        }
+
         if(sizes.updateHeaderButtons){
             delete sizes.updateHeaderButtons;
             
@@ -525,7 +531,12 @@ function Game() {
             }
         });
 
-        if (pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
+        // if (pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
+        //     showPauseModal = false;
+        //     unpouseGame();
+        // }
+
+        if(pauseGameModal.pauseContains(mouseX, mouseY)) {
             showPauseModal = false;
             unpouseGame();
         }
@@ -608,11 +619,20 @@ function Game() {
     }
 
     function pauseGame() {
+        for(var key in sounds) {
+            sounds[key].setVolume(0);
+        }
         pauseStart = millis();
         isPaused = true;
     }
 
     function unpouseGame() {
+        for(var key in sounds) {
+            if(key === 'background' || key === 'popUp') 
+                sounds[key].setVolume(0.3);
+            else 
+                sounds[key].setVolume(1);
+        }
         timer.fixTime(millis() - pauseStart);
         isPaused = false;
         delete pauseStart;

@@ -175,8 +175,6 @@ function Game() {
       statsGameModal.drawStats();
     }
 
-    // line(mouseX, 0, mouseX, height);
-    // text(mouseX, mouseX, mouseY);
     pop();
   }
 
@@ -217,6 +215,11 @@ function Game() {
   }
 
   this.update = function () {
+    if(pauseOnTabChange) {
+      showPauseModal = true;
+      pauseGame();
+      pauseOnTabChange = false;
+    }
     var stw = 237;
     var sth = 74;
     var fs = 30;
@@ -338,11 +341,12 @@ function Game() {
         if (btn.typeText === 'pause') {
           sounds.popUp.play();
           showPauseModal = true;
+          pauseGame();
         }
       }
     })
 
-    if (pauseGameModal.resumeBtn.contains(mouseX, mouseY)) {
+    if (pauseGameModal.pauseContains(mouseX, mouseY)) {
       showPauseModal = false;
       unpouseGame();
     }
@@ -403,13 +407,13 @@ function Game() {
                   delete cup.events.hide.end;
                   startLevel(CURRENT_LEVEL);
                 }
-              }, 1500);
+              }, 2000);
             } else {
               sounds.giggle.play();
-              if (score > 0) {
-                score--;
-                scoreCircle.setScore(score);
-              }
+              // if (score > 0) {
+              //   score--;
+              //   scoreCircle.setScore(score);
+              // }
               if (hearts.lifes.length > 0) {
                 hearts.lifes.pop();
               }
@@ -440,7 +444,7 @@ function Game() {
                           delete winningCup.events.hide.end;
                           startLevel(CURRENT_LEVEL);
                         }
-                      }, 800);
+                      }, 1600);
                     }
                     winningCup.animate('reveal');
                   }, 800);
@@ -561,7 +565,7 @@ function Game() {
 
   function initGame() {
     xushturi = new Xushturi(0, 0);
-    xushturi.switchAnimation('start');
+    xushturi.switchAnimation('win');
     hearts = new LifeFactory(lifes.active, 3, width / 2 - 3 * (36 + 50) / 2, 36, 31, 50);
     cups.push(new Cup(width / 2 - gap - cupImgObj.width, height / 2));
     cups.push(new Cup(width / 2, height / 2));
@@ -651,10 +655,22 @@ function Game() {
   }
 
   function pauseGame() {
+    for(var key in sounds) {
+      sounds[key].setVolume(0);
+    }
     isPaused = true;
   }
 
   function unpouseGame() {
+    for(var key in sounds) {
+      if(key === 'background') {
+        sounds[key].setVolume(0.3);
+      } else if(key === 'popUp') {
+        sounds[key].setVolume(0.5);
+      } else {
+        sounds[key].setVolume(1);
+      }
+    }
     isPaused = false;
   }
 
@@ -675,7 +691,7 @@ function Game() {
 
     //   winningCup.events.reveal.start = function() {
     //     delete winningCup.events.reveal.start;
-    //     winningCup.xushturi.switchAnimation('start');
+    //     winningCup.xushturi.switchAnimation('win');
     //   }
     //   cups[1].animate('reveal');
     //   cups[1].events.reveal.end = function() {

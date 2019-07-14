@@ -39,18 +39,15 @@ function Model(frame, texture) {
     if (this.currentAnimation == null) {
       return;
     }
-
     var calculatedStep = parseInt(millis() / this.animationStep);
     if (calculatedStep <= this.currentStep) {
       return;
     }
-
     this.currentStep = calculatedStep;
 
     var animation = this.frame.animations[this.currentAnimation];
 
     this.currentIndex++;
-
     if (this.currentIndex > animation.end) {
       if (this.noLoop) {
         this.currentAnimation = null;

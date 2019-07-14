@@ -196,12 +196,13 @@ function Modal(options) {
     pop();
   }
 
+  var w = this.width;
+  var h = this.height;
+
   this.drawPause = function() {
     push();
 
     var coef = 1;
-    var w = this.width;
-    var h = this.height;
     var fs = this.fontSize;
     var iconSize = 1;
 
@@ -221,6 +222,11 @@ function Modal(options) {
     }
 
     background(overlayColor.r, overlayColor.g, overlayColor.b, 255 * 0.6);
+
+    if(this.pauseContains(mouseX, mouseY)) {
+      cursor('pointer');
+    }
+
     fill(shadowColor);
     rectMode(CENTER);
     noStroke();
@@ -241,5 +247,19 @@ function Modal(options) {
     this.resumeBtn.draw();
 
     pop();
+  }
+
+  this.pauseContains = function(x, y) {
+    var pw = w / 2;
+    var ph = h / 2;
+    var px = width / 2;
+    var py = height / 2;
+
+    console.log(pw, ph, px, py);  
+
+    return x > px - pw
+      && x < px + pw
+      && y > py - ph
+      && y < py + ph;
   }
 }

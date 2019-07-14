@@ -12,6 +12,7 @@ window.requestQueryParams = window.location.href
     return o;
   }, {});
 
+var pauseOnTabChange = false;
 var veryFirstLoadState = true;
 var imgPath = 'assets/imgs/';
 var fontsPath = 'assets/fonts/';
@@ -270,6 +271,16 @@ function loadSoundEffects() {
   sounds.countDown = loadSound('sound-effects/CountDown.wav');
   sounds.timeLeft = loadSound('sound-effects/TimeLeft.wav');
 }
+
+window.addEventListener('blur', (e) => {
+  if(veryFirstLoadState) {
+    return;
+  }
+  pauseOnTabChange = true;
+  for(var key in sounds) {
+    sounds[key].setVolume(0);
+  }
+});
 
 function changeSizes() {
   if (windowWidth >= 1600) {

@@ -25,7 +25,7 @@ function ControlButton(type, x, y, w, h, typeText) {
 
   this.update = function() {
     this.onUpdate();
-    if(this.typeText !== 'share' && this.typeText !== 'resume' && this.typeText !== 'arrow') {
+    if(this.typeText !== 'share' && this.typeText !== 'Tavidan' && this.typeText !== 'arrow') {
       if(this.typeText === 'sound') {
         if(this.isSound) {
           if(this.contains(mouseX, mouseY)) {
