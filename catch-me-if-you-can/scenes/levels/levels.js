@@ -141,6 +141,11 @@ const LEVEL = [
         width: 85,
         height: 85
       },
+      {
+        fruit: 'feijoa',
+        width: 45,
+        height: 110
+      },
       // {
       //   fruit: 'cherry',
       //   width: 45,
