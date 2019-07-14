@@ -255,8 +255,6 @@ function Modal(options) {
     var px = width / 2;
     var py = height / 2;
 
-    console.log(pw, ph, px, py);  
-
     return x > px - pw
       && x < px + pw
       && y > py - ph

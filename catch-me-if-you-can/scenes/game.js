@@ -170,8 +170,10 @@ function Game() {
                 if(isStoryLineFinished || CURRENT_LEVEL < LEVEL.length - 1) {
                     if(isStoryLineFinished) {
                         CURRENT_LEVEL = round(random(0, LEVEL.length - 1));
+                        turi++;
                     } else {
                         CURRENT_LEVEL++;
+                        turi = CURRENT_LEVEL + 1;
                                                 
                     }
                     this.reset();
@@ -627,15 +629,21 @@ function Game() {
     }
 
     function unpouseGame() {
+        if(pauseStartOnTabChange !== 0) {
+            console.log(pauseStartOnTabChange, millis());
+            timer.fixTime(millis() - pauseStartOnTabChange);
+            pauseStartOnTabChange = 0;
+        } else {
+            timer.fixTime(millis() - pauseStart);
+            delete pauseStart;
+        }
         for(var key in sounds) {
             if(key === 'background' || key === 'popUp') 
                 sounds[key].setVolume(0.3);
             else 
                 sounds[key].setVolume(1);
         }
-        timer.fixTime(millis() - pauseStart);
         isPaused = false;
-        delete pauseStart;
     }
 
     function muteSounds() {

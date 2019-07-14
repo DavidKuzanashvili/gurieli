@@ -37,6 +37,7 @@ var username = window.requestQueryParams.username || null;
 var score = 0;
 
 var CURRENT_LEVEL = 0;
+var turi = CURRENT_LEVEL + 1;
 
 var sizes = {
   roundStartCoefficient: 0,
@@ -272,11 +273,14 @@ function loadSoundEffects() {
   sounds.timeLeft = loadSound('sound-effects/TimeLeft.wav');
 }
 
+var pauseStartOnTabChange = 0;
+
 window.addEventListener('blur', (e) => {
   if(veryFirstLoadState) {
     return;
   }
   pauseOnTabChange = true;
+  pauseStartOnTabChange = millis();
   for(var key in sounds) {
     sounds[key].setVolume(0);
   }

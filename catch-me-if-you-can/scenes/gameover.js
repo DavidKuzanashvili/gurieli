@@ -51,6 +51,7 @@ function GameOver()
             if (btn.contains(mouseX, mouseY)) {
                 if(btn.typeText === 'reset') {
                     CURRENT_LEVEL = 0;
+                    turi = CURRENT_LEVEL + 1;
                     oRoundStart.reset();
                     oGame.reset();
                     score = 0;

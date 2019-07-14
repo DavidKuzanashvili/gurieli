@@ -68,7 +68,7 @@ function Statistics(higestScore, startingPoint) {
     textAlign(pointAlign, CENTER);
     text('qula: ' + this.score, pointX, marginTop);
     textAlign(roundAlign, CENTER);
-    text('raundi: ' + (CURRENT_LEVEL + 1), roundX, roundY);
+    text('raundi: ' + turi, roundX, roundY);
 
     pop();
   }

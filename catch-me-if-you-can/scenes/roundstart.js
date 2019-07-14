@@ -137,7 +137,7 @@ function RoundStart() {
       this.y = height / 2;
     }
 
-    title = new Title(width / 2, height / 2 - 150, 'turi: ' + (CURRENT_LEVEL + 1), LEVEL[CURRENT_LEVEL].color, 60);
+    title = new Title(width / 2, height / 2 - 150, 'turi: ' + turi, LEVEL[CURRENT_LEVEL].color, 60);
     title.onUpdate = function () {
       this.x = width / 2;
       this.y = height / 2 - 150;
@@ -162,7 +162,7 @@ function RoundStart() {
   }
 
   var introFruitOffset = 0;
-  var targetIntroFruitOffset = 200;
+  var targetIntroFruitOffset = 170;
   var introFruitOffsetSpeed = 10;
 
   var drawIntroFruit = drawIntroFruitIn;
