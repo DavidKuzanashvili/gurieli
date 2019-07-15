@@ -225,12 +225,14 @@ function Modal(options) {
     var coef = 1;
     var fs = this.fontSize;
     var iconSize = 1;
+    w = this.width;
+    h = this.height;
 
     if(windowWidth <= 800) {
       coef = 0.7;
-      w = parseInt(w * 0.5);
+      w = parseInt(this.width * 0.5);
       fs = parseInt(fs * 0.5);
-      h = parseInt(h * 0.5);
+      h = parseInt(this.height * 0.5);
       iconSize = 0.5
     }
 

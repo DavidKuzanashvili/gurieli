@@ -57,7 +57,7 @@ function Game() {
         }
 
         settingsBg = new SettingsBackground({
-            x: width - (headerMargin * sizes.headerMarginCoefficient),
+            x: width - this.w / 2 - (headerMargin * sizes.headerMarginCoefficient),
             y: 70,
             w: pngIcons.settings.w,
             h: pngIcons.settings.h,
@@ -254,8 +254,8 @@ function Game() {
 
         if(windowWidth < 1000) {
             headerButtons.forEach(function(btn) {
-                settingsBtn.x = width - 45 * sizes.iconsCoefficients - headerMargin * sizes.headerMarginCoefficient;
-                btn.x = width - 45 * sizes.iconsCoefficients - headerMargin * sizes.headerMarginCoefficient;
+                settingsBtn.x = width - pngIcons.settings.w / 2 - headerMargin * sizes.headerMarginCoefficient;
+                btn.x = width - pngIcons.settings.w / 2 - headerMargin * sizes.headerMarginCoefficient;
 
                 if(btn.typeText === 'close') {
                     btn.y = 70 + btn.h / 2 + verticalMargin;
@@ -630,7 +630,6 @@ function Game() {
 
     function unpouseGame() {
         if(pauseStartOnTabChange !== 0) {
-            console.log(pauseStartOnTabChange, millis());
             timer.fixTime(millis() - pauseStartOnTabChange);
             pauseStartOnTabChange = 0;
         } else {

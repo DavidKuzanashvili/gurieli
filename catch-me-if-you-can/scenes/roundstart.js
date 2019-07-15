@@ -162,7 +162,7 @@ function RoundStart() {
   }
 
   var introFruitOffset = 0;
-  var targetIntroFruitOffset = 170;
+  var targetIntroFruitOffset = 180;
   var introFruitOffsetSpeed = 10;
 
   var drawIntroFruit = drawIntroFruitIn;

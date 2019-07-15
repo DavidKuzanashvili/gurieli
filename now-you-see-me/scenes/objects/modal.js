@@ -222,13 +222,15 @@ function Modal(options) {
     var coef = 1;
     var fs = this.fontSize;
     var iconSize = 1;
+    w = this.width;
+    h = this.height;
 
     if(windowWidth > 500 && windowWidth <= 800) {
       coef = 0.65;
-      w = parseInt(w * coef);
+      w = parseInt(this.width * coef);
       fs = parseInt(fs * coef);
-      h = parseInt(h * coef);
-      iconSize = coef
+      h = parseInt(this.height * coef);
+      iconSize = coef;
     }
 
     if(windowWidth <= 500) {
@@ -280,8 +282,6 @@ function Modal(options) {
     var ph = h / 2;
     var px = width / 2;
     var py = height / 2;
-
-    console.log(pw, ph, px, py);  
 
     return x > px - pw
       && x < px + pw
