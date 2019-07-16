@@ -19,10 +19,13 @@ function GameOver()
 
     this.draw = function()
     {
+        updateTouchTracker();
+        push();
         background('#003919');
         leaves.draw();
 
         modal.drawStats();
+        pop();
     }
 
     function initGameOver() {
@@ -41,12 +44,28 @@ function GameOver()
         modal.xushturi = modalAnimation;
     }
 
-    this.keyPressed = function()
-    {
-        this.sceneManager.showScene( RoundStart );
+    var touchEndedTime = 0;
+
+    function updateTouchTracker() {
+      if(touches.length) {
+        touchEndedTime = millis();
+      }
     }
 
-    this.mousePressed = function() {
+    this.touchStarted = function () {
+        var target = touches.length ? touches[touches.length - 1] : { x: -1000, y: -1000 };
+        clickCallback(target.x, target.y);
+    }
+    
+    this.mousePressed = function () {
+      if(millis() - touchEndedTime < 25) {
+        return;
+      }
+
+      clickCallback(mouseX, mouseY);
+    }
+
+    function clickCallback(mouseX, mouseY) {
         modal.statButtons.forEach(function(btn) {
             if (btn.contains(mouseX, mouseY)) {
                 if(btn.typeText === 'reset') {

@@ -53,14 +53,22 @@ function Timer(timerStart, maxTime = 60) {
     updateAnimaton();
     seconds = Math.min(round(millis() / 1000) - round(this.timerStart / 1000), maxTime);
 
-    if(this.getSecondsLeft() === 10) {
-      this.startSound++;
-      if(this.startSound >= 50) {
+    if(!this.startSound && this.getSecondsLeft() <= 10) {
+      this.startSound = 1;
+      setTimeout(function() {
         textColor = colors.cherry;
         sounds.timeLeft.play();
-        this.startSound = 0;
-      } 
+      }, 1000 / 60 * 50);
     }
+
+    // if(this.getSecondsLeft() === 10) {
+    //   this.startSound++;
+    //   if( >= 50) {
+    //     textColor = colors.cherry;
+    //     sounds.timeLeft.play();
+    //     this.startSound = 0;
+    //   } 
+    // }
 
     if(this.getSecondsLeft() <= 9) {
       textOffsetX = round(random(-1, 1));

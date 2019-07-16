@@ -33,6 +33,8 @@ var sequenceImage = null;
 var xushturi = null;
 var sequences = {};
 var username = window.requestQueryParams.username || null;
+var startTheGame;
+var pauseStart;
 
 var score = 0;
 
@@ -273,14 +275,17 @@ function loadSoundEffects() {
   sounds.timeLeft = loadSound('sound-effects/TimeLeft.wav');
 }
 
-var pauseStartOnTabChange = 0;
 
 window.addEventListener('blur', (e) => {
   if(veryFirstLoadState) {
     return;
   }
   pauseOnTabChange = true;
-  pauseStartOnTabChange = millis();
+
+  if(startTheGame) {
+    pauseStart = millis();
+  }
+
   for(var key in sounds) {
     sounds[key].setVolume(0);
   }

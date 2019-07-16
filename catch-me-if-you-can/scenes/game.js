@@ -40,7 +40,6 @@ function Game() {
     var toggleMusic = false;
     var toggleSettings = false;
     var isPaused = false;
-    var pauseStart;
 
     this.enter = function () {
         initGame();
@@ -299,7 +298,7 @@ function Game() {
         stats = new Statistics(3224, headerMargin);
         stats.score = score;
         
-        timer = new Timer(millis(), 35);
+        timer = new Timer(millis(), 30);
         hearts = new LifeFactory(headerMargin, 5);
         
         hearts.generateLifes();
@@ -624,18 +623,20 @@ function Game() {
         for(var key in sounds) {
             sounds[key].setVolume(0);
         }
-        pauseStart = millis();
+        if(!pauseOnTabChange) {
+            pauseStart = millis();
+        }
         isPaused = true;
     }
 
     function unpouseGame() {
-        if(pauseStartOnTabChange !== 0) {
-            timer.fixTime(millis() - pauseStartOnTabChange);
-            pauseStartOnTabChange = 0;
-        } else {
-            timer.fixTime(millis() - pauseStart);
-            delete pauseStart;
+        if(!isPaused) {
+            return;
         }
+
+        timer.fixTime(millis() - pauseStart);
+        delete pauseStart;
+        
         for(var key in sounds) {
             if(key === 'background' || key === 'popUp') 
                 sounds[key].setVolume(0.3);
